@@ -1,0 +1,53 @@
+\documentclass[12pt,a4paper,twoside]{report}
+\usepackage[sorting=ynt]{biblatex}
+\addbibresource{References.bib}
+\includeonly{preliminary/title.tex,%
+preliminary/dedication.tex,%
+preliminary/abstract.tex,%
+chapters/introduction.tex,%
+chapters/textcorpus.tex
+}
+\begin{document}
+
+%--------------- Prelimanary pages -------------
+\pagenumbering{roman}
+\pagestyle{plain}
+
+%--------------------------------------------
+\include{preliminary/title.tex}
+
+\include{preliminary/copyright.tex}
+\include{preliminary/dedication.tex}
+\include{preliminary/approval-sheet.tex}
+\include{preliminary/certificate.tex}
+\include{preliminary/acknowledgement.tex}
+
+\include{preliminary/dedication.tex}
+\include{preliminary/abstract.tex}
+
+
+%\pagestyle{fancy}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+
+
+%----------------- chapters --------------------
+\pagenumbering{arabic}
+
+%---------------------------------------
+\include{chapters/introduction.tex}
+\include{chapters/textcorpus.tex}
+
+\appendix
+\include{chapters/appendix.tex}
+\include{chapters/publications.tex}
+
+% \bibliographystyle{biblatex}
+% \bibliography{References}
+
+\printbibliography
+
+\end{document}
