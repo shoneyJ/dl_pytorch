@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
+\usepackage[acronym]{glossaries}
 \graphicspath{ {images/} }
 \usepackage[sorting=ynt,backend=biber]{biblatex}
 % \usepackage{svg}
@@ -15,6 +16,9 @@ preliminary/abstract.tex,%
 chapters/introduction.tex,%
 chapters/chapter1.tex
 }
+\makeglossaries
+\input{preliminary/acronyms.tex}
+
 \begin{document}
 
 %--------------- Prelimanary pages -------------
@@ -41,7 +45,6 @@ chapters/chapter1.tex
 \listoftables
 
 
-
 %----------------- chapters --------------------
 \pagenumbering{arabic}
 
@@ -51,6 +54,11 @@ chapters/chapter1.tex
 
 \appendix
 \include{chapters/appendix.tex}
+
+\clearpage
+% \printglossary[type=\acronymtype]
+
+% \printglossary
 
 \printbibliography
 
