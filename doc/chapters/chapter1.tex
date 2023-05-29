@@ -1,17 +1,34 @@
-\chapter{Building \acrfull{kg}}
+\chapter{Building a Knowledge graph}
 
 Graph-based knowledge representation has been researched for decades.
-A knowledge graph acquires and integrates information into an ontology and applies a reasoner to derive new knowledge \parencite{LisaEhrlinger}.
+A \acf{kg} acquires and integrates information into an ontology and applies a reasoner to derive new knowledge \parencite{LisaEhrlinger}.
 The knowledge base is a dataset with formal semantics that can contain different kinds of knowledge, for example, rules, facts, axioms, definitions, statements, and primitives \parencite{Davies.2008cop.2006}.
 
-% One of the first things required for \acrfull*{nlp} tasks is a creating a text corpus.
-% In linguistics and \acrshort{nlp}, corpus refers to a collection of texts.
+\begin{figure}[h!]
+    \centering
+    \includesvg[scale=0.5]{Thesis_kg.svg}
+    \caption{\acl{kg} architecture}
+    \label{fig:kg}
+\end{figure}
+
+Figure \ref{fig:kg} illustrates the procsssing of plain text from various sources such as  Wikipedia API, PDF into a graph. This abstract architecture of a \acl{kg} portraits the asumption that a \acl{kg} is more than a \acf{kb}. \acl{kg} is a combination of \acl{kb} and \acf{qe}. 
+
+\Iac{qe} is a set of graph of possible questions that could be formed in reference to \iac{kb}. \acf{qg} for comprehensive reading is a challenging task. There are datasets available for  \acf{qg}, one of it is Stanford Question Answering Dataset v1.0 (SQuAD) consisting of questions posed by crowdworkers on a set of Wikipedia articles \parencite{PranavRajpurkar.}. The limitation with such a data set is that these do not contain unanserable questions. Building a machine learning model when no answer is supported was out of scope of SQuAD objective \parencite{LupeHernandez}.  Study on automatic question generation from an attention-based sequence learning model for  \ac{qg} and investigate the effect of encoding sentence- vs. paragraph-level information \parencite{DuXinya.29042017}, reduces reability on hand crafted rule based systems.
+
+\section{Fetching text corpus}
+
+
+One of the first things required for \acf*{nlp} tasks is a creating a text corpus.
+In linguistics and \acs{nlp}, corpus refers to a collection of texts.
+
+
+
 
 \begin{figure}[h!]
     \centering
     \includesvg{pronoun.svg}
     \caption{kuch kar bhai}
-    \label{fig:440}
+    \label{fig:propn}
 \end{figure}
 
 

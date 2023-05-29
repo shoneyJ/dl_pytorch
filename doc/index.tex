@@ -1,23 +1,23 @@
 \documentclass[12pt,twoside]{report}
+
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
-\usepackage[acronym]{glossaries}
-\graphicspath{ {images/} }
+\usepackage[nohyperlinks, printonlyused, withpage, smaller]{acronym}
 \usepackage[sorting=ynt,backend=biber]{biblatex}
-% \usepackage{svg}
 \usepackage[inkscapeformat=png]{svg}
+
+\graphicspath{ {images/} }
 \addbibresource{References.bib}
 
 \includeonly{preliminary/title.tex,%
 preliminary/dedication.tex,%
 preliminary/abstract.tex,%
+preliminary/acronyms.tex,%
 chapters/introduction.tex,%
 chapters/chapter1.tex
 }
-\makeglossaries
-\input{preliminary/acronyms.tex}
 
 \begin{document}
 
@@ -27,12 +27,11 @@ chapters/chapter1.tex
 
 %--------------------------------------------
 \include{preliminary/title.tex}
-
-\include{preliminary/copyright.tex}
+% \include{preliminary/copyright.tex}
 \include{preliminary/dedication.tex}
-\include{preliminary/approval-sheet.tex}
-\include{preliminary/certificate.tex}
-\include{preliminary/acknowledgement.tex}
+% \include{preliminary/approval-sheet.tex}
+% \include{preliminary/certificate.tex}
+% \include{preliminary/acknowledgement.tex}
 
 \include{preliminary/dedication.tex}
 \include{preliminary/abstract.tex}
@@ -43,17 +42,17 @@ chapters/chapter1.tex
 \tableofcontents
 \listoffigures
 \listoftables
-
+\include{preliminary/acronyms}
 
 %----------------- chapters --------------------
 \pagenumbering{arabic}
 
 %---------------------------------------
 \include{chapters/introduction.tex}
-\include{chapters/chapter1.tex}
+\include{chapters/chapter1}
 
 \appendix
-\include{chapters/appendix.tex}
+% \include{chapters/appendix.tex}
 
 \clearpage
 % \printglossary[type=\acronymtype]
