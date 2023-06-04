@@ -23,3 +23,6 @@ Eingabe	Ausgabe
 \acused{ecu}	
 \acsu{ecu}	ECU
 \aclu{ecu}	European currency unit
+
+
+https://www.kaggle.com/datasets/lakritidis/product-classification-and-categorization
