@@ -29,11 +29,24 @@ Wikipedia\footnote{https://www.wikipedia.org/} is primarily an encyclopedia with
 
 spaCy\cite{spacy2} features neural models for parsing and entity recognition. These models can be trained for \acf{ner} , tagging and parsing. Its official page on usage\footnote {https://v2.spacy.io/usage/} provides in-depth code example for information extraction.
 
+In figure \ref{fig:dp}, we see a complex sentence's dependency parsing. It has a \acf{nsubj} , connecting \acfp{pobj} with \acfp{adp} and no \acf{dobj}.
+
 \begin{figure}[htp!]
     \centering    
     \includesvg[scale=0.16]{dependency-parser.svg}
-    \caption{kuch kar bhai}
-    \label{fig:propn}
+    \caption{Navigating the parse tree and subtrees}
+    \label{fig:dp}
 \end{figure}
 
+The \acs{nsubj} "oil", itself do not give a complete meaning. However, upon combining its dependency noun "Motor", which is "Motor oil"  gives us an understanding of the topic. Traversing from \acs{nsubj} to  \acfp{conj} provides us with three related compound nouns belonging to a similar group.
 
+"Motor oil", "Engine Oil", "Engine Lubricant"
+
+Traversing further right of the dependency tree we can extract the \acsp{pobj}.  An \acf{amod} "internal" is connecting compound noun "combustion engine".
+
+\begin{figure}[htp!]
+    \centering    
+    \includesvg[scale=0.7]{verbpart.svg}
+    \caption{Negetive Part}
+    \label{fig:vp}
+\end{figure}
