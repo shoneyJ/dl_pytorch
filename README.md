@@ -28,3 +28,5 @@ Eingabe	Ausgabe
 https://www.kaggle.com/datasets/lakritidis/product-classification-and-categorization
 
 https://medium.com/analytics-vidhya/classification-using-long-short-term-memory-glove-global-vectors-for-word-representation-254d02d5e158
+
+test
