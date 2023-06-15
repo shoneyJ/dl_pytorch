@@ -2,18 +2,19 @@
 
 Graph-based knowledge representation has been researched for decades.
 A \acf{kg} acquires and integrates information into an ontology and applies a reasoner to derive new knowledge \parencite{LisaEhrlinger}.
-The knowledge base is a dataset with formal semantics that can contain different kinds of knowledge, for example, rules, facts, axioms, definitions, statements, and primitives \cite{Davies.2008cop.2006}.
+The knowledge base is a dataset with formal semantics that can contain different kinds of knowledge, for example, rules, facts, axioms, definitions, statements, and primitives \parencite{Davies.2008cop.2006}.
 
 \begin{figure}[h!]
     \centering
     \includesvg[scale=0.5]{Thesis_kg.svg}
     \caption{\acl{kg} architecture}
     \label{fig:kg}
+    \parencite[Chapter 4]{LisaEhrlinger}
 \end{figure}
 
-Figure \ref{fig:kg} illustrates the procsssing of plain text from various sources such as  Wikipedia API, PDF into a graph. This abstract architecture of a \acl{kg} portraits the asumption that a \acl{kg} is more than a \acf{kb}. \acl{kg} is a combination of \acl{kb} and \acf{qe}. 
+Figure \ref{fig:kg} illustrates the procsssing of plain text from various sources such as  Wikipedia API, PDF into a graph. This abstract architecture represented by \Citeauthor{LisaEhrlinger} of a \acl{kg} portraits the asumption that a \acl{kg} is more than a \acf{kb}. \acl{kg} is a combination of \acl{kb} and \acf{qe}. 
 
-\Iac{qe} is a set of graph of possible questions that could be formed in reference to \iac{kb}. \acf{qg} for comprehensive reading is a challenging task. There are datasets available for  \acs{qg}, one of it is Stanford Question Answering Dataset v1.0 (SQuAD) consisting of questions posed by crowdworkers on a set of Wikipedia articles \cite{PranavRajpurkar.}. The limitation with such a data set is that these do not contain unanserable questions. Building a machine learning model when no answer is supported was out of scope of SQuAD objective \cite{LupeHernandez}.  Study on automatic question generation from an attention-based sequence learning model for  \ac{qg} and investigate the effect of encoding sentence- vs. paragraph-level information \cite{DuXinya.29042017}, reduces reliance on handcrafted rule based systems.
+\Iac{qe} is a set of graph of possible questions that could be formed in reference to \iac{kb}. \acf{qg} for comprehensive reading is a challenging task. There are datasets available for  \acs{qg}, one of it is Stanford Question Answering Dataset v1.0 (SQuAD) consisting of questions posed by crowdworkers on a set of Wikipedia articles \parencite{PranavRajpurkar.}. The limitation with such a data set is that these do not contain unanserable questions. Building a machine learning model when no answer is supported was out of scope of SQuAD objective \parencite{LupeHernandez}.  Study on automatic question generation from an attention-based sequence learning model for  \ac{qg} and investigate the effect of encoding sentence- vs. paragraph-level information \parencite{DuXinya.29042017}, reduces reliance on handcrafted rule based systems.
 
 \clearpage
 
@@ -21,15 +22,15 @@ Figure \ref{fig:kg} illustrates the procsssing of plain text from various source
 
 
 One of the first things required for \acf*{nlp} tasks is a creating a text corpus.
-In linguistics and \acs{nlp}, corpus refers to a collection of texts. This paper's objective is to web crawl and extract data related to "Motor Oil". Our intention is to fetch the unstructred text corpus specifically related to "Motor Oil" and to create a graph-based \acs{kb}. 
+In linguistics and \acs{nlp}, corpus refers to a collection of texts. One of the objective of this paper is to web crawl and extract data related to "Motor Oil". Our intention is to fetch the unstructred text corpus specifically related to "Motor Oil" and to create a graph-based knowledge. 
 
-Wikipedia\footnote{https://www.wikipedia.org/} is primarily an encyclopedia with the additional benefit of heavy linking between articles and without the size constraints of paper articles \cite{TorstenZesch}. Wikipedia API \footnote{https://pypi.org/project/Wikipedia-API/}
+Wikipedia\footnote{https://www.wikipedia.org/} is primarily an encyclopedia with the additional benefit of heavy linking between articles and without the size constraints of paper articles \parencite{TorstenZesch}. Wikipedia API \footnote{https://pypi.org/project/Wikipedia-API/}
 
 \section{spaCy - Dependency Parsing}
 
-spaCy \cite{spacy2} features neural models for parsing and entity recognition. These models can be trained for \acf{ner} , tagging and parsing. Its official page on usage\footnote {https://v2.spacy.io/usage/} provides in-depth code example for information extraction.
+spaCy \parencite{spacy2} features neural models for parsing and entity recognition. These models can be trained for \acf{ner} , tagging and parsing. Its official page on usage\footnote {https://v2.spacy.io/usage/} provides in-depth code example for information extraction.
 
-In figure \ref{fig:dp}, we see a complex sentence's dependency parsing. It has a \acf{nsubj} , connecting \acfp{pobj} with \acfp{adp} and no \acf{dobj}.
+In figure \ref{fig:dp}, we see a complex sentence's dependency parsing. It has a \acf{nsubj}, connecting \acfp{pobj} with \acfp{adp} and no \acf{dobj}.
 
 \begin{figure}[htp!]
     \centering    
@@ -38,15 +39,12 @@ In figure \ref{fig:dp}, we see a complex sentence's dependency parsing. It has a
     \label{fig:dp}
 \end{figure}
 
-The \acs{nsubj} "oil", itself do not give a complete meaning. However, upon combining its dependency noun "Motor", which is "Motor oil"  gives us an understanding of the topic. Traversing from \acs{nsubj} to  \acfp{conj} provides us with three related compound nouns belonging to a similar group.
+The \acs{nsubj} "oil", itself does not give a complete meaning. However, upon combining its dependency noun "Motor", which is "Motor oil"  gives us an understanding of the topic. Traversing from \acs{nsubj} to  \acfp{conj} provides us with three related compound nouns belonging to a similar group.
 
 "Motor oil", "Engine Oil", "Engine Lubricant"
 
 Traversing further right of the dependency tree we can extract the \acsp{pobj}.  An \acf{amod} "internal" is connecting compound noun "combustion engine".
 
-\begin{figure}[htp!]
-    \centering    
-    \includesvg[scale=0.7]{verbpart.svg}
-    \caption{Negetive Part}
-    \label{fig:vp}
-\end{figure}
+\section{Knowledge graph in using Python}
+
+Networkx \parencite{hagberg2008exploring} and Pandas \parencite{mckinney2010data} are python libraries for working with graphs and data structures.
