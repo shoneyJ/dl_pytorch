@@ -26,7 +26,7 @@ In linguistics and \acs{nlp}, corpus refers to a collection of texts. One of the
 
 Wikipedia\footnote{https://www.wikipedia.org/} is primarily an encyclopedia with the additional benefit of heavy linking between articles and without the size constraints of paper articles \parencite{TorstenZesch}. Wikipedia API \footnote{https://pypi.org/project/Wikipedia-API/}
 
-\section{spaCy - Dependency Parsing}
+\section{spaCy - Dependency Parsing} \label{dependencyparsing}
 
 spaCy \parencite{spacy2} features neural models for parsing and entity recognition. These models can be trained for \acf{ner} , tagging and parsing. Its official page on usage\footnote {https://v2.spacy.io/usage/} provides in-depth code example for information extraction.
 
@@ -45,6 +45,22 @@ The \acs{nsubj} "oil", itself does not give a complete meaning. However, upon co
 
 Traversing further right of the dependency tree we can extract the \acsp{pobj}.  An \acf{amod} "internal" is connecting compound noun "combustion engine".
 
-\section{Knowledge graph in using Python}
+\section{Knowledge graph with Networkx}
 
-Networkx \parencite{hagberg2008exploring} and Pandas \parencite{mckinney2010data} are python libraries for working with graphs and data structures.
+The directed graphs created with Networkx \parencite{hagberg2008exploring} is suitable for representing depedency parsing of a sentence mentioned in section \ref{dependencyparsing}. A knowledge base are represented as triples of \acf{SRO}. In which the subject and object are nodes or entities of a graph and relation are directed edges or links between the nodes.
+
+In table \ref{table:1}, distigution of triples by  \acs{POS} tags is depicted. 
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{>{$}l<{$} l}
+
+triples   &   \acf{POS} tags   \\
+\hline
+subject   &   \acs{nsubj} , \acs{pron}                          \\
+object    &   \acs{dobj}    , \acs{pobj}                     \\
+relation  &   \acs{adp}, verb
+\end{tabular}
+\end{center}
+\caption{\acs{SRO} and \acs{POS} tags mappings}
+\label{table:1}
+\end{table}
