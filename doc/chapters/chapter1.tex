@@ -49,6 +49,8 @@ Traversing further right of the dependency tree we can extract the \acsp{pobj}. 
 
 The directed graphs created with Networkx \parencite{hagberg2008exploring} is suitable for representing depedency parsing of a sentence mentioned in section \ref{dependencyparsing}. A knowledge base are represented as triples of \acf{SRO}. In which the subject and object are nodes or entities of a graph and relation are directed edges or links between the nodes.
 
+\subsection{What to use as nodes n(x) and edges e(y)?}
+
 In table \ref{table:1}, distigution of triples by  \acs{POS} tags is depicted. 
 \begin{table}[h!]
 \begin{center}
@@ -56,11 +58,12 @@ In table \ref{table:1}, distigution of triples by  \acs{POS} tags is depicted.
 
 triples   &   \acf{POS} tags   \\
 \hline
-subject   &   \acs{nsubj} , \acs{pron}                          \\
-object    &   \acs{dobj}    , \acs{pobj}                     \\
-relation  &   \acs{adp}, verb
+n(subject)   &   \acs{nsubj} , \acs{pron}                          \\
+n(object)  &   \acs{dobj}    , \acs{pobj}                     \\
+e(relation)  &   \acs{adp}, verb
 \end{tabular}
 \end{center}
 \caption{\acs{SRO} and \acs{POS} tags mappings}
 \label{table:1}
 \end{table}
+
