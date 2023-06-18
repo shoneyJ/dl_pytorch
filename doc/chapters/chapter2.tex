@@ -1,3 +1,4 @@
+
 \chapter{Training a classification model}
 
 One of the major challenge in an ecommerce industry is to categorize the products. The phenominal types of products in the ecommerce web application sold online may require an artificial inteligence generated category tree. The multi level product-categories in the taxonomy tree received and defined from the suppliers or manfucture may not be usable. Since the existing multi level category of those products in ecommerse application may defer. Importing product-category details directly from the various channels may lead to disambugution. The artificial inteligence generated category tree reduces the product ready to deploy time on the production environment. The product ready to deploy time here refers to the check lists of data correctness of the product before listing online.
@@ -18,4 +19,64 @@ resp = client.search(index="development_products",
 
 The above code sample fetches the features of the product such as "name","description",category".
 
-\section {Normalization of text.}
+
+Elasticsearch uses \acf{Tf-Idf}. \acs{Tf-Idf} is a technique to generate numeric representation of words. \acs{Tf-Idf} represents product of two terms, \acs{Tf} and \acs{Idf}.
+
+% \begin{math} x_i=tf(w_i) x idf(w_i) \end{math}
+
+
+
+\section {Feature selection and dataset sources}
+
+A feature represents a set of data inputed in a training model to predict the the masked related data. In simple terms, in a classication model which predicts category of a product, product name, description can be labeled as its feature. 
+
+The datasets used primarly for extracting feautures will be from the existing product database. In this paper, the datasets used are of an ecommerce business belonging to automotive industry domain. Secondary dataset used is from the TecDoc catalogue by TecAlliance \footnote{https://www.tecalliance.net/}
+
+In table \ref{table:features}, the feature description details are listed. In below category tree, there are three levels.
+
+\begin{quote} 
+\centering 
+sparepart/cooling-system/thermostat
+\end{quote}
+
+The number of category levels differ for each products. 
+
+\begin{table}[h!]
+\begin{center}
+      \caption{Feature descriptions}
+      \begin{tabular}{ p{0.3cm}p{3cm}p{6cm}  }
+            \toprule
+            
+            \textbf{No}& \textbf{Feature} & \textbf{Value}\\
+            \midrule
+            1&Category tree & multi level categories\\
+            2&Description & description with html tags\\
+            3&Manufacturere & name of company manfactured\\
+            4&Short description  & product info displayed\\
+            5&Supplier  &  supplier of the product\\
+            6&n number of \newline  category levels   &  feature extracted from category tree\\
+           
+            \hline
+            \end{tabular}
+\end{center}
+
+\label{table:features}
+\end{table}
+
+
+\begin{tabular}{llllllllrr}
+      \toprule
+       & name & sdesc & category & catlevel0 & catlevel1 & catlevel2 & catlevel3 & catlevel4 & catlevel5 \\
+      \midrule
+      0 & denso dtm82363 thermostat coolant & thermostat coolant & thermostat & sparepart & cooling system & thermostat & NaN & NaN & NaN \\
+      1 & zf 1043 010 297 automatic transmission & automatic transmission & automatic transmission & sparepart & transmission & automatic transmission & automatic transmission & NaN & NaN \\
+      2 & zf 1060 040 003 automatic transmission & automatic transmission & automatic transmission & sparepart & transmission & automatic transmission & automatic transmission & NaN & NaN \\
+      3 & vaico v10 0131 camshaft & camshaft & camshaft & sparepart & engine & engine timing & camshaft & NaN & NaN \\
+      4 & vaico v26 0302 track control arm & track control arm & track control arm & sparepart & powertrain suspension & wheel suspension & track control arm & NaN & NaN \\
+      5 & vaico v30 1250 1 suspension kit & suspension kit & suspension kit & sparepart & powertrain suspension & wheel suspension & suspension kit & NaN & NaN \\
+      6 & vaico v10 0474 1 tensioner pulley timing belt & tensioner pulley timing belt & tensioner pulley & sparepart & belt drive & tensioner pulley & NaN & NaN & NaN \\
+      7 & vaico v10 2660 mounting automatic transmission & mounting automatic transmission & mounting & sparepart & transmission & automatic transmission & mounting & NaN & NaN \\
+      8 & vaico v10 4245 shock absorber & shock absorber & shock absorber & sparepart & powertrain suspension & suspension & shock absorber & NaN & NaN \\
+      9 & vaico v24 0908 wheel hub & wheel hub & wheel hub & sparepart & powertrain suspension & wheel suspension & wheel hub & NaN & NaN \\
+      \bottomrule
+      \end{tabular}
