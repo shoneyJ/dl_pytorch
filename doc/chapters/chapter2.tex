@@ -32,30 +32,32 @@ A feature represents a set of data inputed in a training model to predict the th
 
 The datasets used primarly for extracting feautures will be from the existing product database. In this paper, the datasets used are of an ecommerce business belonging to automotive industry domain. Secondary dataset used is from the TecDoc catalogue by TecAlliance \footnote{https://www.tecalliance.net/}
 
-In table \ref{table:features}, the feature description details are listed. In below category tree, there are three levels.
+ In this experiment, consider 5 levels of categories as the maximum limit. The number of category levels differ for each products. Consider an example of category tree with three levels. 
 
 \begin{quote} 
 \centering 
 sparepart/cooling-system/thermostat
 \end{quote}
+In such case, level 4 and level 5 will be appended with values using data imputation techniques, refer section \ref{dataimput}. 
 
-The number of category levels differ for each products. In this experiment, consider 5 levels of categories as the maximum limit. 
+The table \ref{table:l5} lists the feature description aling with the sample of category levels.
+% \begin{figure}[h]
+%       \centering
+%       \small{This is text.  It's in a figure environment but it's still text}
+%       \caption{\label{fig_text}Some text that can float as a figure}
+%   \end{figure}
+
+
+
 \begin{table}
-      \caption{Level 5 category sample data}
+      \caption{Feature descriptin and five levels of category sample data}
       \label{table:l5}
-\begin{tabular}{llllll}
-      \toprule
-       catlevel0 & catlevel1 & catlevel2 & catlevel3 & catlevel4 & catlevel5 \\
-      \midrule
-      sparepart & cooling system & thermostat & NaN & NaN & NaN \\
 
-      \bottomrule
-\end{tabular}
-\end{table}
+% \end{table}
 
-\begin{table}
-      \caption{Feature descriptions}
-      \label{table:features}
+% \begin{table}
+%       \caption{Feature descriptions}
+%       \label{table:features}
       \begin{tabular}{ lll }
             \toprule
             
@@ -71,6 +73,15 @@ The number of category levels differ for each products. In this experiment, cons
             \bottomrule
             \end{tabular}
 
+            \begin{tabular}{llllll}
+                  \toprule
+                   catlevel0 & catlevel1 & catlevel2 & catlevel3 & catlevel4 & catlevel5 \\
+                  \midrule
+                  sparepart & cooling system & thermostat & NaN & NaN & NaN \\
+            
+                  \bottomrule
+            \end{tabular}
+
 \end{table}
 
-The table headings of \ref{table:l5} are also the features. 
+\section {Missing category level - data imputation.} \label{dataimput}
