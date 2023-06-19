@@ -39,12 +39,24 @@ In table \ref{table:features}, the feature description details are listed. In be
 sparepart/cooling-system/thermostat
 \end{quote}
 
-The number of category levels differ for each products. 
+The number of category levels differ for each products. In this experiment, consider 5 levels of categories as the maximum limit. 
+\begin{table}
+      \caption{Level 5 category sample data}
+      \label{table:l5}
+\begin{tabular}{llllll}
+      \toprule
+       catlevel0 & catlevel1 & catlevel2 & catlevel3 & catlevel4 & catlevel5 \\
+      \midrule
+      sparepart & cooling system & thermostat & NaN & NaN & NaN \\
 
-\begin{table}[h!]
-\begin{center}
+      \bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}
       \caption{Feature descriptions}
-      \begin{tabular}{ p{0.3cm}p{3cm}p{6cm}  }
+      \label{table:features}
+      \begin{tabular}{ lll }
             \toprule
             
             \textbf{No}& \textbf{Feature} & \textbf{Value}\\
@@ -54,29 +66,11 @@ The number of category levels differ for each products.
             3&Manufacturere & name of company manfactured\\
             4&Short description  & product info displayed\\
             5&Supplier  &  supplier of the product\\
-            6&n number of \newline  category levels   &  feature extracted from category tree\\
+            \color{red}6&n number of  category levels   &  feature extracted from category tree\\
            
-            \hline
+            \bottomrule
             \end{tabular}
-\end{center}
 
-\label{table:features}
 \end{table}
 
-
-\begin{tabular}{llllllllrr}
-      \toprule
-       & name & sdesc & category & catlevel0 & catlevel1 & catlevel2 & catlevel3 & catlevel4 & catlevel5 \\
-      \midrule
-      0 & denso dtm82363 thermostat coolant & thermostat coolant & thermostat & sparepart & cooling system & thermostat & NaN & NaN & NaN \\
-      1 & zf 1043 010 297 automatic transmission & automatic transmission & automatic transmission & sparepart & transmission & automatic transmission & automatic transmission & NaN & NaN \\
-      2 & zf 1060 040 003 automatic transmission & automatic transmission & automatic transmission & sparepart & transmission & automatic transmission & automatic transmission & NaN & NaN \\
-      3 & vaico v10 0131 camshaft & camshaft & camshaft & sparepart & engine & engine timing & camshaft & NaN & NaN \\
-      4 & vaico v26 0302 track control arm & track control arm & track control arm & sparepart & powertrain suspension & wheel suspension & track control arm & NaN & NaN \\
-      5 & vaico v30 1250 1 suspension kit & suspension kit & suspension kit & sparepart & powertrain suspension & wheel suspension & suspension kit & NaN & NaN \\
-      6 & vaico v10 0474 1 tensioner pulley timing belt & tensioner pulley timing belt & tensioner pulley & sparepart & belt drive & tensioner pulley & NaN & NaN & NaN \\
-      7 & vaico v10 2660 mounting automatic transmission & mounting automatic transmission & mounting & sparepart & transmission & automatic transmission & mounting & NaN & NaN \\
-      8 & vaico v10 4245 shock absorber & shock absorber & shock absorber & sparepart & powertrain suspension & suspension & shock absorber & NaN & NaN \\
-      9 & vaico v24 0908 wheel hub & wheel hub & wheel hub & sparepart & powertrain suspension & wheel suspension & wheel hub & NaN & NaN \\
-      \bottomrule
-      \end{tabular}
+The table headings of \ref{table:l5} are also the features. 
