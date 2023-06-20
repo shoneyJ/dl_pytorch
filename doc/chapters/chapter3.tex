@@ -1,25 +1,4 @@
-\chapter{Development environment and hardware setup}
 
-\section {Ubuntu server 20.04 configuration}
+\chapter{Multi level category vectorization techniques}
 
-\section {Python virtual environment} \label {pyenv}
-
-pyenv facilitaes to isolate python version dependent source codes and avoid version conflicts. A virtual environment will install packages to a specific python module instad of installing globally. Asuming the directrory root directory name is "dev", follow linux bash code to activate virtual environment. 
-The bash script below will create and activate virtual environment and all the packages will be installed within the venv directory
-\begin{lstlisting}[language=bash]
-    pyenv install 3.10 /
-    cd ~/dev /
-    pyenv local 3.10 /
-    python -m venv .venv /
-    source .venv/bin/activate
-
-\end{lstlisting}
-
-Compatible python clients to interact with project dependent module installation can be installed by specifying the version range.
-Python Elastic search client's official low version installation details are mentioned on elasticsearch-py \footnote{https://elasticsearch-py.readthedocs.io/en/6.8.2/} website.
-
-\begin{lstlisting}[language=Python]
-    python -m pip install "elasticsearch>=6.4.0,<7.0.0"
-\end{lstlisting}
-
-\section {Docker containers - CouchDB, Elastic search, Redis}
+Vectorization of a text is a process of transforming a text into a real number representation. ff
