@@ -29,4 +29,4 @@ https://www.kaggle.com/datasets/lakritidis/product-classification-and-categoriza
 
 https://medium.com/analytics-vidhya/classification-using-long-short-term-memory-glove-global-vectors-for-word-representation-254d02d5e158
 
-test
+https://www.kaggle.com/code/leekahwin/text-classification-using-n-gram-0-8-f1
