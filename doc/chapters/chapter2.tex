@@ -47,7 +47,7 @@ The table \ref{table:l5} lists the feature description aling with the sample of 
 
 
 
-\begin{table}
+\begin{table}[h]
       \caption{Feature descriptin and five levels of category sample data}
       \label{table:l5}
 
@@ -84,6 +84,71 @@ The table \ref{table:l5} lists the feature description aling with the sample of 
 
 
 \subsection{Dependency parsing for extracting nouns from features}
+
+\section {Text normalization} \label{text_normalization}
+
+Text normalization is a process of transforming the document into a standard and consistent form of a text. A document is a text from single source. Some of the examples of document are list of product names from databases, a pdf file, texts retrieved from web scraping. Text normalization enables to perform required operations on the text as the text inputs are consistent accross the document. The process of text normalization varies based on the type of text that needs to normilized. There is no standard method for text normalization task. In this paper, text normalization of product name and category from the database source is performed. The text are of two languages, English and Deutsch.
+
+In table \ref{table:TN}, displays the difference in text before and after normalization. 
+
+\begin{table}[h]
+      \caption{Sample of text normalization effect}
+      \centering
+      \label{table:TN}
+\begin{tabular}{lll}
+      \toprule 
+                  &\textbf{Name} & \textbf{Category} \\ 
+      \midrule
+      \textbf{Before}&VAICO V10-4245 Stoßdämpfer & Stoßdämpfer \\
+      \textbf{After}&vaico v104245 stoßdampfer & stoßdampfer \\
+      
+      \bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Lower case}
+
+Using Pandas - vectorized string method, a text can be lower cased across the document. These methos exclude the missing  / NA values automatically \parencite{mckinney-proc-scipy-2010}.
+
+\begin{lstlisting}[language=Python]
+      df_de["name"]= df_de["name"].str.lower()
+\end{lstlisting}
+
+\subsection{Html parsing}
+
+Probability of getting html tags in a document increases if the source of document is from web scraping or also if the document from database source has inline html tags. In such case, fetching normal texts from a html text is required. One of the method would be to use regular expressions to get text in between angel brackets \textless \textgreater text \textless \textgreater. However, this method would require to have the tags to be well formed.
+\begin{lstlisting}[language=Python]
+      text = re.sub('<[^>]*>', '', text)
+\end{lstlisting}
+
+
+
+The better option would be to use Beautiful Soup \footnote{https://www.crummy.com/software/BeautifulSoup/bs4/doc/} a Pyhon library for pulling data out of HTLM and XML.
+\begin{lstlisting}[language=Python]
+      # Remove html tags 
+      soup = BeautifulSoup(doc, 'html.parser')
+      text =soup.get_text()
+\end{lstlisting}
+
+\subsection{Cleanning text}
+
+A product detail text may contain non-word characters represented in regular expression as \textbackslash W. It may also contain space seperated decimals describing the dimentional values of the product such as weight, height. Regular expressions could be used for removing the non-character words and spaces between the decimal values. 
+
+\begin{lstlisting}[language=Python]
+      text = (re.sub('[-\W]+', ' ', text))
+      text = (re.sub('(?<=\d) (?=\d)', '', text))
+\end{lstlisting}
+
+\subsection{Normal form D - Unicode database}
+
+A product name in Deutsch language may contain umlaute characters such as \"A.  Pythons unicodedata \footnote{https://docs.python.org/3/library/unicodedata.html} module provides access to the Unicode Character Database (UCD) which defines the character properties for all Unicode characters. To change \"A to A, the Normal form D (NFD) should be applied which translated each character into its decomposed form. Further the text can be refined with the general category assigned to the character as string. Nonspacing mark characters \footnote{https://www.compart.com/en/unicode/category/Mn} are represented as "Mn". These characters could be removed by referring the the character category.
+\begin{lstlisting}[language=Python]
+      ''.join(
+            c for c in unicodedata.normalize('NFD', text)
+            if unicodedata.category(c) != 'Mn')
+\end{lstlisting}
+
+
 
 \section {Data imputation techniques - on missing data} \label{dataimput}
 

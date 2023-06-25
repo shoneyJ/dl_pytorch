@@ -11,7 +11,7 @@ def main():
 
     [df_eng, df_de]=df.create()
 
-    print(df_de.head(2).to_latex())
+    print(df_de.dtypes)
 
     # df_eng["category"].astype("category")
 

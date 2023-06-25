@@ -22,6 +22,12 @@ class DataFrame:
         self.df_eng=self.df_eng.drop_duplicates()
 
         self.df_de=self.df_de.drop_duplicates()
+
+
+        self.df_eng["category"]	= self.df_eng["category"].astype('category')
+        self.df_de["category"]	= self.df_de["category"].astype('category')
+
+
     
     def normalize(self,doc):
 
