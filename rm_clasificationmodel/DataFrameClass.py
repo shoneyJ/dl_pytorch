@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+from pandas.api.types import CategoricalDtype
 class DataFrame:
     def __init__(self,es):
         self.es = es
@@ -20,12 +22,14 @@ class DataFrame:
                     list_row["category"]=cats["label"]
             
 
-            if(list_row):
+            if(list_row["name"]!=None and list_row["category"]!=None):
                 new_row = pd.Series(list_row)
                 df_eng=pd.concat([df_eng, new_row.to_frame().T], ignore_index=True)
             # df_eng.loc[len(df_eng)] = list_row
 
-        return df_eng      
+        return df_eng 
+    
+         
 
 
 
