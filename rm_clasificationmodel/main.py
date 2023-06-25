@@ -11,15 +11,15 @@ def main():
 
     df_eng=df.create()
 
-    # print(df_eng)
+    print(df_eng.head())
 
     # df_eng["category"].astype("category")
 
     # df =df_eng["category"].isnull()
 
     # bool_name_series = pd.notnull(df_eng["name"])
-    bool_cat_series = pd.isnull(df_eng["name"])
-    print(df_eng[bool_cat_series])
+    # bool_cat_series = pd.isnull(df_eng["name"])
+    # print(df_eng[bool_cat_series])
     
 
 
