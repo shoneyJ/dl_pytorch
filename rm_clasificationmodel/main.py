@@ -9,9 +9,9 @@ def main():
 
     df=DataFrame(es)
 
-    df_eng=df.create()
+    [df_eng, df_de]=df.create()
 
-    print(df_eng.head())
+    print(df_de.head(2).to_latex())
 
     # df_eng["category"].astype("category")
 

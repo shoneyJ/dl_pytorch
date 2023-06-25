@@ -15,7 +15,13 @@ class DataFrame:
 
         self.df_eng["category"]	= self.df_eng["category"].str.lower().apply(lambda c:self.normalize(c))
 
+        self.df_de["name"]	= self.df_de["name"].str.lower().apply(lambda n:self.normalize(n))        
+
+        self.df_de["category"]	= self.df_de["category"].str.lower().apply(lambda c:self.normalize(c))
+
         self.df_eng=self.df_eng.drop_duplicates()
+
+        self.df_de=self.df_de.drop_duplicates()
     
     def normalize(self,doc):
 
@@ -33,6 +39,7 @@ class DataFrame:
 
     def create(self):
         self.df_eng = pd.DataFrame(columns=['name','category'])
+        self.df_de = pd.DataFrame(columns=['name','category'])
         resp=self.es.getFeatures()
 
         for hit in resp['hits']['hits']:
@@ -56,10 +63,14 @@ class DataFrame:
             if(list_row_en["name"]!=None and list_row_en["category"]!=None):
                 new_row = pd.Series(list_row_en)
                 self.df_eng=pd.concat([self.df_eng, new_row.to_frame().T], ignore_index=True)
+
+            if(list_row_de["name"]!=None and list_row_de["category"]!=None):
+                new_row = pd.Series(list_row_de)
+                self.df_de=pd.concat([self.df_de, new_row.to_frame().T], ignore_index=True)
             # df_eng.loc[len(df_eng)] = list_row
 
         self.clean()
-        return self.df_eng
+        return [self.df_eng,self.df_de]
 
     
 
