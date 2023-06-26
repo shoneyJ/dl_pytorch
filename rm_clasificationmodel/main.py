@@ -9,9 +9,9 @@ def main():
 
     df=DataFrame(es)
 
-    [df_eng, df_de]=df.create()
+    [df_en, df_de]=df.create()
 
-    print(df_de.dtypes)
+    print(df_en["category"].unique())
 
     # df_eng["category"].astype("category")
 
