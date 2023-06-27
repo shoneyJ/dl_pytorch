@@ -1,4 +1,5 @@
 
+from TrainClass import Train
 from ElasticSearchClass import ElasticSearchDb
 from DataFrameClass import DataFrame
 from VectorizeClass import Vectorize
@@ -11,16 +12,12 @@ def main():
 
     [df_en, df_de]=df.create()
 
-    print(df_en["name"].unique())
-
     cv = Vectorize(1,1)
 
     cv.ngramFit(doc=df_en["name"])
 
     transformed_vector_name=cv.transform(df_en["name"])
-    vocab = cv.getVocabulary()
-
-    print (transformed_vector_name.shape)
+   
 
     # df_eng["category"].astype("category")
 
@@ -29,6 +26,13 @@ def main():
     # bool_name_series = pd.notnull(df_eng["name"])
     # bool_cat_series = pd.isnull(df_eng["name"])
     # print(df_eng[bool_cat_series])
+
+    train = Train(cv,df_en)
+
+    for i in range(10):
+        category, name, category_tensor, name_tensor = train.randomTrainingExample()
+    
+        print('category =', category, ', name =', name)
     
 
 

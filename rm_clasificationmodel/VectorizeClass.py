@@ -7,9 +7,17 @@ class Vectorize():
         self.vectorizer.fit(doc)
 
     def transform (self,doc):
-        return self.vectorizer.transform(doc)
+        self.transformedVector = self.vectorizer.transform(doc)
+        return self.transformedVector
     
     def getVocabulary(self):
         return self.vectorizer.vocabulary_
+    
+    def getTransformedVectorByIndex(self,index):
+        return self.transformedVector.toarray()[index]
+    
+    def getTransformedVectorSize(self):
+        return self.transformedVector.shape[1]
+    
     
     

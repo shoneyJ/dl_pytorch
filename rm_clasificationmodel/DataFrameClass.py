@@ -41,8 +41,7 @@ class DataFrame:
         if unicodedata.category(c) != 'Mn')
         # text= text.replace('-', '')
 
-       
-
+   
     def create(self):
         self.df_eng = pd.DataFrame(columns=['name','category'])
         self.df_de = pd.DataFrame(columns=['name','category'])
