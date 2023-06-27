@@ -1,7 +1,7 @@
 
 from ElasticSearchClass import ElasticSearchDb
 from DataFrameClass import DataFrame
-import pandas as pd
+from VectorizeClass import Vectorize
 
 
 def main():
@@ -11,7 +11,16 @@ def main():
 
     [df_en, df_de]=df.create()
 
-    print(df_en["category"].unique())
+    print(df_en["name"].unique())
+
+    cv = Vectorize(1,1)
+
+    cv.ngramFit(doc=df_en["name"])
+
+    transformed_vector_name=cv.transform(df_en["name"])
+    vocab = cv.getVocabulary()
+
+    print (transformed_vector_name.shape)
 
     # df_eng["category"].astype("category")
 
