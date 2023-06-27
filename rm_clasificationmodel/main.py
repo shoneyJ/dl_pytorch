@@ -12,11 +12,11 @@ def main():
 
     [df_en, df_de]=df.create()
 
-    cv = Vectorize(1,1)
+    vectorizer = Vectorize(1,1)
 
-    cv.ngramFit(doc=df_en["name"])
+    vectorizer.fit(doc=df_en["name"])
 
-    transformed_vector_name=cv.transform(df_en["name"])
+    vectorizer.transform(df_en["name"])
    
 
     # df_eng["category"].astype("category")
@@ -27,12 +27,11 @@ def main():
     # bool_cat_series = pd.isnull(df_eng["name"])
     # print(df_eng[bool_cat_series])
 
-    train = Train(cv,df_en)
+    train = Train(vectorizer,df_en)
 
-    for i in range(10):
-        category, name, category_tensor, name_tensor = train.randomTrainingExample()
-    
-        print('category =', category, ', name =', name)
+    train.run(10000)
+
+
     
 
 

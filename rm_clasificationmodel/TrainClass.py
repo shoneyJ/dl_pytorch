@@ -27,8 +27,7 @@ class Train():
 
         self.rnn.zero_grad()
 
-        for i in range(name_tensor.size()[0]):
-            output, hidden = self.rnn(name_tensor[i], hidden)
+        output, hidden = self.rnn(name_tensor, hidden)
 
         loss = self.criterion(output, category_tensor)
         loss.backward()
@@ -64,3 +63,27 @@ class Train():
         cat_i = top_i[0].item()
         
         return self.all_category[cat_i], cat_i
+    
+
+    def run(self,n_iters):
+        for epoch in range(1, n_iters + 1):
+    
+            category, name, category_tensor, name_tensor = self.randomTrainingExample()
+            
+            output, loss = self.train(category_tensor, name_tensor)
+            current_loss += loss
+
+            if epoch % 5000 == 0:
+                guess, guess_i = self.categoryFromOutput(output)
+                correct = '✓' if guess == category else '✗ (%s)' % category
+                
+                print('%d %d%% %.4f %s / %s %s' % (epoch, 
+                                                epoch / n_iters * 100,
+                                                loss,
+                                                name, 
+                                                guess, 
+                                                correct))
+
+            if epoch % 1000 == 0:
+                self.all_losses.append(current_loss / 1000)
+                current_loss = 0
