@@ -36,6 +36,7 @@ class DataFrame:
         text =soup.get_text()
         text = (re.sub('[-\W]+', ' ', text))
         text = (re.sub('(?<=\d) (?=\d)', '', text))
+        text = (re.sub("([a-z]\d+)|(\d+)", '', text))
         return ''.join(
         c for c in unicodedata.normalize('NFD', text)
         if unicodedata.category(c) != 'Mn')

@@ -27,13 +27,21 @@ class Train():
 
         self.rnn.zero_grad()
 
-        output, hidden = self.rnn(name_tensor, hidden)
+        for i in range(name_tensor.size()[0]):     
+
+            output, hidden = self.rnn(name_tensor[i], hidden)
 
         loss = self.criterion(output, category_tensor)
         loss.backward()
 
         # for p in self.rnn.parameters():
         #     p.data.add_(-self.learning_rate, p.grad.data)
+
+            # Add parameters' gradients to their values, multiplied by learning rate
+        for p in self.rnn.parameters():
+            p.data.add_(p.grad.data, alpha=-self.learning_rate)
+
+
 
         return output, loss.item()
 
@@ -51,8 +59,14 @@ class Train():
         name =self.df_en.iloc[index]["name"]
         
         category_tensor = torch.tensor([self.all_category.index(randcategory)], dtype=torch.long)
-        name_tensor=torch.zeros(1, self.inputSize)
-        name_tensor[0][np.where(ngramNameArray==1)[0]] = 1
+        ngramOnceArray = np.where(ngramNameArray==1)[0]
+
+        name_tensor=torch.zeros(len(ngramOnceArray),1, self.inputSize)
+       
+        for i in range(ngramOnceArray.size):
+           
+            name_tensor[i][0][ngramOnceArray[i]] = 1
+           
         
         
         return randcategory, name, category_tensor, name_tensor
@@ -75,7 +89,7 @@ class Train():
             output, loss = self.train(category_tensor, name_tensor)
             self.current_loss += loss
 
-            if epoch % 100 == 0:
+            if epoch % 5000 == 0:
                 guess, guess_i = self.categoryFromOutput(output)
                 correct = '✓' if guess == category else '✗ (%s)' % category
                 
