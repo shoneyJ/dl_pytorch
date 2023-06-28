@@ -3,6 +3,7 @@ from TrainClass import Train
 from ElasticSearchClass import ElasticSearchDb
 from DataFrameClass import DataFrame
 from VectorizeClass import Vectorize
+from NN import RNN
 
 
 def main():
@@ -17,6 +18,8 @@ def main():
     vectorizer.fit(doc=df_en["name"])
 
     vectorizer.transform(df_en["name"])
+
+    vectorizer.transform(df_en["category"])
    
 
     # df_eng["category"].astype("category")
@@ -26,8 +29,14 @@ def main():
     # bool_name_series = pd.notnull(df_eng["name"])
     # bool_cat_series = pd.isnull(df_eng["name"])
     # print(df_eng[bool_cat_series])
+    inputSize=vectorizer.getTransformedVectorSize()
+    n_hidden = 256
+    df_category = df_en.groupby('category')        
+    all_category = list(df_category.groups.keys())        
+    n_category = len(all_category)
+    rnn=RNN(inputSize, n_hidden, n_category)
 
-    train = Train(vectorizer,df_en)
+    train = Train(vectorizer,df_en,all_category,rnn)
 
     train.run(10000)
 
