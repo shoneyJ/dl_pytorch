@@ -30,7 +30,7 @@ def main():
     # bool_cat_series = pd.isnull(df_eng["name"])
     # print(df_eng[bool_cat_series])
     inputSize=vectorizer.getTransformedVectorSize()
-    n_hidden = 256*3
+    n_hidden = 256*6
     df_category = df_en.groupby('category')        
     all_category = list(df_category.groups.keys())        
     n_category = len(all_category)

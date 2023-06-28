@@ -3,6 +3,9 @@ import torch
 import random
 import numpy as np
 
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+
 from NN import RNN
 
 class Train():
@@ -103,3 +106,50 @@ class Train():
             if epoch % 1000 == 0:
                 self.all_losses.append(self.current_loss / 1000)
                 self.current_loss = 0
+        
+        # torch.save(self.rnn,'ngram-rnn-classification.pt')
+    
+
+    def plot(data):
+        plt.figure()
+        plt.plot(data)
+    
+
+   
+    
+    def confusionMatix(self,len):
+        # Keep track of correct guesses in a confusion matrix
+        confusion = torch.zeros(len, len)
+        n_confusion = 10000
+
+        # Go through a bunch of examples and record which are correctly guessed
+        for i in range(n_confusion):
+            category, name, category_tensor, name_tensor = self.randomTrainingExample()
+            output = self.evaluate(name_tensor)
+            guess, guess_i = self.categoryFromOutput(output)
+            category_i = self.all_categories.index(category)
+            confusion[category_i][guess_i] += 1
+        
+        # Normalize by dividing every row by its sum
+        for i in range(len):
+            confusion[i] = confusion[i] / confusion[i].sum()
+        
+        # Set up plot
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        cax = ax.matshow(confusion.numpy())
+        fig.colorbar(cax)
+
+        # Set up axes
+        ax.set_xticklabels([''] + self.all_categories, rotation=90)
+        ax.set_yticklabels([''] + self.all_categories)
+
+        # Force label at every tick
+        ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
+        ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
+
+        # sphinx_gallery_thumbnail_number = 2
+        plt.show()
+
+
+
