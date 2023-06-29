@@ -36,10 +36,10 @@ def main():
     df_category = df_en.groupby('category')        
     all_category = list(df_category.groups.keys())        
     n_category = len(all_category)
-    # rnn=RNN(inputSize, n_hidden, n_category)
+    rnn=RNN(inputSize, n_hidden, n_category)
 
 
-    rnn=torch.load('ngram-rnn-classification.pt')
+    # rnn=torch.load('ngram-rnn-classification.pt')
     train = Train(vectorizer,df_en,all_category,rnn)
 
     train.confusionMatix()

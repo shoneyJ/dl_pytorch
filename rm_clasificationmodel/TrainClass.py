@@ -128,7 +128,7 @@ class Train():
     
     def confusionMatix(self):
         # Keep track of correct guesses in a confusion matrix
-        n_categories = len(self.all_categories)
+        n_categories = len(self.all_category)
         confusion = torch.zeros(n_categories, n_categories)
         n_confusion = 10000
 
@@ -137,11 +137,11 @@ class Train():
             category, name, category_tensor, name_tensor = self.randomTrainingExample()
             output = self.evaluate(name_tensor)
             guess, guess_i = self.categoryFromOutput(output)
-            category_i = self.all_categories.index(category)
+            category_i =self.all_category.index(category)
             confusion[category_i][guess_i] += 1
         
         # Normalize by dividing every row by its sum
-        for i in range(len):
+        for i in range(n_categories):
             confusion[i] = confusion[i] / confusion[i].sum()
         
         # Set up plot
@@ -151,8 +151,8 @@ class Train():
         fig.colorbar(cax)
 
         # Set up axes
-        ax.set_xticklabels([''] + self.all_categories, rotation=90)
-        ax.set_yticklabels([''] + self.all_categories)
+        ax.set_xticklabels([''] + self.all_category, rotation=90)
+        ax.set_yticklabels([''] + self.all_category)
 
         # Force label at every tick
         ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
