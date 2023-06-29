@@ -1,9 +1,11 @@
 
+import torch
 from TrainClass import Train
 from ElasticSearchClass import ElasticSearchDb
 from DataFrameClass import DataFrame
 from VectorizeClass import Vectorize
 from NN import RNN
+from evaluate import Evaluate
 
 
 def main():
@@ -30,18 +32,21 @@ def main():
     # bool_cat_series = pd.isnull(df_eng["name"])
     # print(df_eng[bool_cat_series])
     inputSize=vectorizer.getTransformedVectorSize()
-    n_hidden = 256*6
+    n_hidden = 256*4
     df_category = df_en.groupby('category')        
     all_category = list(df_category.groups.keys())        
     n_category = len(all_category)
-    rnn=RNN(inputSize, n_hidden, n_category)
+    # rnn=RNN(inputSize, n_hidden, n_category)
 
+
+    rnn=torch.load('ngram-rnn-classification.pt')
     train = Train(vectorizer,df_en,all_category,rnn)
 
-    train.run(200000)
+    train.confusionMatix()
 
 
-    
+
+    # train.run(200000)
 
 
 

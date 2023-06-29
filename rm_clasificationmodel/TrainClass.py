@@ -92,7 +92,7 @@ class Train():
             output, loss = self.train(category_tensor, name_tensor)
             self.current_loss += loss
 
-            if epoch % 5000 == 0:
+            if epoch % 10000 == 0:
                 guess, guess_i = self.categoryFromOutput(output)
                 correct = '✓' if guess == category else '✗ (%s)' % category
                 
@@ -103,23 +103,33 @@ class Train():
                                                 guess, 
                                                 correct))
 
-            if epoch % 1000 == 0:
+            if epoch % 5000 == 0:
                 self.all_losses.append(self.current_loss / 1000)
                 self.current_loss = 0
-        
-        # torch.save(self.rnn,'ngram-rnn-classification.pt')
+            
+        self.plot()
+        torch.save(self.rnn,'ngram-rnn-classification.pt')
     
 
-    def plot(data):
+    def plot(self):
         plt.figure()
-        plt.plot(data)
+        plt.plot(self.all_losses)
+        plt.savefig('histogram.png', dpi=400)
     
 
-   
+         # Just return an output given a numpy  array
+    def evaluate(self,tensor):
+        hidden = self.rnn.initHidden()
+
+        for i in range(tensor.size()[0]):
+            output, hidden = self.rnn(tensor[i], hidden)
+
+        return output
     
-    def confusionMatix(self,len):
+    def confusionMatix(self):
         # Keep track of correct guesses in a confusion matrix
-        confusion = torch.zeros(len, len)
+        n_categories = len(self.all_categories)
+        confusion = torch.zeros(n_categories, n_categories)
         n_confusion = 10000
 
         # Go through a bunch of examples and record which are correctly guessed
@@ -150,6 +160,12 @@ class Train():
 
         # sphinx_gallery_thumbnail_number = 2
         plt.show()
+        plt.savefig('confusion.png', dpi=400)
 
+    
+
+   
+    
+   
 
 
