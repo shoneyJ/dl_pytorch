@@ -5,24 +5,35 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+from VectorizeClass import Vectorize
 
 from NN import RNN
 
 class Train():
-    def __init__(self,vectorizer,df_en,all_category,rnn):
-        # self.rnn = rnn
+    def __init__(self,df_en,withSaved=False,useSubset=False):
+        self.df_en=df_en
+        self.useSubset=useSubset        
+        self.vectorizer = Vectorize(1,1)
+        self.vectorizer.fit(doc=df_en["name"])
+        self.vectorizer.transform(df_en["name"]) 
+        self.inputSize=self.vectorizer.getTransformedVectorSize()
+        self.n_hidden = 256*4
+        
+        self.df_category = self.df_en.groupby('category')       
+        self.all_category = list(self.df_category.groups.keys()) 
+        if self.useSubset:
+            self.all_category=random.choices(self.all_category,20)
+
+        self.n_category = len(self.all_category)
+        self.rnn=RNN(self.inputSize, self.n_hidden, self.n_category) if withSaved else torch.load('ngram-rnn-classification.pt')
         self.learning_rate=0.005
         self.criterion = nn.NLLLoss()
-        self.vectorizer =vectorizer
-        self.df_en=df_en
-        self.all_category=all_category
-        self.df_category = self.df_en.groupby('category')
-        self.inputSize =  vectorizer.getTransformedVectorSize()     
 
-        self.rnn = rnn
+        self.df_category = self.df_en.groupby('category')
         self.current_loss = 0
         self.all_losses = []
-        
+
+      
 
     def train(self,category_tensor, name_tensor):
     
@@ -50,7 +61,7 @@ class Train():
 
     
     def randomTrainingExample(self):
-        
+     
         randcategory = random.choice(self.all_category)
         # get feature name from the category
         random_feature_indices = self.df_category.indices[randcategory]
@@ -104,7 +115,7 @@ class Train():
                                                 correct))
 
             if epoch % 5000 == 0:
-                self.all_losses.append(self.current_loss / 1000)
+                self.all_losses.append(self.current_loss / 5000)
                 self.current_loss = 0
             
         self.plot()
@@ -128,13 +139,19 @@ class Train():
     
     def confusionMatix(self):
         # Keep track of correct guesses in a confusion matrix
-        n_categories = len(self.all_category)
+        # Get only 30 categories
+
+       
+
+
+
+        n_categories = len(self.all_category_subset)
         confusion = torch.zeros(n_categories, n_categories)
         n_confusion = 10000
 
         # Go through a bunch of examples and record which are correctly guessed
         for i in range(n_confusion):
-            category, name, category_tensor, name_tensor = self.randomTrainingExample()
+            category, name, category_tensor, name_tensor = self.randomTrainingExample(True)
             output = self.evaluate(name_tensor)
             guess, guess_i = self.categoryFromOutput(output)
             category_i =self.all_category.index(category)

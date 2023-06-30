@@ -15,40 +15,36 @@ def main():
 
     [df_en, df_de]=df.create()
 
-    vectorizer = Vectorize(1,1)
+    # vectorizer = Vectorize(1,1)
     # vectorizer.setTfidFitTransform(df_en["name"])
 
     # x =vectorizer.getTfidFitTransform()
 
     # print(x.shape)
 
-    vectorizer.fit(doc=df_en["name"])
+    # vectorizer.fit(doc=df_en["name"])
 
-    vectorizer.transform(df_en["name"]) 
+    # vectorizer.transform(df_en["name"]) 
 
     # df =df_eng["category"].isnull()
 
     # bool_name_series = pd.notnull(df_eng["name"])
     # bool_cat_series = pd.isnull(df_eng["name"])
     # print(df_eng[bool_cat_series])
-    inputSize=vectorizer.getTransformedVectorSize()
-    n_hidden = 256*4
-    df_category = df_en.groupby('category')        
-    all_category = list(df_category.groups.keys())        
-    n_category = len(all_category)
-    rnn=RNN(inputSize, n_hidden, n_category)
+    # inputSize=vectorizer.getTransformedVectorSize()
+    # n_hidden = 256*4
+    # df_category = df_en.groupby('category')        
+    # all_category = list(df_category.groups.keys())        
+    # n_category = len(all_category)
+    # rnn=RNN(inputSize, n_hidden, n_category)
 
 
     # rnn=torch.load('ngram-rnn-classification.pt')
-    train = Train(vectorizer,df_en,all_category,rnn)
+    train = Train(df_en,True)
 
     train.confusionMatix()
 
-
-
     # train.run(200000)
-
-
 
 
 if __name__=="__main__":
