@@ -6,7 +6,7 @@
 \usepackage{anyfontsize}
 \usepackage{tikz}
 \usepackage{mathpazo}
-\usepackage{multicol}
+\usepackage{multicol,caption}
 \usepackage{tikz}
 \usepackage{graphicx}
 \usepackage{graphicx}
@@ -43,6 +43,10 @@
     \end{center}
 
 }
+
+\newenvironment{Figure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
 
 \begin{document}
     \fontsize{55}{65}
@@ -125,13 +129,41 @@
         
     \end{center}
 
-    \includegraphics{histogram}
+
+    \subsection{Confusion Matrix}
+    Confusion matrix displays how well the network performed on different categories. It is a matrix of actual categories (rows) which category the network guesses (columns). In figure \ref{fig:cm}, the yellow cells aligned diagonally shows the correct guesses by the network.
+    \begin{Figure}
+        \centering
+        \includegraphics[width=0.50\linewidth]{confusion._200epoch}
+        \captionsetup{font=footnotesize}
+        \captionof{figure}{Confusion Matrix}
+        \label{fig:cm}
+    \end{Figure}
 
           
     
 \end{multicols}
 
 % \printbibliography
+\fontsize{30}{40}
+\selectfont
+\section{Network Architecture - Recurrent Neural Netwrok}
+\begin{multicols}{3}
+    \begin{Figure}
+        \centering
+        \includegraphics[width=0.5\linewidth]{nn_arch}
+        \captionsetup{font=footnotesize}
+        \captionof{figure}{Confusion Matrix}
+        \label{fig:nn}
+    \end{Figure}
+    \columnbreak
+
+    \begin{enumerate}
+        \item Input - ngram vocabulary size of product feature
+    \end{enumerate}
+\end{multicols}
+
+
 
 
 \end{document}

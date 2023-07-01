@@ -10,9 +10,8 @@ from VectorizeClass import Vectorize
 from NN import RNN
 
 class Train():
-    def __init__(self,df_en,withSaved=False,useSubset=False):
-        self.df_en=df_en
-        self.useSubset=useSubset        
+    def __init__(self,df_en,doLoad=False,testing=False):
+        self.df_en=df_en     
         self.vectorizer = Vectorize(1,1)
         self.vectorizer.fit(doc=df_en["name"])
         self.vectorizer.transform(df_en["name"]) 
@@ -21,15 +20,14 @@ class Train():
         
         self.df_category = self.df_en.groupby('category')       
         self.all_category = list(self.df_category.groups.keys()) 
-        if self.useSubset:
-            self.all_category=random.choices(self.all_category,20)
+        if testing:
+            self.all_category=random.choices(self.all_category,k=20)
 
         self.n_category = len(self.all_category)
-        self.rnn=RNN(self.inputSize, self.n_hidden, self.n_category) if withSaved else torch.load('ngram-rnn-classification.pt')
+        self.rnn= torch.load('ngram-rnn-classification.pt') if doLoad else  RNN(self.inputSize, self.n_hidden, self.n_category)
         self.learning_rate=0.005
         self.criterion = nn.NLLLoss()
 
-        self.df_category = self.df_en.groupby('category')
         self.current_loss = 0
         self.all_losses = []
 
@@ -139,19 +137,14 @@ class Train():
     
     def confusionMatix(self):
         # Keep track of correct guesses in a confusion matrix
-        # Get only 30 categories
 
-       
-
-
-
-        n_categories = len(self.all_category_subset)
+        n_categories = len(self.all_category)
         confusion = torch.zeros(n_categories, n_categories)
         n_confusion = 10000
 
         # Go through a bunch of examples and record which are correctly guessed
         for i in range(n_confusion):
-            category, name, category_tensor, name_tensor = self.randomTrainingExample(True)
+            category, name, category_tensor, name_tensor = self.randomTrainingExample()
             output = self.evaluate(name_tensor)
             guess, guess_i = self.categoryFromOutput(output)
             category_i =self.all_category.index(category)
@@ -168,7 +161,7 @@ class Train():
         fig.colorbar(cax)
 
         # Set up axes
-        ax.set_xticklabels([''] + self.all_category, rotation=90)
+        ax.set_xticklabels([''] + self.all_category, rotation=45)
         ax.set_yticklabels([''] + self.all_category)
 
         # Force label at every tick
@@ -178,6 +171,7 @@ class Train():
         # sphinx_gallery_thumbnail_number = 2
         plt.show()
         plt.savefig('confusion.png', dpi=400)
+        
 
     
 
