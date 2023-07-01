@@ -30,3 +30,7 @@ https://www.kaggle.com/datasets/lakritidis/product-classification-and-categoriza
 https://medium.com/analytics-vidhya/classification-using-long-short-term-memory-glove-global-vectors-for-word-representation-254d02d5e158
 
 https://www.kaggle.com/code/leekahwin/text-classification-using-n-gram-0-8-f1
+
+https://pytorch.org/tutorials/beginner/former_torchies/nnft_tutorial.html
+
+https://github.com/pytorch/examples/blob/main/word_language_model/main.py

@@ -159,7 +159,11 @@
     \columnbreak
 
     \begin{enumerate}
-        \item Input - ngram vocabulary size of product feature
+        \item Input layer - These nodes pass on information to hidden nodes. The collection of product names after normalization and creating a vocabulary of it using n-gram vectorization provides provides \textit{n} number of unique words. Here, \textit{n} is the number of input layer size.  
+        \item Hidden layers -  Transfers information from input node to the output node.
+        \item Output layer - This layer performs computation and transfers information to the network to out of the function. In our experiment the total number of categories the model should predict is the size of the output layer.
+        \item Softmax function - Takes input of \textit{K} real numbers, and normalizes it into a probability distribution consisting of \textit{K} probabilities.
+        \item Combine function : Add the input layer and hidden layer tensors and pass on to the softmax function.
     \end{enumerate}
 \end{multicols}
 
