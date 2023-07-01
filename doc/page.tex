@@ -72,7 +72,7 @@
 
 \end{tikzpicture}
 \vspace{1cm}
-\begin{multicols}{3}
+\begin{multicols*}{3}
 
    
     \fontsize{30}{40}
@@ -102,6 +102,28 @@
      
     \end{multicols}
 
+\columnbreak
+
+    \section{Network Architecture - Recurrent Neural Network}
+    % \begin{Figure}
+    %     \centering
+    %     \includegraphics[width=0.50\linewidth]{nn_arch}
+    %     \captionsetup{font=footnotesize}
+    %     \captionof{figure}{Confusion Matrix}
+    %     \label{fig:nn}
+    % \end{Figure}
+    
+
+    \begin{enumerate}
+        \item Input layer - These nodes pass on information to hidden nodes. The collection of product names after normalization and creating a vocabulary of it using n-gram vectorization provides provides \textit{n} number of unique words. Here, \textit{n} is the number of input layer size.  
+        \item Hidden layers -  Transfers information from input node to the output node.
+        \item Output layer - This layer performs computation and transfers information to the network to out of the function. In our experiment the total number of categories the model should predict is the size of the output layer.
+        \item Softmax function - Takes input of \textit{K} real numbers, and normalizes it into a probability distribution consisting of \textit{K} probabilities.
+        \item Combine function : Add the input layer and hidden layer tensors and pass on to the softmax function.
+    \end{enumerate}
+
+
+
     \section{Evaluation and Results}
     \begin{enumerate}
         \item Preprocessing of the product and category data frame is performed, which involves step:-
@@ -129,7 +151,7 @@
         
     \end{center}
 
-
+\columnbreak
     \subsection{Confusion Matrix}
     Confusion matrix displays how well the network performed on different categories. It is a matrix of actual categories (rows) which category the network guesses (columns). In figure \ref{fig:cm}, the yellow cells aligned diagonally shows the correct guesses by the network.
     \begin{Figure}
@@ -140,32 +162,12 @@
         \label{fig:cm}
     \end{Figure}
 
+
+
           
     
-\end{multicols}
+\end{multicols*}
 
-% \printbibliography
-\fontsize{30}{40}
-\selectfont
-\section{Network Architecture - Recurrent Neural Netwrok}
-\begin{multicols}{3}
-    \begin{Figure}
-        \centering
-        \includegraphics[width=0.5\linewidth]{nn_arch}
-        \captionsetup{font=footnotesize}
-        \captionof{figure}{Confusion Matrix}
-        \label{fig:nn}
-    \end{Figure}
-    \columnbreak
-
-    \begin{enumerate}
-        \item Input layer - These nodes pass on information to hidden nodes. The collection of product names after normalization and creating a vocabulary of it using n-gram vectorization provides provides \textit{n} number of unique words. Here, \textit{n} is the number of input layer size.  
-        \item Hidden layers -  Transfers information from input node to the output node.
-        \item Output layer - This layer performs computation and transfers information to the network to out of the function. In our experiment the total number of categories the model should predict is the size of the output layer.
-        \item Softmax function - Takes input of \textit{K} real numbers, and normalizes it into a probability distribution consisting of \textit{K} probabilities.
-        \item Combine function : Add the input layer and hidden layer tensors and pass on to the softmax function.
-    \end{enumerate}
-\end{multicols}
 
 
 

@@ -40,10 +40,10 @@ def main():
 
 
     # rnn=torch.load('ngram-rnn-classification.pt')
-    train = Train(df_en,False,True)
-    train.run(2000)
-
-    train.confusionMatix()
+   
+    train = Train(df_en)
+    train.run(200000)
+    train.predict('vaico  centering bush propshaft',2)
 
     
 

@@ -7,9 +7,13 @@ class Vectorize():
 
     def fit(self,doc):
         self.vectorizer.fit(doc)
+    
+    def getVocabLen(self):
+        return len(self.vectorizer.vocabulary_)
 
     def transform (self,doc):
-        self.transformedVector = self.vectorizer.transform(doc)
+        self.transformedVector=self.vectorizer.transform(doc)
+        return self.transformedVector
 
     def getVocabulary(self):
         return self.vectorizer.vocabulary_

@@ -6,6 +6,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from VectorizeClass import Vectorize
+import time
+import math
 
 from NN import RNN
 
@@ -14,8 +16,8 @@ class Train():
         self.df_en=df_en     
         self.vectorizer = Vectorize(1,1)
         self.vectorizer.fit(doc=df_en["name"])
-        self.vectorizer.transform(df_en["name"]) 
-        self.inputSize=self.vectorizer.getTransformedVectorSize()
+       
+        self.inputSize=self.vectorizer.getVocabLen()
         self.n_hidden = 256*4
         
         self.df_category = self.df_en.groupby('category')       
@@ -30,8 +32,7 @@ class Train():
 
         self.current_loss = 0
         self.all_losses = []
-
-      
+ 
 
     def train(self,category_tensor, name_tensor):
     
@@ -66,19 +67,20 @@ class Train():
         
         index = random_feature_indices[random.randint(0, len(random_feature_indices) - 1)]
 
-        ngramNameArray = self.vectorizer.getTransformedVectorByIndex(index)
+        # ngramNameArray = self.vectorizer.getTransformedVectorByIndex(index)
 
         name =self.df_en.iloc[index]["name"]
         
         category_tensor = torch.tensor([self.all_category.index(randcategory)], dtype=torch.long)
-        ngramOnceArray = np.where(ngramNameArray==1)[0]
+        # ngramOnceArray = np.where(ngramNameArray==1)[0]
 
-        name_tensor=torch.zeros(len(ngramOnceArray),1, self.inputSize)
+        # name_tensor=torch.zeros(len(ngramOnceArray),1, self.inputSize)
        
-        for i in range(ngramOnceArray.size):
+        # for i in range(ngramOnceArray.size):
            
-            name_tensor[i][0][ngramOnceArray[i]] = 1
-           
+        #     name_tensor[i][0][ngramOnceArray[i]] = 1
+
+        name_tensor = self.nameToTensor(name)           
         
         
         return randcategory, name, category_tensor, name_tensor
@@ -94,19 +96,22 @@ class Train():
     
 
     def run(self,n_iters):
+        start = time.time()
         for epoch in range(1, n_iters + 1):
     
             category, name, category_tensor, name_tensor = self.randomTrainingExample()
             
             output, loss = self.train(category_tensor, name_tensor)
             self.current_loss += loss
+             # Print ``iter`` number, loss, name and guess
 
             if epoch % 10000 == 0:
                 guess, guess_i = self.categoryFromOutput(output)
                 correct = '✓' if guess == category else '✗ (%s)' % category
                 
-                print('%d %d%% %.4f %s / %s %s' % (epoch, 
+                print('%d %d%% (%s) %.4f %s / %s %s' % (epoch, 
                                                 epoch / n_iters * 100,
+                                                self.timeSince(start),
                                                 loss,
                                                 name, 
                                                 guess, 
@@ -134,6 +139,41 @@ class Train():
             output, hidden = self.rnn(tensor[i], hidden)
 
         return output
+    
+    def timeSince(self,since):
+        now = time.time()
+        s = now - since
+        m = math.floor(s / 60)
+        s -= m * 60
+        return '%dm %ds' % (m, s)
+    
+    def nameToTensor(self,name):
+        # create empty tensor with 
+        vectorized=self.vectorizer.transform(list(name.split()))
+        n_vectors=len(vectorized.indices)
+
+        name_tensor=torch.zeros(n_vectors,1, self.inputSize)
+        for i in range(n_vectors):
+           
+            name_tensor[i][0][vectorized.indices[i]] = 1
+        
+        return name_tensor
+
+
+    def predict(self,name, n_predictions=3):
+        print('\n> %s' % name)
+        with torch.no_grad():
+            output = self.evaluate(self.nameToTensor(name))
+
+            # Get top N categories
+            topv, topi = output.topk(n_predictions, 1, True)
+            predictions = []
+
+            for i in range(n_predictions):
+                value = topv[0][i].item()
+                category_index = topi[0][i].item()
+                print('(%.2f) %s' % (value, self.all_category[category_index]))
+                predictions.append([value, self.all_category[category_index]])
     
     def confusionMatix(self):
         # Keep track of correct guesses in a confusion matrix
