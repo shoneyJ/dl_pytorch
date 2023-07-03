@@ -438,5 +438,5 @@ TSWLatexianTemp*
 #*Notes.bib
 *.ipynb:Zone.Identifier
 
-developmen-Environment/*
+development-environment/*
 *.pt
