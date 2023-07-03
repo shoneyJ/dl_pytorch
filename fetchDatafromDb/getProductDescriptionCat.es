@@ -1,6 +1,6 @@
 Get retromotion-indexer_development_products/_search
 {
-  "_source":["descriptions","descriptionsSource","nameSource","shortDescriptionSource","categoriesSource"],
+  "_source":["_id","descriptions","descriptionsSource","nameSource","shortDescriptionSource","categoriesSource"],
     "query": {
         "match_all":{}
         // "bool": {

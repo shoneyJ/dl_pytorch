@@ -34,3 +34,5 @@ https://www.kaggle.com/code/leekahwin/text-classification-using-n-gram-0-8-f1
 https://pytorch.org/tutorials/beginner/former_torchies/nnft_tutorial.html
 
 https://github.com/pytorch/examples/blob/main/word_language_model/main.py
+
+https://pytorch.org/tutorials/intermediate/char_rnn_generation_tutorial.html

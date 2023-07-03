@@ -46,15 +46,16 @@ class DataFrame:
 
    
     def create(self):
-        self.df_eng = pd.DataFrame(columns=['name','category'])
+        self.df_eng = pd.DataFrame(columns=["id",'name','category'])
         self.df_de = pd.DataFrame(columns=['name','category'])
-        resp=self.es.search("retromotion-indexer_development_products",{"_source":["descriptions","descriptionsSource","nameSource","shortDescriptionSource","categoriesSource"],
+        resp=self.es.search("retromotion-indexer_development_products",{"_source":["_id","descriptions","descriptionsSource","nameSource","shortDescriptionSource","categoriesSource"],
                            'size' : 65000,
                            "query": {"match_all": {}}})
 
         for hit in resp['hits']['hits']:
-            list_row_en = dict (name=None,category=None)
+            list_row_en = dict (id=None,name=None,category=None)
             list_row_de = dict (name=None,category=None)
+            list_row_en["id"]=hit['_id']
             for name in hit['_source']['nameSource']:
                 if (name["language"]=="en"):
                     list_row_en["name"]=name["value"]
@@ -79,7 +80,11 @@ class DataFrame:
                 self.df_de=pd.concat([self.df_de, new_row.to_frame().T], ignore_index=True)
             # df_eng.loc[len(df_eng)] = list_row
 
+        docDict = self.df_eng.to_dict(orient="records")
+        self.createIndexerProductCategory(docDict)
+
         self.clean()
+
         return [self.df_eng,self.df_de]
 
     def getNormal(self):
@@ -99,9 +104,76 @@ class DataFrame:
         
         return self.df_eng
 
+    def getProductTaxonomy(self,_from,_size):
+
+        self.df_taxonomy_all_en = pd.DataFrame(columns=['id','name','category'])
+        resp=self.es.search("english-taxonomy-all",{"_source":["id","name","category"],
+                                                    'from':_from,
+                                                    'size' :_size ,
+                                                    "query": {"match_all": {}}})
+        for hit in resp['hits']['hits']:
+                list_row_en = dict (id=None,name=None,category=None)            
+                list_row_en["name"]=hit['_source']['name']             
+                list_row_en["category"]=hit['_source']['category']
+
+                new_row = pd.Series(list_row_en)
+                self.df_taxonomy_all_en=pd.concat([self.df_taxonomy_all_en, new_row.to_frame().T], ignore_index=True)
+        
+
+        
+        return self.df_taxonomy_all_en
 
 
+    def createIndexerTaxonomy(self,docDict):
+        request_body = {
+        "settings": {
+            "number_of_shards": 5,
+            "number_of_replicas": 1
+        },
+        'mappings': {
+            "product_taxonomy": {   
+            
+                'properties': {
+                    'name': {'type': 'text'},
+                    'category': {'type': 'text'},
+                }
+            }
+            
+        }
+        }
+
+        self.es.create('english-taxonomy-normal',request_body)
     
+
+        for val in docDict:
+            
+            self.es.ingest('english-taxonomy-normal',val,'product_taxonomy')
+
+    def createIndexerProductCategory(self,docDict):
+        request_body = {
+        "settings": {
+            "number_of_shards": 5,
+            "number_of_replicas": 1
+        },
+        'mappings': {
+            "product_category": {   
+            
+                'properties': {
+                    'id': {'type': 'text'},
+                    'name': {'type': 'text'},
+                    'category': {'type': 'text'},
+                }
+            }
+        }
+        }
+
+        self.es.create('english-taxonomy-all',request_body)
+    
+
+        for val in docDict:
+            
+            self.es.ingest('english-taxonomy-all',val,'product_category')
+
          
 
 
