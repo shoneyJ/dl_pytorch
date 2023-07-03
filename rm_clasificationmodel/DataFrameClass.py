@@ -48,7 +48,9 @@ class DataFrame:
     def create(self):
         self.df_eng = pd.DataFrame(columns=['name','category'])
         self.df_de = pd.DataFrame(columns=['name','category'])
-        resp=self.es.getFeatures()
+        resp=self.es.search("retromotion-indexer_development_products",{"_source":["descriptions","descriptionsSource","nameSource","shortDescriptionSource","categoriesSource"],
+                           'size' : 65000,
+                           "query": {"match_all": {}}})
 
         for hit in resp['hits']['hits']:
             list_row_en = dict (name=None,category=None)
@@ -80,7 +82,23 @@ class DataFrame:
         self.clean()
         return [self.df_eng,self.df_de]
 
-    
+    def getNormal(self):
+        self.df_eng = pd.DataFrame(columns=['name','category'])
+        resp=self.es.search("english-taxonomy-normal",{"_source":["name","category"],
+                                                        'size' : 5000,
+                                                        "query": {"match_all": {}}})
+        for hit in resp['hits']['hits']:
+                list_row_en = dict (name=None,category=None)            
+                list_row_en["name"]=hit['_source']['name']             
+                list_row_en["category"]=hit['_source']['category']
+
+                new_row = pd.Series(list_row_en)
+                self.df_eng=pd.concat([self.df_eng, new_row.to_frame().T], ignore_index=True)
+        
+
+        
+        return self.df_eng
+
 
 
     

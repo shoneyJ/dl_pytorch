@@ -8,12 +8,50 @@ from NN import RNN
 from evaluate import Evaluate
 
 
+
 def main():
-    es =ElasticSearchDb("http://172.17.212.35:9200")
+    # es =ElasticSearchDb("http://172.17.212.35:9200")
+    es_local =ElasticSearchDb("http://192.168.0.30:9200")
+   
 
-    df=DataFrame(es)
+    df=DataFrame(es_local)
 
-    [df_en, df_de]=df.create()
+    df.getNormal()
+
+    df_en = df.getNormal()
+
+    # [df_en, df_de]=df.create()
+
+    # docDict = df_en.to_dict(orient='records')
+
+    # request_body = {
+    #         "settings": {
+    #             "number_of_shards": 5,
+    #             "number_of_replicas": 1
+    #         },
+    #         'mappings': {
+    #             "product_taxonomy": {   
+                
+    #                 'properties': {
+    #                     'name': {'type': 'text'},
+    #                     'category': {'type': 'text'},
+    #                 }
+    #             }
+                
+    #         }
+    #     }
+
+    # es_local.create('english-taxonomy-normal',request_body)
+    
+
+    # for val in docDict:
+    #     print (val)
+    #     es_local.ingest('english-taxonomy-normal',val,'product_taxonomy')
+
+
+
+
+    
 
     # vectorizer = Vectorize(1,1)
     # vectorizer.setTfidFitTransform(df_en["name"])
@@ -42,7 +80,7 @@ def main():
     # rnn=torch.load('ngram-rnn-classification.pt')
    
     train = Train(df_en)
-    train.run(200000)
+    train.run(90000)
     train.predict('vaico  centering bush propshaft',2)
 
     
