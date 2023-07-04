@@ -41,9 +41,9 @@ class ElasticSearchDb:
         }
         }
 
-        self.es.create('english-false-prediction',request_body)
+        self.create('english-false-prediction',request_body)
     
 
         for val in docDict:
             
-            self.es.ingest('english-false-prediction',val,'category_prediction')
+            self.ingest('english-false-prediction',val,'category_prediction')
