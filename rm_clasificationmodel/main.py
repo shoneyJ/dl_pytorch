@@ -13,10 +13,10 @@ def main():
     es =ElasticSearchDb("http://172.17.212.35:9200")
    
     df=DataFrame(es)
-    dfProductTaxonomyEn=df.getProductTaxonomy(0,10000)
+    # dfProductTaxonomyEn=df.getProductTaxonomy(0,10000)
 
     
-    # df_en = df.getNormal()
+    df_en = df.getNormal()
 
     # [df_en, df_de]=df.create()
 
@@ -25,8 +25,8 @@ def main():
 
     # rnn=torch.load('ngram-rnn-classification.pt')
    
-    # train = Train(df_en)
-    # train.run(20)
+    train = Train(df_en)
+    train.run(200000)
     # train.predict('vaico  centering bush propshaft',2)
 
     
