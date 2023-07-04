@@ -2,21 +2,23 @@ from NN import *
 import sys
 from helper import *
 
-class predict():
+class Predict():
     def __init__(self):
-         self.rnn = torch.load('char-rnn-classification.pt')
+         self.rnn = torch.load('ngram-rnn-classification.pt')
          self.helper= Helper()
 
     def evaluate(self,tensor):
-            hidden = self.rnn.initHidden()
+        hidden = self.rnn.initHidden()
 
-            for i in range(tensor.size()[0]):
-                output, hidden = self.rnn(tensor[i], hidden)
+            # for i in range(tensor.size()[0]):
+            #     output, hidden = self.rnn(tensor[i], hidden)
+        output, hidden = self.rnn(tensor, hidden)
 
-            return output
 
-    def predict(self,name, n_predictions=1):
-            print('\n> %s' % name)
+        return output
+
+    def start(self,name, n_predictions=1):
+           
             with torch.no_grad():
                 output = self.evaluate(self.helper.nameToTensor(name))
 
@@ -27,6 +29,8 @@ class predict():
                 for i in range(n_predictions):
                     value = topv[0][i].item()
                     category_index = topi[0][i].item()
-                    print('(%.2f) %s' % (value, self.helper.getCategoryByIndex(category_index)))
+                    # print('(%.2f) %s' % (value, self.helper.getCategoryByIndex(category_index)))
                     predictions.append([value, self.helper.getCategoryByIndex(category_index)])
+            
+            return predictions
 

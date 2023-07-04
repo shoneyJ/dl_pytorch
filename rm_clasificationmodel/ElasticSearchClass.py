@@ -20,3 +20,30 @@ class ElasticSearchDb:
     def create(self,_index,request_body):
 
         self.es.indices.create(index=_index, body=request_body)
+    
+    def createIndexerPrediction(self,docDict):
+        request_body = {
+        "settings": {
+            "number_of_shards": 5,
+            "number_of_replicas": 1
+        },
+        'mappings': {
+            "category_prediction": {   
+            
+                'properties': {
+                    'id': {'type': 'text'},
+                    'name': {'type': 'text'},
+                    'category': {'type': 'text'},
+                    'predicted': {'type': 'text'},
+                    'value': {'type': 'float'},
+                }
+            }
+        }
+        }
+
+        self.es.create('english-false-prediction',request_body)
+    
+
+        for val in docDict:
+            
+            self.es.ingest('english-false-prediction',val,'category_prediction')

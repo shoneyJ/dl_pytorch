@@ -112,7 +112,8 @@ class DataFrame:
                                                     'size' :_size ,
                                                     "query": {"match_all": {}}})
         for hit in resp['hits']['hits']:
-                list_row_en = dict (id=None,name=None,category=None)            
+                list_row_en = dict (id=None,name=None,category=None)
+                list_row_en["id"]=hit['_source']['id']      
                 list_row_en["name"]=hit['_source']['name']             
                 list_row_en["category"]=hit['_source']['category']
 
@@ -173,6 +174,9 @@ class DataFrame:
         for val in docDict:
             
             self.es.ingest('english-taxonomy-all',val,'product_category')
+
+    
+
 
          
 

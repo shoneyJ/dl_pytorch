@@ -15,7 +15,7 @@ class Helper():
     def dumpAllCategory(self,allCategory):
         pickle.dump(allCategory, open("category.pickel", "wb"))
 
-    def loadAllCategory():
+    def loadAllCategory(self):
         return pickle.load(open("category.pickel", "rb"))
     
     def normalize(self,doc):
