@@ -1,12 +1,7 @@
 import torch.nn as nn
 import torch
-import random
 import numpy as np
-
-
-import matplotlib.ticker as ticker
-from VectorizeClass import Vectorize
-from helper import *
+from data import *
 import time
 
 
@@ -15,15 +10,17 @@ from NN import *
 class Train():
     def __init__(self,df_en):
         self.df_en=df_en  
-        self.helper= Helper(df_en)
-        self.inputSize, self.n_category= self.helper.getIOSize()
-        self.n_hidden = 256*4
+        self.data= Data(df_en)
+        self.inputSize, self.n_category= self.data.getIOSize()
+        self.n_hidden = 128*3
         self.rnn= RNN(self.inputSize, self.n_hidden, self.n_category)
         self.learning_rate=0.005
         self.criterion = nn.NLLLoss()
 
         self.current_loss = 0
         self.all_losses = []
+
+        self.helper= Helper()
  
 
     def train(self,category_tensor, name_tensor):
@@ -32,51 +29,36 @@ class Train():
 
         self.rnn.zero_grad()
 
-        for i in range(name_tensor.size()[0]):     
+        # for i in range(name_tensor.size()[0]):     
 
-            output, hidden = self.rnn(name_tensor[i], hidden)
+        #     output, hidden = self.rnn(name_tensor[i], hidden)
 
+        output, hidden = self.rnn(name_tensor, hidden)
         loss = self.criterion(output, category_tensor)
         loss.backward()
 
-        # for p in self.rnn.parameters():
-        #     p.data.add_(-self.learning_rate, p.grad.data)
-
-            # Add parameters' gradients to their values, multiplied by learning rate
+       
+        # Add parameters' gradients to their values, multiplied by learning rate
         for p in self.rnn.parameters():
             p.data.add_(p.grad.data, alpha=-self.learning_rate)
 
 
 
         return output, loss.item()
-   
-     
-        randcategory = random.choice(self.all_category)
-        # get feature name from the category
-        random_feature_indices = self.df_category.indices[randcategory]
-        
-        index = random_feature_indices[random.randint(0, len(random_feature_indices) - 1)]
 
-        name =self.df_en.iloc[index]["name"]
-        
-        category_tensor = torch.tensor([self.all_category.index(randcategory)], dtype=torch.long)
-        
-        name_tensor = self.helper.nameToTensor(name,self.vectorizer)
-        
-        return randcategory, name, category_tensor, name_tensor
       
-    def run(self,n_iters):
+    def run(self,n_iters,print_every,plot_every):
         start = time.time()
         for epoch in range(1, n_iters + 1):
     
-            category, name, category_tensor, name_tensor = self.helper.randomTrainingExample()
+            category, name, category_tensor, name_tensor = self.data.randomTrainingExample()
             
             output, loss = self.train(category_tensor, name_tensor)
             self.current_loss += loss
              # Print ``iter`` number, loss, name and guess
 
-            if epoch % 10000 == 0:
-                guess, guess_i = self.helper.categoryFromOutput(output)
+            if epoch % print_every == 0:
+                guess, guess_i = self.data.categoryFromOutput(output)
                 correct = '✓' if guess == category else '✗ (%s)' % category
                 
                 print('%d %d%% (%s) %.4f %s / %s %s' % (epoch, 
@@ -87,8 +69,8 @@ class Train():
                                                 guess, 
                                                 correct))
 
-            if epoch % 5000 == 0:
-                self.all_losses.append(self.current_loss / 5000)
+            if epoch % plot_every == 0:
+                self.all_losses.append(self.current_loss / plot_every)
                 self.current_loss = 0
             
         self.helper.plot(self.all_losses,"loss.png")
@@ -108,19 +90,19 @@ class Train():
 
 
     # def predict(self,name, n_predictions=1):
-        print('\n> %s' % name)
-        with torch.no_grad():
-            output = self.evaluate(self.helper.nameToTensor(name,self.vectorizer))
+    #     print('\n> %s' % name)
+    #     with torch.no_grad():
+    #         output = self.evaluate(self.helper.nameToTensor(name,self.vectorizer))
 
-            # Get top N categories
-            topv, topi = output.topk(n_predictions, 1, True)
-            predictions = []
+    #         # Get top N categories
+    #         topv, topi = output.topk(n_predictions, 1, True)
+    #         predictions = []
 
-            for i in range(n_predictions):
-                value = topv[0][i].item()
-                category_index = topi[0][i].item()
-                print('(%.2f) %s' % (value, self.all_category[category_index]))
-                predictions.append([value, self.all_category[category_index]])
+    #         for i in range(n_predictions):
+    #             value = topv[0][i].item()
+    #             category_index = topi[0][i].item()
+    #             print('(%.2f) %s' % (value, self.all_category[category_index]))
+    #             predictions.append([value, self.all_category[category_index]])
     
     # def confusionMatix(self):
     #     # Keep track of correct guesses in a confusion matrix
@@ -160,10 +142,4 @@ class Train():
     #     plt.savefig('confusion.png', dpi=400)
         
 
-    
-
-   
-    
-   
-
-
+  

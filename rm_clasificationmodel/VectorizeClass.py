@@ -1,5 +1,6 @@
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
+import pickle
 class Vectorize():
     def __init__(self,ngram_min,ngram_max):
         self.vectorizer = CountVectorizer(ngram_range=(ngram_min, ngram_max))
@@ -29,6 +30,11 @@ class Vectorize():
         self.TfidVectorized=self.TfidV.fit_transform(doc) 
 
     def getTfidFitTransform(self):
-       return  self.TfidVectorized       
+       return  self.TfidVectorized
+
+    def pickleVectorizor(self):
+        pickle.dump(self.vectorizer, open("vector.pickel", "wb"))
+
+     
     
     
