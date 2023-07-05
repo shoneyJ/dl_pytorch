@@ -86,27 +86,25 @@
     \selectfont
  
     \section{Introduction}
-    E-commerce sales are increasing exponentially ever since the world is connected online. Convinience for searching the desired product, comparing different products before making a purchase and easy access on tips of the finger has made online shoping trending especially among the youth. A vast variety of products are sold online.
+    E-commerce sales are increasing exponentially ever since the world is connected online. Convenience for searching the desired product, comparing different products before making a purchase and easy access on tips of the finger has made online shopping trending especially among the youth. A vast variety of products are sold online.
 
-    Product taxonomy (categorization) is the logical and heirarchical arrangement of the company's product. A well defined product taxonomy enables customers to search the desired product in least number of clicks on an E-commerce website. 
-    An AI of unsupervised learning model to create product taxonomy based on product features is the need of the hour. In this paper, a research on automating the process of defining the product taxonomy is conducted. 
+    Product taxonomy (categorization) is the logical and hierarchical arrangement of the company's product. A well-defined product taxonomy enables customers to search the desired product in the least number of clicks on an E-commerce website. 
+    An AI of unsupervised learning model to create product taxonomy based on product features is the need of the hour. In this paper, research on automating the process of defining the product taxonomy is conducted. 
     
  
     \section{Problem statement and objective}
 
-    In a business to business(B2B) type of E-commerse, the product taxonomy exchange between the companies such as suppliers and manufactures and online reteiler may differ. Product taxonomy must be analyzed and fit into the existing vocabular of the product taxonomy of online retailer. An example, if a supplier name a certain product category as "Engine oil" and the category already existing at online retailer is "Motor Oil". In such case importing the category from the supplier may result in poorly defined product taxonomy. The objective is to perform feature selection of product details using scikit learn \parencite{sklearn_api}, process text based classification on each heirarchy to predict the category levels of the product.
+    In a business to business(B2B) type of Ecommerce, the product taxonomy exchange between the companies such as suppliers and manufactures and online retailer may differ. Product taxonomy must be analyzed and fit into the existing vocabulary of the product taxonomy of online retailer. An example, if a supplier name a certain product category as "Engine oil" and the category already existing at online retailer is "Motor Oil". In such case importing the category from the supplier may result in poorly defined product taxonomy. The objective is to perform feature selection of product details using scikit learn \parencite{sklearn_api}, process text based classification on each hierarchy to predict the category levels of the product.
 
     \begin{multicols}{2}
         \section{Tools and Technologies}
             \includesvg{PyTorch_logo_black.svg} \\
-            Pytorch  \parencite{Paszke.03122019} is a machine learnning library which provides Pythonic programming style. The open-source Python ecosystem packages like NumPy, SciPy and Pandas fulfills most of the numerical analysis needs of research.  Python provides vast repositories of libraries to handle data preprocessing, statistical analysis and plotting. 
-
-            Pytorch performs execution of dynamic tensors computation with automatic differentiation for efficient gradient based optimization. 
+            Pytorch  \parencite{Paszke.03122019} is a machine learning library which provides Pythonic programming style. The open-source Python ecosystem packages like NumPy, SciPy and Pandas fulfills most of the numerical analysis needs of research.  Python provides vast repositories of libraries to handle data preprocessing, statistical analysis and plotting. Pytorch performs execution of dynamic tensors computation with automatic differentiation for efficient gradient based optimization. 
                  
     \columnbreak
         \section{Research questions}
         \begin{enumerate}
-            \item How Natural Language Processing (NLP) can be applied in ecommerse industry?
+            \item How Natural Language Processing (NLP) can be applied in ecommerce industry?
             \item Which neural network architecture is suitable for text based classification model?
             \item What are the steps involved for preprocessing text to extract features from the document?
             \item  How to get better results with better shaped network? Evaluate neural network performance based on confusion matrix.
@@ -117,9 +115,9 @@
   
     \section{Methodology}
     \begin{enumerate}
-        \item Inspitation: Unmanageable and not well defined product taxonomy. 
-        \item Empathize: Gained in depth understanding of the E-commerse industries requirement.
-        \item Ideate: Modifying Tuitorial on character-level RNN \parencite{sean}  to work with vocabulary level RNN.
+        \item Inspiration: Unmanageable and not well-defined product taxonomy. 
+        \item Empathize: Gained in depth understanding of the Ecommerce industries requirement.
+        \item Ideate: Modifying Tutorial on character-level RNN \parencite{sean}  to work with vocabulary level RNN.
         \item Prototype: Creating a prototype of predicting category based on a single feature of product before including all the features.
         \item Test: Testing the prototype and gaining the feedback from the user. 
     \end{enumerate} 
@@ -151,7 +149,7 @@
         \begin{enumerate}
             \item Normalization of text: ngram vectorization to define vocabulary.
             \item To change \"A to A, apply the Normal form D (NFD).
-            \item Use Beautiful Soup a Pyhon library for pulling data out of HTLM and XML.
+            \item Use Beautiful Soup a Python library for pulling data out of HTLM and XML.
         \end{enumerate}
 
         
@@ -183,7 +181,7 @@
     \end{Figure}
 
 
-    \subsection{Negetive log likelihood graph}
+    \subsection{Negative log likelihood graph}
     The curve reaching 0 by end of training the machine learning model to 2,000,000 iteration indicates the model performed well.
 
     \begin{Figure}
@@ -196,7 +194,7 @@
 
     \subsection{Actual vs predicted }
     Author tested the model with 10000 pairs of product name and category.
-    Analyzing the falsly predicted result of 1455 records gained insight of incorrect categorization of existing products.
+    Analyzing the falsely predicted result of 1455 records gained insight of incorrect categorization of existing products.
 \vspace{0.5cm}
 
     \begin{center}
