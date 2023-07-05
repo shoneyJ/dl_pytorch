@@ -20,6 +20,8 @@
 % \columnseprule=2pt
 \graphicspath{ {images/} }
 
+
+
 \renewcommand{\section}[1]{
     \begin{center}
         \begin{tikzpicture}
@@ -53,7 +55,8 @@
   {\endminipage\par\medskip}
 
 \begin{document}
-    \fontsize{55}{65}
+
+    \fontsize{50}{60}
     \selectfont
      \begin{tikzpicture}
             
@@ -79,8 +82,9 @@
 \begin{multicols*}{3}
 
    
-    \fontsize{30}{35}
+    \fontsize{34}{36}
     \selectfont
+ 
     \section{Introduction}
     E-commerce sales are increasing exponentially ever since the world is connected online. Convinience for searching the desired product, comparing different products before making a purchase and easy access on tips of the finger has made online shoping trending especially among the youth. A vast variety of products are sold online.
 
@@ -98,8 +102,8 @@
             Pytorch  \parencite{Paszke.03122019} is a machine learnning library which provides Pythonic programming style. The open-source Python ecosystem packages like NumPy, SciPy and Pandas fulfills most of the numerical analysis needs of research.  Python provides vast repositories of libraries to handle data preprocessing, statistical analysis and plotting. 
 
             Pytorch performs execution of dynamic tensors computation with automatic differentiation for efficient gradient based optimization. 
-            \columnbreak     
-
+                 
+    \columnbreak
         \section{Research questions}
         \begin{enumerate}
             \item How Natural Language Processing (NLP) can be applied in ecommerse industry?
@@ -110,19 +114,18 @@
      
     \end{multicols}
 
-
+  
     \section{Methodology}
-    Design thinking a user-centered aprroach enabled to define the problems and its solutions while developing the model which predicts multi-level product category.
     \begin{enumerate}
-        \item Inspitation: Product details imported from manufactures or suppliers were needed to be  scrutinize before making these ready for deployment and publically available for customers. 
-        \item Empathize: User of a "Predicting the product category" are the E-commerse industries. Gained in depth understanding of the user needs.
-        \item Ideate:  Tuitorial on character-level RNN \parencite{sean} provides a basic building block for a RNN. Modifying it to work with word or vocabulary level RNN help achieve the goal of predicting category based on product features.
+        \item Inspitation: Unmanageable and not well defined product taxonomy. 
+        \item Empathize: Gained in depth understanding of the E-commerse industries requirement.
+        \item Ideate: Modifying Tuitorial on character-level RNN \parencite{sean}  to work with vocabulary level RNN.
         \item Prototype: Creating a prototype of predicting category based on a single feature of product before including all the features.
         \item Test: Testing the prototype and gaining the feedback from the user. 
     \end{enumerate} 
 
     
-
+    \vspace{0.5cm}
     \section{Network Architecture - Recurrent Neural Network}
     % \begin{Figure}
     %     \centering
@@ -134,29 +137,26 @@
     
 
     \begin{enumerate}
-        \item Input layer - These nodes pass on information to hidden nodes. The collection of product names after normalization and creating a vocabulary of it using n-gram vectorization provides provides \textit{n} number of unique words. Here, \textit{n} is the number of input layer size.  
+        \item Input layer - \textit{n} number of unique words in collection of product names. Here, \textit{n} is the input layer size.  
         \item Hidden layers -  Transfers information from input node to the output node.
-        \item Output layer - This layer performs computation and transfers information to the network to out of the function. In our experiment the total number of categories the model should predict is the size of the output layer.
+        \item Output layer - \textit{c} number of categories the model should predict.
         \item Softmax function - Takes input of \textit{K} real numbers, and normalizes it into a probability distribution consisting of \textit{K} probabilities.
-        \item Combine function : Add the input layer and hidden layer tensors and pass on to the softmax function.
     \end{enumerate}
 
 
-
+    \vspace{0.5cm}
     \section{Evaluation and Results}
     \begin{enumerate}
-        \item Preprocessing of the product and category data frame is performed, which involves step:-
+        \item Preprocessing steps:-
         \begin{enumerate}
-            \item Normalization of text: lowercase, perform Tf-Idf, ngram vectorization to extract text.
-            \item To change \"A to A, the Normal form D (NFD) should be applied which translates each character into its decomposed form.
+            \item Normalization of text: ngram vectorization to define vocabulary.
+            \item To change \"A to A, apply the Normal form D (NFD).
             \item Use Beautiful Soup a Pyhon library for pulling data out of HTLM and XML.
         \end{enumerate}
-        \item The developed text based classification model successfully preditcs the product taxonomy based on the product features.
-        \item The time required to analyze the product details before it is ready deploy is reduced. As manual work of defining the product taxonomy is automated.  
-        \item Better shaped neural network architecture is developed. 
+
         
     \end{enumerate}
-    \vspace{1cm}
+
     \subsection{Text: Before and After normalization}
     \begin{center}
         \begin{tabular}{lll}
@@ -170,7 +170,7 @@
         \end{tabular}
         
     \end{center}
-\vspace{1cm}
+
     \subsection{Confusion Matrix}
     Confusion matrix displays how well the network performed on different categories. It is a matrix of actual categories (rows) which category the network guesses (columns). In figure \ref{fig:cm}, the yellow cells aligned diagonally shows the correct guesses by the network.
 
@@ -182,16 +182,49 @@
         \label{fig:cm}
     \end{Figure}
 
- \printbibliography
 
+    \subsection{Negetive log likelihood graph}
+    The curve reaching 0 by end of training the machine learning model to 2,000,000 iteration indicates the model performed well.
 
+    \begin{Figure}
+        \centering
+        \includegraphics[width=0.50\linewidth]{loss}
+        \captionsetup{font=footnotesize}
+        \captionof{figure}{Confusion Matrix}
+        \label{fig:loss}
+    \end{Figure}
 
-          
+    \subsection{Actual vs predicted }
+    Author tested the model with 10000 pairs of product name and category.
+    Analyzing the falsly predicted result of 1455 records gained insight of incorrect categorization of existing products.
+\vspace{0.5cm}
+
+    \begin{center}
+   \begin{tabular}{lll}
+        \toprule 
+            \textbf{Name} & \textbf{Category} & \textbf{Prediction} \\
+        \midrule
+            
+            RPM Sensor, engine management&Sensor&rpm sensor \\
+        
+\bottomrule
+   \end{tabular}
+    \end{center}
+        
+\vspace{0.5cm}
+%  \printbibliography
+
+\section{References}
+
+Buitinck, Lars et al. (2013).\\
+“API design for machine learning software: experiences from the scikit-learn
+project”.\\
+\linebreak
+Paszke, Adam et al. (n.d.).\\
+PyTorch: An Imperative Style, High-Performance Deep Learning Library.\\
+\linebreak
+Robertson, Sean (n.d.).\\
+Classifying names with a character level RNN.
     
 \end{multicols*}
-
-
-
-
-
 \end{document}
