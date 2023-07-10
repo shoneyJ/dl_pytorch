@@ -439,5 +439,5 @@ TSWLatexianTemp*
 *.ipynb:Zone.Identifier
 
 development-environment/*
-*.pt
+*-classification.pt
 *.pickel

@@ -1,44 +1,68 @@
+\chapter{Data collection}
 
-\chapter{Prerequisites for developing classification model}
+% One of the major challenge in an ecommerce industry is to categorize the products. The phenominal types of products in the ecommerce web application sold online may require an artificial inteligence generated category tree. The multi level product-categories in the taxonomy tree received and defined from the suppliers or manfucture may not be usable. Since the existing multi level category of those products in ecommerse application may defer. Importing product-category details directly from the various channels may lead to disambugution. The artificial inteligence generated category tree reduces the product ready to deploy time on the production environment. The product ready to deploy time here refers to the check lists of data correctness of the product before listing online.
 
-One of the major challenge in an ecommerce industry is to categorize the products. The phenominal types of products in the ecommerce web application sold online may require an artificial inteligence generated category tree. The multi level product-categories in the taxonomy tree received and defined from the suppliers or manfucture may not be usable. Since the existing multi level category of those products in ecommerse application may defer. Importing product-category details directly from the various channels may lead to disambugution. The artificial inteligence generated category tree reduces the product ready to deploy time on the production environment. The product ready to deploy time here refers to the check lists of data correctness of the product before listing online.
 
-\section {Fetch existing product taxonomy using Elastic Search}
 
-In section \ref {pyenv}, version specific python client installation detail are documented. For this project, python client elasticsearch 6.8.2 is installed as the client needs to be compatble with Elastic search version being used.
-
+\section {Fetch existing product taxonomy using Elasticsearch}
+Elastic search \footnote{https://www.elastic.co/} is a fast and scalable search and analytics engine. It can build a powerful AI and machine learning enabled search experience. In this paper, author fetches labeled dataset of products to serve as the training data for the machine learning model.
+Refer section \ref {pyenv} for installation detail of version specific python client of Elastic search. For this project, python client elasticsearch 6.8.2 is installed as the client needs to be compatible with Elastic search version being used. The official Python client provides mapping with Elasticsearch REST APIs.
 
 \begin{lstlisting}[language=Python]
-from elasticsearch import Elasticsearch
-client = Elasticsearch("http://localhost:9200")
-
-resp = client.search(index="development_products",
-                     body={"_source":["descriptions","descriptionsSource","nameSource","shortDescriptionSource","categoriesSource"],
-                           "query": {"match_all": {}}})
+resp=self.es.search("english-name-category",{"_source":["id","name","category"],
+'from':_from,
+'size' :_size ,
+"query": {"match_all": {}}})
 \end{lstlisting}
 
-The above code sample fetches the features of the product such as "name","description",category".
+The above code fetches indexed product name and its top hierarchy level category. This record serves as a foundation for multi level category prediction.  
+
+\begin{table}[h]
+      \caption{Index: english-name-category statistics}
+      \centering
+      \label{table:enc}
+\begin{tabular}{ll}
+      \toprule 
+
+      Samples total&22160 \\
+      Dimensionality&2 \\
+      Features&name \\
+      Target&category \\
+      
+      \bottomrule
+\end{tabular}
+\end{table}
+
+% In table \ref{table:enc}, the total number of products is mentioned.
 
 
-Elasticsearch uses \acf{Tf-Idf}. \acs{Tf-Idf} is a technique to generate numeric representation of words. \acs{Tf-Idf} represents product of two terms, \acs{Tf} and \acs{Idf}.
+
+
+% Elasticsearch uses \acf{Tf-Idf}. \acs{Tf-Idf} is a technique to generate numeric representation of words. \acs{Tf-Idf} represents product of two terms, \acs{Tf} and \acs{Idf}.
 
 % \begin{math} x_i=tf(w_i) x idf(w_i) \end{math}
 
 \section {Feature selection and dataset sources}
 
-A feature represents a set of data inputed in a training model to predict the the masked related data. In simple terms, in a classication model which predicts category of a product, product name, description can be labeled as its feature. 
+A feature represents a dataset fine-tuned to serve as a training data for machine learning model. The feature selection API from Scikit learn \parencite{sklearn_api} name it as dimensionality reduction. In table \ref{table:enc} the dimensionality is only two. Hence, the obvious choice of feature is "Product name" and target is "Category". Selecting features from higher number of dimensionality is a challenge and a deciding factor to improve the estimators' accuracy scores.\\ 
+Various methods for feature selection with Scikit Learn API are:-
+\begin{enumerate}
+      \item Removing features with low variance
+      \item Univariate feature selection
+      \item Recursive feature elimination
 
-The datasets used primarly for extracting feautures will be from the existing product database. In this paper, the datasets used are of an ecommerce business belonging to automotive industry domain. Secondary dataset used is from the TecDoc catalogue by TecAlliance \footnote{https://www.tecalliance.net/}
+\end{enumerate}
 
- In this experiment, consider 5 levels of categories as the maximum limit. The number of category levels differ for each products. Consider an example of category tree with three levels. 
+% The datasets used primarly for extracting feautures will be from the existing product database. In this paper, the datasets used are of an ecommerce business belonging to automotive industry domain. Secondary dataset used is from the TecDoc catalogue by TecAlliance \footnote{https://www.tecalliance.net/}
 
-\begin{quote} 
-\centering 
-sparepart/cooling-system/thermostat
-\end{quote}
-In such case, level 4 and level 5 will be appended with values using data imputation techniques, refer section \ref{dataimput}. 
+ Author initially chose to experiment with two-dimensionality, a simple experiment of predicting target which is top level category with feature which is the name of the product. Refer table \ref{table:feature_decription} to view the potential features for an ecommerce domain. 
+%   five levels of categories are taken into consideration. The number of category levels differ for each product. Consider an example of category tree with three levels. 
 
-The table \ref{table:l5} lists the feature description aling with the sample of category levels.
+% \begin{quote} 
+% \centering 
+% sparepart/cooling-system/thermostat
+% \end{quote}
+% In such case, level 4 and level 5 will be appended with values using data imputation techniques, refer section \ref{dataimput}. 
 % \begin{figure}[h]
 %       \centering
 %       \small{This is text.  It's in a figure environment but it's still text}
@@ -48,110 +72,43 @@ The table \ref{table:l5} lists the feature description aling with the sample of 
 
 
 \begin{table}[h]
-      \caption{Feature descriptin and five levels of category sample data}
-      \label{table:l5}
-
-% \end{table}
-
-% \begin{table}
-%       \caption{Feature descriptions}
-%       \label{table:features}
+      \centering
+      \caption{Feature description}
+      \label{table:feature_decription}
       \begin{tabular}{ lll }
             \toprule
             
-            \textbf{No}& \textbf{Feature} & \textbf{Value}\\
+            \textbf{No}& \textbf{Feature} & \textbf{Description}\\
             \midrule
-            1&Category tree & multi level categories\\
-            2&Description & description with html tags\\
-            3&Manufacturere & name of company manfactured\\
+            1&Product name & normalized form of name\\
+            2&Category tree & multi level categories\\
+            3&Description & Description with html tags\\         
             4&Short description  & product info displayed\\
             5&Supplier  &  supplier of the product\\
-            \color{red}6&n number of  category levels   &  feature extracted from category tree\\
+            6&Manufacturer  &  manufacturer of the product\\           
+            7&Price  &  Price of the product\\
+            8&Dimension  & Height, weight of the product\\
+            9&(n-1) number of  category levels   &  n is the total category level, one of which will be the target\\
            
             \bottomrule
             \end{tabular}
 
-            \begin{tabular}{llllll}
-                  \toprule
-                   catlevel0 & catlevel1 & catlevel2 & catlevel3 & catlevel4 & catlevel5 \\
-                  \midrule
-                  sparepart & cooling system & thermostat & NaN & NaN & NaN \\
+            % \begin{tabular}{llllll}
+            %       \toprule
+            %        catlevel0 & catlevel1 & catlevel2 & catlevel3 & catlevel4 & catlevel5 \\
+            %       \midrule
+            %       sparepart & cooling system & thermostat & NaN & NaN & NaN \\
             
-                  \bottomrule
-            \end{tabular}
+            %       \bottomrule
+            % \end{tabular}
 
 \end{table}
 
 
-\subsection{Dependency parsing for extracting nouns from features}
+% \subsection{Dependency parsing for extracting nouns from features}
 
-\section {Text normalization} \label{text_normalization}
+% \section {Data imputation techniques - on missing data} \label{dataimput}
 
-Text normalization is a process of transforming the document into a standard and consistent form of a text. A document is a text from single source. Some of the examples of document are list of product names from databases, a pdf file, texts retrieved from web scraping. Text normalization enables to perform required operations on the text as the text inputs are consistent accross the document. The process of text normalization varies based on the type of text that needs to normilized. There is no standard method for text normalization task. In this paper, text normalization of product name and category from the database source is performed. The text are of two languages, English and Deutsch.
+% \subsection {Forward and Backward fill}
 
-In table \ref{table:TN}, displays the difference in text before and after normalization. 
-
-\begin{table}[h]
-      \caption{Sample of text normalization effect}
-      \centering
-      \label{table:TN}
-\begin{tabular}{lll}
-      \toprule 
-                  &\textbf{Name} & \textbf{Category} \\ 
-      \midrule
-      \textbf{Before}&VAICO V10-4245 Stoßdämpfer & Stoßdämpfer \\
-      \textbf{After}&vaico v104245 stoßdampfer & stoßdampfer \\
-      
-      \bottomrule
-\end{tabular}
-\end{table}
-
-\subsection{Lower case}
-
-Using Pandas - vectorized string method, a text can be lower cased across the document. These methos exclude the missing  / NA values automatically \parencite{mckinney-proc-scipy-2010}.
-
-\begin{lstlisting}[language=Python]
-      df_de["name"]= df_de["name"].str.lower()
-\end{lstlisting}
-
-\subsection{Html parsing}
-
-Probability of getting html tags in a document increases if the source of document is from web scraping or also if the document from database source has inline html tags. In such case, fetching normal texts from a html text is required. One of the method would be to use regular expressions to get text in between angel brackets \textless \textgreater text \textless \textgreater. However, this method would require to have the tags to be well formed.
-\begin{lstlisting}[language=Python]
-      text = re.sub('<[^>]*>', '', text)
-\end{lstlisting}
-
-
-
-The better option would be to use Beautiful Soup \footnote{https://www.crummy.com/software/BeautifulSoup/bs4/doc/} a Pyhon library for pulling data out of HTLM and XML.
-\begin{lstlisting}[language=Python]
-      # Remove html tags 
-      soup = BeautifulSoup(doc, 'html.parser')
-      text =soup.get_text()
-\end{lstlisting}
-
-\subsection{Cleanning text}
-
-A product detail text may contain non-word characters represented in regular expression as \textbackslash W. It may also contain space seperated decimals describing the dimentional values of the product such as weight, height. Regular expressions could be used for removing the non-character words and spaces between the decimal values. 
-
-\begin{lstlisting}[language=Python]
-      text = (re.sub('[-\W]+', ' ', text))
-      text = (re.sub('(?<=\d) (?=\d)', '', text))
-\end{lstlisting}
-
-\subsection{Normal form D - Unicode database}
-
-A product name in Deutsch language may contain umlaute characters such as \"A.  Pythons unicodedata \footnote{https://docs.python.org/3/library/unicodedata.html} module provides access to the Unicode Character Database (UCD) which defines the character properties for all Unicode characters. To change \"A to A, the Normal form D (NFD) should be applied which translated each character into its decomposed form. Further the text can be refined with the general category assigned to the character as string. Nonspacing mark characters \footnote{https://www.compart.com/en/unicode/category/Mn} are represented as "Mn". These characters could be removed by referring the the character category.
-\begin{lstlisting}[language=Python]
-      ''.join(
-            c for c in unicodedata.normalize('NFD', text)
-            if unicodedata.category(c) != 'Mn')
-\end{lstlisting}
-
-
-
-\section {Data imputation techniques - on missing data} \label{dataimput}
-
-\subsection {Forward and Backward fill}
-
-\subsection {Impute with mode}
+% \subsection {Impute with mode}

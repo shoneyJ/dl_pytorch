@@ -41,7 +41,7 @@ class ElasticSearchDb:
         }
         }
 
-        self.create('english-false-prediction',request_body)
+        # self.create('english-false-prediction',request_body)
     
 
         for val in docDict:

@@ -1,3 +1,8 @@
-\chapter{Neural networks for classification model}
+\chapter{Impute missing text data}
 
-Pyroch \parencite{Paszke.03122019}
+Machine leaning algorithms requires that their inputs have no missing values.
+Missing values encoded as NaNs or blanks are incompatible with estimators which represents as the numerical values and assumes all values have and hold meaning. Discarding the entire row and/or columns of a dataset containing the missing values could lead to losing valuable data. The process to fill (impute) missing values are referred to as imputation.
+
+\subsection{Feature imputation}
+
+In an iterated round-robin fashion, at every step a missing feature column  \textit{y} and other feature columns treated as input \textit{x} predicts the missing values of \textit{y}. 
