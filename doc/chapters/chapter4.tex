@@ -44,18 +44,7 @@ Replacing the most frequent categorical value in a column is known as mode imput
 
 Mode imputation on categorical data are prone to fill incorrect data if the missing data is not the most frequent one.
 
-\section{Mean/median imputation}
 
-Pandas.DataFrame.median \parencite{mckinney-proc-scipy-2010} returns the median value. These can be applied to the features represented in numerical value. In reference to table \ref{table:feature_imputation}, \textit{price} could be a column on which median value can be filled. However, using median to fill missing value could underestimate or overestimate the value.
-
-\begin{enumerate}
-    \item Median - The mid point value
-    \item Mean - The average value
-\end{enumerate}
-
-\begin{lstlisting}[language=Python]
-    df = df.fillna(df.median().iloc[0])
-\end{lstlisting}
 
 \section{\textit{k}-Nearest Neighbors imputation}
 
@@ -88,3 +77,64 @@ The optimal \textit{k} value can be evaluated by iterating the classifier with d
 
 As per \parencite{scikit-learn}, larger \textit{k} suppresses the effects of noise, but makes the classification boundaries less distinct.
 
+\subsection{KNN model implementation}
+
+In table \ref{table:KNN_implementation} there are nine columns. Target column is 'catL3' which is the category at level three. 
+
+\begin{table}[h]
+    \centering
+    \caption{Data frame head}
+    \label{table:KNN_implementation}
+    \begin{tabular}{ lll }
+          \toprule
+          
+          \textbf{No}& \textbf{Feature} & \textbf{Categorical}\\
+          \midrule
+          1&Product name & No\\
+          3&Description & No\\         
+          4&Short description  & No\\
+          5&Supplier  & Yes\\
+          6&Manufacturer  &  Yes\\           
+          7&Price  &  No \\
+          8&Dimension  & Yes\\
+          \bottomrule
+          \end{tabular}
+\end{table}
+
+
+
+
+\begin{lstlisting}[language=Python]
+    X = df.drop(['catL3'], axis = 1)
+    y = df['catL3']
+    from sklearn import preprocessing
+    X = preprocessing.StandardScaler().fit(X).transform(X.astype(float))
+    from sklearn.model_selection import train_test_split
+    X_train, X_test, y_train, y_test = train_test_split( X, y, test_size=0.2, random_state=4)
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn import metrics
+    #Train Model and Predict
+    k = 3  
+    neigh = KNeighborsClassifier(n_neighbors = k).fit(X_train,y_train)
+    Pred_y = neigh.predict(X_test)
+    print("Accuracy of model at K=3 is",metrics.accuracy_score(y_test, Pred_y))
+\end{lstlisting}
+
+\begin{itemize}
+    \item Collect independent data features into the X data frame and target field into a y data frame.
+    \item  Split data into training and testing. 
+    \item  Import the classifier model from sklearn library and fit the model with  \textit{k} equal to the optimal value.
+\end{itemize}
+
+\section{Mean/median imputation}
+
+Pandas.DataFrame.median \parencite{mckinney-proc-scipy-2010} returns the median value. These can be applied to the features represented in numerical value. In reference to table \ref{table:feature_imputation}, \textit{price} could be a column on which median value can be filled. However, using median to fill missing value could underestimate or overestimate the value.
+
+\begin{enumerate}
+    \item Median - The mid point value
+    \item Mean - The average value
+\end{enumerate}
+
+\begin{lstlisting}[language=Python]
+    df = df.fillna(df.median().iloc[0])
+\end{lstlisting}

@@ -192,11 +192,21 @@ class DataFrame:
             for cats in hit['_source']['categoriesSource']:
                 if (cats["language"]=="en"):
                     list_row["category"]=cats["label"]
+
+                    i=0
+                    categories =cats["path"].split('/')
+
+                    for category in categories:
+                        list_row[f"catL{i+1}"] = category
+                        i= i+1
+
             
 
-            if(list_row["name"]!=None and list_row["catL1"]!=None):
+            if(list_row["name"]!=None):
                 new_row = pd.Series(list_row)
                 df=pd.concat([df, new_row.to_frame().T], ignore_index=True)
+
+        return df
 
 
 
