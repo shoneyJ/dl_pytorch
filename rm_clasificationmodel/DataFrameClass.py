@@ -175,7 +175,29 @@ class DataFrame:
             
             self.es.ingest('english-taxonomy-all',val,'product_category')
 
+    def setDfProductTaxonomy(self,lang='en'):
+
+        resp=self.es.searchDevelopmentProducts()
+        df = pd.DataFrame(columns=["id",'name','shortDesc','Desc','catL1','catL2','catL3','catL4','catL5'])
+
+        for hit in resp['hits']['hits']:
+            list_row = dict (id=None,name=None,shortDesc=None,Desc=None,catL1=None,catL2=None,catL3=None,catL4=None,catL5=None)
+           
+            list_row["id"]=hit['_id']
+            for name in hit['_source']['nameSource']:
+                if (name["language"]==lang):
+                    list_row["name"]=name["value"]                    
+
     
+            for cats in hit['_source']['categoriesSource']:
+                if (cats["language"]=="en"):
+                    list_row["category"]=cats["label"]
+            
+
+            if(list_row["name"]!=None and list_row["catL1"]!=None):
+                new_row = pd.Series(list_row)
+                df=pd.concat([df, new_row.to_frame().T], ignore_index=True)
+
 
 
          

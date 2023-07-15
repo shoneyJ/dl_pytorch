@@ -47,3 +47,18 @@ class ElasticSearchDb:
         for val in docDict:
             
             self.ingest('english-false-prediction',val,'category_prediction')
+
+    def searchDevelopmentProducts(self):
+                resp=self.es.search("retromotion-indexer_development_products",
+                                    {"_source":
+                                     ["_id",
+                                      "descriptions",
+                                      "descriptionsSource",
+                                      "nameSource",
+                                      "shortDescriptionSource",
+                                      "categoriesSource"
+                                      ],
+                           'size' : 65000,
+                           "query": {"match_all": {}}})
+                
+                return resp

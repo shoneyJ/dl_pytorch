@@ -3,6 +3,88 @@
 Machine leaning algorithms requires that their inputs have no missing values.
 Missing values encoded as NaNs or blanks are incompatible with estimators which represents as the numerical values and assumes all values have and hold meaning. Discarding the entire row and/or columns of a dataset containing the missing values could lead to losing valuable data. The process to fill (impute) missing values are referred to as imputation.
 
-\subsection{Feature imputation}
+\section{Feature imputation / Regression imputation / Predictive Imputation}
 
-In an iterated round-robin fashion, at every step a missing feature column  \textit{y} and other feature columns treated as input \textit{x} predicts the missing values of \textit{y}. 
+Machine learning algorithm to predict values in a categorical variable based on other available features. Table \ref{table:feature_imputation} states the categorical features from the all the features mentioned in \ref{table:feature_decription}.
+
+
+\begin{table}[h]
+    \centering
+    \caption{Feature imputation}
+    \label{table:feature_imputation}
+    \begin{tabular}{ lll }
+          \toprule
+          
+          \textbf{No}& \textbf{Feature} & \textbf{Categorical}\\
+          \midrule
+          1&Product name & No\\
+          3&Description & No\\         
+          4&Short description  & No\\
+          5&Supplier  & Yes\\
+          6&Manufacturer  &  Yes\\           
+          7&Price  &  No \\
+          8&Dimension  & Yes\\
+          \bottomrule
+          \end{tabular}
+\end{table}
+
+The \textit{dimension} column is also considered as a categorical value as it has few unique values.
+
+If \textit{supplier} is the missing value from the set of row. The missing \textit{supplier} data must be predicted only from the available list of suppliers. A supervised machine learning with labeled dataset to train the model to classify the available features data to predict \textit{supplier}. A tensor size of the number of unique \textit{supplier} will be the output of the model. 
+In an iterated round-robin fashion, at every step a missing feature column  \textit{y} and other feature columns treated as input \textit{x} predicts the missing values of \textit{y}. Regression imputation is more accurate than mode imputation on categorical value.
+
+
+\section{Mode imputation}
+
+Replacing the most frequent categorical value in a column is known as mode imputation.  Pandas.DataFrame.mode \parencite{mckinney-proc-scipy-2010} function returns most often value. Code snippet will fill the missing values for each column using its own most frequent value.
+
+\begin{lstlisting}[language=Python]
+    df = df.fillna(df.mode().iloc[0])
+\end{lstlisting}
+
+Mode imputation on categorical data are prone to fill incorrect data if the missing data is not the most frequent one.
+
+\section{Mean/median imputation}
+
+Pandas.DataFrame.median \parencite{mckinney-proc-scipy-2010} returns the median value. These can be applied to the features represented in numerical value. In reference to table \ref{table:feature_imputation}, \textit{price} could be a column on which median value can be filled. However, using median to fill missing value could underestimate or overestimate the value.
+
+\begin{enumerate}
+    \item Median - The mid point value
+    \item Mean - The average value
+\end{enumerate}
+
+\begin{lstlisting}[language=Python]
+    df = df.fillna(df.median().iloc[0])
+\end{lstlisting}
+
+\section{\textit{k}-Nearest Neighbors imputation}
+
+k-Nearest Neighbor is a supervised learning algorithm is used to search dataset with the most similar elements to a given query element, with similarity defined by a distance function. 
+
+The most common distance functions are:-
+
+\begin{enumerate}
+    \item Eulidean distance.
+    \item Manhattan distance.
+    \item Hamming distance.
+\end{enumerate}
+
+sklearn.neighbors.KNeighborsClassifier \parencite{scikit-learn} does an instance-based learning, it does not construct a model, but stores instance of training data. Classification is computed from majority vote of nearest neighbors of each point.
+
+The \textit{k}-neighbors classification implements learning based on  \textit{k} nearest neighbors of each query point, where \textit{K} is integer value specified by user.
+
+The optimal \textit{k} value can be evaluated by iterating the classifier with different  \textit{n\textunderscore neighbors} parameter and finding the minimum value of error rate.
+
+\begin{lstlisting}[language=Python]
+    error_rate = []
+    for i in range(1,40):
+        knn = KNeighborsClassifier(n_neighbors=i)
+        knn.fit(X_train,y_train)
+        pred_i = knn.predict(X_test)
+        error_rate.append(np.mean(pred_i != y_test))
+
+    print("Minimum error:-",min(error_rate),"at K =",error_rate.index(min(error_rate)))
+\end{lstlisting}
+
+As per \parencite{scikit-learn}, larger \textit{k} suppresses the effects of noise, but makes the classification boundaries less distinct.
+

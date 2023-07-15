@@ -60,3 +60,32 @@ Iterative Refinement: Product categorization is an iterative process, and the mo
 
 It's important to note that the success of product categorization using machine learning heavily depends on the quality and representativeness of the labeled training data, as well as the selection and engineering of relevant features
 
+
+\begin{table}[h]
+    \centering
+    \caption{Feature imputation}
+    \label{table:feature_imputation}
+    \begin{tabular}{ lll }
+          \toprule
+          
+          \textbf{No}& \textbf{Feature} & \textbf{Categorical}\\
+          \midrule
+          1&Product name & No\\
+          3&Description & No\\         
+          4&Short description  & No\\
+          5&Supplier  & Yes\\
+          6&Manufacturer  &  Yes\\           
+          7&Price  &  No \\
+          8&Dimension  & Yes\\
+          \bottomrule
+          \end{tabular}
+\end{table}
+
+
+\begin{lstlisting}[language=Python]
+    resp=self.es.search("english-name-category",{"_source":["id","name","category"],
+    'from':_from,
+    'size' :_size ,
+    "query": {"match_all": {}}})
+\end{lstlisting}
+
