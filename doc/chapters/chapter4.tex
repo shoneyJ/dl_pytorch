@@ -48,7 +48,7 @@ Mode imputation on categorical data are prone to fill incorrect data if the miss
 
 \section{\textit{k}-Nearest Neighbors imputation}
 
-k-Nearest Neighbor is a supervised learning algorithm is used to search dataset with the most similar elements to a given query element, with similarity defined by a distance function. 
+k-Nearest Neighbor is a supervised learning algorithm is used to search dataset with the most similar elements to a given query element, with similarity defined by a distance function. This imputation method is suitable for categorical data.
 
 The most common distance functions are:-
 
@@ -79,28 +79,30 @@ As per \parencite{scikit-learn}, larger \textit{k} suppresses the effects of noi
 
 \subsection{KNN model implementation}
 
-In table \ref{table:KNN_implementation} there are nine columns. Target column is 'catL3' which is the category at level three. 
+In table \ref{table:KNN_implementation} there are 8 columns. Target column is 'catL3' which is the category at level three. 
+
+
 
 \begin{table}[h]
     \centering
     \caption{Data frame head}
     \label{table:KNN_implementation}
-    \begin{tabular}{ lll }
-          \toprule
-          
-          \textbf{No}& \textbf{Feature} & \textbf{Categorical}\\
-          \midrule
-          1&Product name & No\\
-          3&Description & No\\         
-          4&Short description  & No\\
-          5&Supplier  & Yes\\
-          6&Manufacturer  &  Yes\\           
-          7&Price  &  No \\
-          8&Dimension  & Yes\\
-          \bottomrule
-          \end{tabular}
-\end{table}
+    \begin{tabular}{llll}
+    \toprule id & name & shortDesc & Desc \\
+    \midrule
 
+    1&DENSO DTM82363 & NaN & NaN \\
+    \bottomrule
+\end{tabular}
+
+\begin{tabular}{llll}
+    \toprule catL1 & catL2 & catL3 & catL4\\
+    \midrule
+
+    SparePart & Cooling System & Thermostat & NaN \\
+    \bottomrule
+\end{tabular}
+\end{table}
 
 
 

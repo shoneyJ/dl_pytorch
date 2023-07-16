@@ -1,4 +1,4 @@
-Get retromotion-indexer_development_products/_search
+POST retromotion-indexer_development_products/_search
 {
   "_source":["_id","descriptions","descriptionsSource","nameSource","shortDescriptionSource","categoriesSource"]
     // "query": {

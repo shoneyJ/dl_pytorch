@@ -178,7 +178,7 @@ class DataFrame:
     def setDfProductTaxonomy(self,lang='en'):
 
         resp=self.es.searchDevelopmentProducts()
-        df = pd.DataFrame(columns=["id",'name','shortDesc','Desc','catL1','catL2','catL3','catL4','catL5'])
+        df = pd.DataFrame(columns=["id",'name','shortDesc','Desc','category','catL1','catL2','catL3','catL4','catL5'])
 
         for hit in resp['hits']['hits']:
             list_row = dict (id=None,name=None,shortDesc=None,Desc=None,catL1=None,catL2=None,catL3=None,catL4=None,catL5=None)
@@ -186,7 +186,15 @@ class DataFrame:
             list_row["id"]=hit['_id']
             for name in hit['_source']['nameSource']:
                 if (name["language"]==lang):
-                    list_row["name"]=name["value"]                    
+                    list_row["name"]=name["value"]
+
+            for sd in hit['_source']['shortDescriptionSource']:
+                if (name["language"]==lang):
+                    list_row["shortDesc"]=sd["value"]
+
+            for ds in hit['_source']['descriptionsSource']:
+                if (name["language"]==lang):
+                    list_row["Desc"]=ds["value"]                             
 
     
             for cats in hit['_source']['categoriesSource']:

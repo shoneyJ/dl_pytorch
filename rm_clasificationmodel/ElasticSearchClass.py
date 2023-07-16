@@ -50,8 +50,8 @@ class ElasticSearchDb:
             self.ingest('english-false-prediction', val, 'category_prediction')
 
     def searchDevelopmentProducts(self):
-        resp = self.es.search("retromotion-indexer_development_products",
-                              {
+        resp = self.es.search(index="retromotion-indexer_development_products",
+                              body={
                                   "_source":
                                   ["_id",
                                    "descriptions",
@@ -59,7 +59,8 @@ class ElasticSearchDb:
                                    "nameSource",
                                    "shortDescriptionSource",
                                    "categoriesSource"
-                                   ]
+                                   ],
+                                   "size":65000
 
                               })
 
