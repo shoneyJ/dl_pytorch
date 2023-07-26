@@ -32,16 +32,17 @@ class DataFrame:
     def normalize(self,doc):
 
         # Remove html tags 
-        soup = BeautifulSoup(doc, 'html.parser')
-        text =soup.get_text()
-        text = (re.sub('[-\W]+', ' ', text))
-        text = (re.sub('(?<=\d) (?=\d)', '', text))
-        text = (re.sub("([a-z]\d+)|(\d+)", '', text))
-        
-        
-        return ''.join(
-        c for c in unicodedata.normalize('NFD', text)
-        if unicodedata.category(c) != 'Mn')
+        if doc:
+            soup = BeautifulSoup(doc, 'html.parser')
+            text =soup.get_text()
+            text = (re.sub('[-\W]+', ' ', text))
+            text = (re.sub('(?<=\d) (?=\d)', '', text))
+            text = (re.sub("([a-z]\d+)|(\d+)", '', text))
+            
+            
+            return ''.join(
+            c for c in unicodedata.normalize('NFD', text)
+            if unicodedata.category(c) != 'Mn')
         # text= text.replace('-', '')
 
    
@@ -177,6 +178,7 @@ class DataFrame:
 
     def setDfProductTaxonomy(self,lang='en'):
 
+
         resp=self.es.searchDevelopmentProducts()
         df = pd.DataFrame(columns=["id",'name','shortDesc','Desc','category','catL1','catL2','catL3','catL4','catL5'])
 
@@ -184,29 +186,34 @@ class DataFrame:
             list_row = dict (id=None,name=None,shortDesc=None,Desc=None,catL1=None,catL2=None,catL3=None,catL4=None,catL5=None)
            
             list_row["id"]=hit['_id']
-            for name in hit['_source']['nameSource']:
-                if (name["language"]==lang):
-                    list_row["name"]=name["value"]
+            if 'nameSource' in hit['_source']:
+                for name in hit['_source']['nameSource']:
+                    if (name["language"]==lang):
+                        list_row["name"]=name["value"]
 
-            for sd in hit['_source']['shortDescriptionSource']:
-                if (name["language"]==lang):
-                    list_row["shortDesc"]=sd["value"]
+            if 'shortDescriptionSource' in hit['_source']:
+                for sd in hit['_source']['shortDescriptionSource']:
+                    if (sd["language"]==lang):
+                        list_row["shortDesc"]=sd["value"]
 
-            for ds in hit['_source']['descriptionsSource']:
-                if (name["language"]==lang):
-                    list_row["Desc"]=ds["value"]                             
+            
+            if 'descriptionsSource' in hit['_source']:
+                for ds in hit['_source']['descriptionsSource']:
+                    if (ds["language"]==lang):
+                        list_row["Desc"]=ds["value"]                             
 
     
-            for cats in hit['_source']['categoriesSource']:
-                if (cats["language"]=="en"):
-                    list_row["category"]=cats["label"]
+            if 'categoriesSource' in hit['_source']:
+                for cats in hit['_source']['categoriesSource']:
+                    if (cats["language"]=="en"):
+                        list_row["category"]=cats["label"]
 
-                    i=0
-                    categories =cats["path"].split('/')
+                        i=0
+                        categories =cats["path"].split('/')
 
-                    for category in categories:
-                        list_row[f"catL{i+1}"] = category
-                        i= i+1
+                        for category in categories:
+                            list_row[f"catL{i+1}"] = category
+                            i= i+1
 
             
 
@@ -215,8 +222,54 @@ class DataFrame:
                 df=pd.concat([df, new_row.to_frame().T], ignore_index=True)
 
         return df
+    
 
+    def createProductFeature(self):
+        resp =self.es.searchProductFeatures(0,10000)
+        df = pd.DataFrame(columns=['name','shortDesc','Desc','category','catL1','catL2','catL3','catL4','catL5'])
 
+        for hit in resp['hits']['hits']:
+            list_row = dict (name=None,shortDesc=None,Desc=None,catL1=None,catL2=None,catL3=None,catL4=None,catL5=None)
+           
+            # list_row["id"]=hit['_source']['id']
+
+            list_row["name"]=hit['_source']['name']
+            list_row["shortDesc"]=hit['_source']['shortDesc']
+            list_row["Desc"]=hit['_source']['Desc']
+            list_row["category"]=hit['_source']['category']
+            for i in range(1,5):
+                list_row[f"catL{i}"] = hit['_source'][f"catL{i}"]
+            
+
+            if(list_row["name"]!=None):
+                new_row = pd.Series(list_row)
+                df=pd.concat([df, new_row.to_frame().T], ignore_index=True)
+
+       
+
+        df = self.cleanData(df)
+        df=df.drop_duplicates()
+        self.es.createIndexerProductFeatureNormal()
+
+        doc = df.to_dict(orient='records')
+        self.es.ingestProductFeaturesNormal(doc)
+
+   
+    def cleanData(self,df):
+
+            
+
+        df["name"]	= df["name"].str.lower().apply(lambda n:self.normalize(n))
+        df["shortDesc"]	= df["shortDesc"].str.lower().apply(lambda c:self.normalize(c)) 
+        df["Desc"]	= df["Desc"].str.lower().apply(lambda c:self.normalize(c))   
+        df["Desc"]	= df["Desc"].str.lower().apply(lambda c:self.normalize(c))
+        df["category"]	= df["category"].str.lower().apply(lambda c:self.normalize(c))
+        for i in range(1,5):
+               df[f"catL{i}"]	= df[f"catL{i}"].str.lower().apply(lambda c:self.normalize(c))
+        return df
+
+        
+       
 
          
 

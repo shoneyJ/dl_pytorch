@@ -23,21 +23,21 @@ In table \ref{table:TN}, displays the difference in text before and after normal
 
 Using Pandas - vectorized string method, a text can be lower cased across the document. These methos exclude the missing  / NA values automatically \parencite{mckinney-proc-scipy-2010}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, caption={Pandas vectorized string method }]
       df_de["name"]= df_de["name"].str.lower()
 \end{lstlisting}
 
 \section{Html parsing}
 
 Probability of getting html tags in a document increases if the source of document is from web scraping or also if the document from database source has inline html tags. In such case, fetching normal texts from a html text is required. One of the method would be to use regular expressions to get text in between angel brackets \textless \textgreater text \textless \textgreater. However, this method would require to have the tags to be well formed.
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, caption={Regular expression to get text from html}]
       text = re.sub('<[^>]*>', '', text)
 \end{lstlisting}
 
 
 
 The better option would be to use Beautiful Soup \footnote{https://www.crummy.com/software/BeautifulSoup/bs4/doc/} a Pyhon library for pulling data out of HTLM and XML.
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, caption={Beautiful soap API to get text from html}]
       # Remove html tags 
       soup = BeautifulSoup(doc, 'html.parser')
       text =soup.get_text()
@@ -46,7 +46,7 @@ The better option would be to use Beautiful Soup \footnote{https://www.crummy.co
 \section{Cleanning text}
 A product detail text may contain non-word characters represented in regular expression as \textbackslash W. It may also contain space seperated decimals describing the dimentional values of the product such as weight, height. Regular expressions could be used for removing the non-character words and spaces between the decimal values. 
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,,caption={Clean text with Regular expression}]
       text = (re.sub('[-\W]+', ' ', text))
       text = (re.sub('(?<=\d) (?=\d)', '', text))
 \end{lstlisting}
@@ -54,7 +54,7 @@ A product detail text may contain non-word characters represented in regular exp
 \section{Normal form D - Unicode database}
 
 A product name in Deutsch language may contain umlaute characters such as \"A.  Pythons unicodedata \footnote{https://docs.python.org/3/library/unicodedata.html} module provides access to the Unicode Character Database (UCD) which defines the character properties for all Unicode characters. To change \"A to A, the Normal form D (NFD) should be applied which translated each character into its decomposed form. Further the text can be refined with the general category assigned to the character as string. Nonspacing mark characters \footnote{https://www.compart.com/en/unicode/category/Mn} are represented as "Mn". These characters could be removed by referring the the character category.
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python ,caption={NFD normalization}]
       ''.join(
             c for c in unicodedata.normalize('NFD', text)
             if unicodedata.category(c) != 'Mn')

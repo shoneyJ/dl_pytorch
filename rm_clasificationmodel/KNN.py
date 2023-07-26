@@ -5,5 +5,3 @@ from sklearn.neighbors import KNeighborsClassifier
 class KNN():
     def __init__(self) -> None:
         pass
-
-    

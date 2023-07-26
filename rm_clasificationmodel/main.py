@@ -13,10 +13,17 @@ import pandas as pd
 
 def main():
     es =ElasticSearchDb("http://localhost:9200")
+
+    # resp =es.searchProductFeatures(0,10000)
+    # es.createIndexerProductFeature()
     helper = Helper()
    
     df=DataFrame(es)
-    df_prod= df.setDfProductTaxonomy()
+    df.createProductFeature()
+    # df_prod= df.setDfProductTaxonomy()
+    # doc = df_prod.to_dict(orient='records')
+
+    # es.ingestProductFeatures(doc)
     # dfProductTaxonomyEn=df.getProductTaxonomy(10000,0)    
     # df_en = df.getNormal()
     # # train = Train(df_en)

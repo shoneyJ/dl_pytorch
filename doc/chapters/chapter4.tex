@@ -10,7 +10,7 @@ Machine learning algorithm to predict values in a categorical variable based on 
 
 \begin{table}[h]
     \centering
-    \caption{Feature imputation}
+    \caption{Identify categorical features}
     \label{table:feature_imputation}
     \begin{tabular}{ lll }
           \toprule
@@ -38,7 +38,7 @@ In an iterated round-robin fashion, at every step a missing feature column  \tex
 
 Replacing the most frequent categorical value in a column is known as mode imputation.  Pandas.DataFrame.mode \parencite{mckinney-proc-scipy-2010} function returns most often value. Code snippet will fill the missing values for each column using its own most frequent value.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, caption={Pandas DataFrames mode function}]
     df = df.fillna(df.mode().iloc[0])
 \end{lstlisting}
 
@@ -46,9 +46,9 @@ Mode imputation on categorical data are prone to fill incorrect data if the miss
 
 
 
-\section{\textit{k}-Nearest Neighbors imputation}
+\section{\acf{KNN}  imputation}
 
-k-Nearest Neighbor is a supervised learning algorithm is used to search dataset with the most similar elements to a given query element, with similarity defined by a distance function. This imputation method is suitable for categorical data.
+\acl{KNN} is a supervised learning algorithm is used to search dataset with the most similar elements to a given query element, with similarity defined by a distance function. This imputation method is suitable for categorical data.
 
 The most common distance functions are:-
 
@@ -60,11 +60,9 @@ The most common distance functions are:-
 
 sklearn.neighbors.KNeighborsClassifier \parencite{scikit-learn} does an instance-based learning, it does not construct a model, but stores instance of training data. Classification is computed from majority vote of nearest neighbors of each point.
 
-The \textit{k}-neighbors classification implements learning based on  \textit{k} nearest neighbors of each query point, where \textit{K} is integer value specified by user.
+The \textit{k}-neighbors classification implements learning based on  \textit{k} nearest neighbors of each query point, where \textit{k} is integer value specified by user. The optimal \textit{k} value can be evaluated by iterating the classifier with different  \textit{n\textunderscore neighbors} parameter and finding the minimum value of error rate. As per \parencite{scikit-learn}, larger \textit{k} suppresses the effects of noise, but makes the classification boundaries less distinct.
 
-The optimal \textit{k} value can be evaluated by iterating the classifier with different  \textit{n\textunderscore neighbors} parameter and finding the minimum value of error rate.
-
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, caption={Find optimal \textit{k} value in \acl{KNN} }]
     error_rate = []
     for i in range(1,40):
         knn = KNeighborsClassifier(n_neighbors=i)
@@ -75,11 +73,12 @@ The optimal \textit{k} value can be evaluated by iterating the classifier with d
     print("Minimum error:-",min(error_rate),"at K =",error_rate.index(min(error_rate)))
 \end{lstlisting}
 
-As per \parencite{scikit-learn}, larger \textit{k} suppresses the effects of noise, but makes the classification boundaries less distinct.
 
-\subsection{KNN model implementation}
 
-In table \ref{table:KNN_implementation} there are 8 columns. Target column is 'catL3' which is the category at level three. 
+\subsection{\acs{KNN} model implementation}
+
+In table \ref{table:KNN_implementation} there are 7 columns. Target column is \textbf{Category-Level-3} which is the category at level three.
+As per the sample category hierarchy, the  
 
 
 
@@ -87,24 +86,25 @@ In table \ref{table:KNN_implementation} there are 8 columns. Target column is 'c
     \centering
     \caption{Data frame head}
     \label{table:KNN_implementation}
-    \begin{tabular}{llll}
-    \toprule id & name & shortDesc & Desc \\
-    \midrule
+    \begin{tabular}{ll}
+        \toprule     
+        \textbf{Name}& \textit{product name} \\
+        \textbf{Description}& \textit{product description} \\
+        \textbf{Short-Description}& \textit{product short description} \\
+        \textbf{Category-Level-1}& Spare-Part \\
+        \textbf{Category-Level-2}& Cooling System \\
+        \textbf{Category-Level-3}& Thermostat \\
+        \textbf{Category-Level-4}& NaN \textit{product has no level 4 category} \\
+        \bottomrule
+    \end{tabular}
 
-    1&DENSO DTM82363 & NaN & NaN \\
-    \bottomrule
-\end{tabular}
-
-\begin{tabular}{llll}
-    \toprule catL1 & catL2 & catL3 & catL4\\
-    \midrule
-
-    SparePart & Cooling System & Thermostat & NaN \\
-    \bottomrule
-\end{tabular}
 \end{table}
 
-
+\begin{itemize}
+    \item Collect independent data features into the X data frame and target field into a y data frame.
+    \item  Split data into training and testing. 
+    \item  Import the classifier model from sklearn library and fit the model with  \textit{k} value equal to the optimal value.
+\end{itemize}
 
 \begin{lstlisting}[language=Python]
     X = df.drop(['catL3'], axis = 1)
@@ -122,11 +122,7 @@ In table \ref{table:KNN_implementation} there are 8 columns. Target column is 'c
     print("Accuracy of model at K=3 is",metrics.accuracy_score(y_test, Pred_y))
 \end{lstlisting}
 
-\begin{itemize}
-    \item Collect independent data features into the X data frame and target field into a y data frame.
-    \item  Split data into training and testing. 
-    \item  Import the classifier model from sklearn library and fit the model with  \textit{k} equal to the optimal value.
-\end{itemize}
+
 
 \section{Mean/median imputation}
 
