@@ -38,9 +38,9 @@ Consider a data frame with columns \textit{ProductName} and data value as in tba
 
 The length of the vocabulary is the number of unique tokens in the data frame column. In the sample data the vocabulary length is six. The vector has the dimensionality equal to the size of the vocabulary. Adding one in the dimension to each of the word in the vocabulary represents one hot encoding.
 
-\begin{table}[h]
+\begin{table}[]
     \centering
-    \caption{One hot encoding}
+    \caption{Sample One-Hot encoding}
     \label{table:countencode}
     \begin{tabular}{ ll }
           \toprule
@@ -68,5 +68,12 @@ Count Vectorization can also be performed on range of grams of words.
 \end{lstlisting}
 
 
-The code in listing \ref{ngramcode}, will add additional vocabularies of two words such as "drive shaft". This enables to preserve local ordering information.
+The code in listing \ref{ngramcode}, will add additional vocabularies of two words such as "drive shaft". This enables to preserve local ordering information. 
 
+\section{Pickling the Vectorizer}
+
+Pickle \footnote{https://docs.python.org/3/library/pickle.html} module creates a portable serialized representation of python object. Reusing the CountVectorizer object once it has been fit with the document can be enabled by Pickle module. 
+
+\begin{lstlisting}[language=Python,label=pickle, caption={Pickle vectorization}]
+    pickle.dump(self.vectorizer, open("vector.pickel", "wb"))
+\end{lstlisting}
