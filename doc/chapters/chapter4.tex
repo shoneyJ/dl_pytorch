@@ -3,7 +3,7 @@
 Machine leaning algorithms requires that their inputs have no missing values.
 Missing values encoded as NaNs or blanks are incompatible with estimators which represents as the numerical values and assumes all values have and hold meaning. Discarding the entire row and/or columns of a dataset containing the missing values could lead to losing valuable data. The process to fill (impute) missing values are referred to as imputation.
 
-\section{Feature imputation / Regression imputation / Predictive Imputation}
+\section{Feature imputation / Regression imputation or \\ Predictive Imputation}
 
 Machine learning algorithm to predict values in a categorical variable based on other available features. Table \ref{table:feature_imputation} states the categorical features from the all the features mentioned in \ref{table:feature_decription}.
 
@@ -48,12 +48,15 @@ Mode imputation on categorical data are prone to fill incorrect data if the miss
 
 \section{\acf{KNN}  imputation}
 
-\acl{KNN} is a supervised learning algorithm is used to search dataset with the most similar elements to a given query element, with similarity defined by a distance function. This imputation method is suitable for categorical data.
+\acl{KNN} is a supervised learning algorithm and is used to search dataset with the most similar elements to a given query element, with similarity defined by a distance function. This imputation method is suitable for categorical data.
 
-The most common distance functions are:-
+The most common distance metrics functions are:-
 
 \begin{enumerate}
-    \item Eulidean distance.
+    \item Euclidean distance.
+    % \begin{lstlisting}[language=Python, caption={Euclidean distance formula }]
+    %     dist(x, y) = sqrt(dot(x, x) - 2 * dot(x, y) + dot(y, y))
+    %         \end{lstlisting}
     \item Manhattan distance.
     \item Hamming distance.
 \end{enumerate}
@@ -78,13 +81,13 @@ The \textit{k}-neighbors classification implements learning based on  \textit{k}
 \subsection{\acs{KNN} model implementation}
 
 In table \ref{table:KNN_implementation} there are 7 columns. Target column is \textbf{Category-Level-3} which is the category at level three.
-As per the sample category hierarchy, the  
+As per the example category hierarchy in table \ref{table:KNN_implementation} 
 
 
 
 \begin{table}[h]
     \centering
-    \caption{Data frame head}
+    \caption{Sample features }
     \label{table:KNN_implementation}
     \begin{tabular}{ll}
         \toprule     
