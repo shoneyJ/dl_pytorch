@@ -1,5 +1,78 @@
 \chapter{Model selection - Neural networks}
 
-\parencite{sean} tutorial on \textit{classifying names with a character-level \acs{RNN}} provides a basic foundation for classification algorithm. In this tutorial, \Citeauthor{sean} train on few thousand surnames from 18 languages of origin, and predicts which language the name is from based on the spelling. 
+\parencite{sean} tutorial on \textit{classifying names with a character-level \acs{RNN}} provides a basic foundation for classification algorithm. In this tutorial, \Citeauthor{sean} trains on few thousand surnames from 18 languages of origin, and predicts which language the name is from based on the spelling. \Citeauthor{sean} uses one-hot vector of size 1 x no\textunderscore letters. A one-hot vector is filled with 0s except for a 1 at index of the letter. For example, letter b is represented as 0,1,0,0...0. To make a word author joins a bunch of letters into 2D matrix name\textunderscore length x 1 x no\textunderscore letters. 
 
-Similarly, in this paper author predicts category based on the name of the product. 
+
+Similarly, in this paper author predicts category based on the name of the products. As described in section \ref{ch_countvector}, product names are converted into one-hot encoded format. These encoded pattern of name serves as an input to the machine learning model. Model learns these patterns and predicts the category in which these pattern belongs to. In section \ref{nametotensor} the input tensors are modified to fit for use case of predicting category based on product name.  
+
+\section{Product name to tensors} \label{nametotensor}
+
+\begin{lstlisting}[language=Python,label=productnametotensor, caption={Convert product name to tensors}]
+    def nameToTensor(self,name):
+        vectorizer= pickle.load(open("vector.pickel", "rb"))
+        inputSize=len(vectorizer.vocabulary_)
+        vectorized=vectorizer.transform(list(name.split()))
+        name_tensor=torch.zeros(1, inputSize)
+        for index in vectorized.indices:
+            name_tensor[0][index] = 1
+        
+        return name_tensor
+\end{lstlisting}
+
+\begin{enumerate}
+    \item vectorizer: \\
+    In section \ref{pickle_vector}, using the Pickle module the vector object had been stored. Line number 2 loads the vectorizer.
+    \item vector size: \\
+    Line 3 gets the length of the vector vocabulary. Which is the number of unique words in the product name across entire column of \textit{ProductName}
+    \item transform : \\
+    Based on the existing vocabulary, transform the array of name into the vectorized form.
+    \item torch.zero \footnote{https://pytorch.org/docs/stable/generated/torch.zeros.html}: \\
+    Create a tensor filled with scalar value 0, with size of the vocabulary.
+    % \begin{lstlisting}[language=Python, caption={Euclidean distance formula }]
+    %     dist(x, y) = sqrt(dot(x, x) - 2 * dot(x, y) + dot(y, y))
+    %         \end{lstlisting}
+    \item Set 1 for each vectorized index.
+    
+\end{enumerate}
+
+% \section{\Citeauthor{sean} input tensors vs Product name to tensor}
+
+
+% \begin{lstlisting}[language=Python,label=sean, caption={\Citeauthor{sean} input tensor}]
+%     def lineToTensor(line):
+%         tensor = torch.zeros(len(line), 1, n_letters)
+%         for li, letter in enumerate(line):
+%             tensor[li][0][letterToIndex(letter)] = 1
+%         return tensor
+% \end{lstlisting}
+
+\section{\acf{RNN}}
+This \acs*{RNN} module copied from \parencite{sean} tutorial contains two linear layers which operate on input and hidden state, with LogSoftmax layer after the output layer,
+\begin{lstlisting}[language=Python,label=productnametotensor, caption={\acf{RNN} class}]
+class RNN(nn.Module):
+        
+    def __init__(self, input_size, hidden_size, output_size):
+        
+        super(RNN, self).__init__()
+
+        self.hidden_size = hidden_size
+
+        self.i2h = nn.Linear(input_size + hidden_size, hidden_size)
+        
+        self.h2o = nn.Linear(hidden_size, output_size)
+        
+        self.softmax = nn.LogSoftmax(dim=1)
+
+    def forward(self, input, hidden):
+        compbined = torch.cat((input, hidden), 1)
+        
+        hidden = self.i2h(compbined)
+        
+        output = self.h2o(hidden)
+        output = self.softmax(output)
+        
+        return output, hidden
+
+    def initHidden(self):
+        return torch.zeros(1, self.hidden_size)
+\end{lstlisting}

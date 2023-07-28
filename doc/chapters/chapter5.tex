@@ -13,7 +13,7 @@ For example, the normalized product name "abc joint kit drive shaft" can be toke
 
 Number of occurrence of each token in a document is called counting in terms of numerical feature extraction.
 
-\section{Count Vectorization or One-Hot encoding}
+\section{Count Vectorization or One-Hot encoding} \label{ch_countvector}
 
 
 CountVectorizer class of scikit learn API implements both tokenization and occurrence counting \parencite{sklearn_api}. 
@@ -70,7 +70,7 @@ Count Vectorization can also be performed on range of grams of words.
 
 The code in listing \ref{ngramcode}, will add additional vocabularies of two words such as "drive shaft". This enables to preserve local ordering information. 
 
-\section{Pickling the Vectorizer}
+\section{Pickling the Vectorizer} \label{pickle_vector}
 
 Pickle \footnote{https://docs.python.org/3/library/pickle.html} module creates a portable serialized representation of python object. Reusing the CountVectorizer object once it has been fit with the document can be enabled by Pickle module. 
 

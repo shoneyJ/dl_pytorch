@@ -50,17 +50,7 @@ class Helper():
         vectorizer=self.loadVectorizer()
         inputSize=len(vectorizer.vocabulary_)
         vectorized=vectorizer.transform(list(name.split()))
-        # n_vectors=len(vectorized.indices)
-
-        # name_tensor=torch.zeros(n_vectors,1, inputSize)
-        # for i in range(n_vectors):
-           
-        #     name_tensor[i][0][vectorized.indices[i]] = 1
-        
-        # return name_tensor
-
         name_tensor=torch.zeros(1, inputSize)
-
         for index in vectorized.indices:
             name_tensor[0][index] = 1
         
