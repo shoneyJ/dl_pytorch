@@ -1,11 +1,46 @@
-\chapter{Model selection - Neural networks}
+\chapter{Model selection : Neural networks}
 
-\parencite{sean} tutorial on \textit{classifying names with a character-level \acs{RNN}} provides a basic foundation for classification algorithm. In this tutorial, \Citeauthor{sean} trains on few thousand surnames from 18 languages of origin, and predicts which language the name is from based on the spelling. \Citeauthor{sean} uses one-hot vector of size 1 x no\textunderscore letters. A one-hot vector is filled with 0s except for a 1 at index of the letter. For example, letter b is represented as 0,1,0,0...0. To make a word author joins a bunch of letters into 2D matrix name\textunderscore length x 1 x no\textunderscore letters. 
+\section{Understanding Pytorch tutorial on \textit{classifying names with a character-level \acs{RNN}} } \label{sec:chRNN}
+
+\parencite{sean} tutorial on \textit{classifying names with a character-level \acs{RNN}} provides a basic foundation for classification algorithm. In this tutorial, \Citeauthor{sean} trains on few thousand surnames from 18 languages of origin, and predicts which language the name is from based on the spelling.
+\subsection{One-Hot vector representation}
+\Citeauthor{sean} uses one-hot vector of size 1 x no\textunderscore letters (26 letters). A one-hot vector is filled with 0s except for a 1 at index of the letter. For example, letter b is represented as 0,1,0,0...0. To make a word, author joins a bunch of letters into 2D matrix name\textunderscore length x 1 x no\textunderscore letters.
+
+\begin{table}[h]
+    \centering
+    \caption{One-Hot vector representation of name James}
+    \label{table:feature_imputation}
+    \begin{tabular}{ lllllllllll }
+          \toprule
+          
+          \textbf{Letter}& \textbf{a} & \textbf{...}& \textbf{e}&\textbf{...}&\textbf{j}&\textbf{...}&\textbf{m}&\textbf{...}&\textbf{s}&\textbf{...}\\
+          \midrule
+          J&0 & 0& 0& 0&1& 0& 0& 0& 0& 0\\
+          a&1 & 0& 0& 0&0& 0& 0& 0& 0& 0\\         
+          m&0 & 0& 0& 0&0& 0& 1& 0& 0& 0\\
+          e&0 & 0& 1& 0&0& 0& 0& 0& 0& 0\\
+          s&0 & 0& 0& 0&0& 0& 0& 0& 1& 0\\           
+        
+          \bottomrule
+          \end{tabular}
+\end{table}
+
+\subsection{Vector input and scalar output of the classification model}
+It is a character level \acs*{RNN} which reads words as a series of characters. Figure \ref{fig:pytorch} shows the flow of name information to the neural network as a sequence of characters. One character at a time is feed in classification model built using RNN and outputs the language corresponding to that name.
+
+\begin{figure}[htp!]
+    \centering    
+    \includesvg[scale=0.5]{pytorchTuitorial.svg}
+    \caption{Language prediction based on name}
+    \label{fig:pytorch}
+\end{figure}
 
 
-Similarly, in this paper author predicts category based on the name of the products. As described in section \ref{ch_countvector}, product names are converted into one-hot encoded format. These encoded pattern of name serves as an input to the machine learning model. Model learns these patterns and predicts the category in which these pattern belongs to. In section \ref{nametotensor} the input tensors are modified to fit for use case of predicting category based on product name.  
+\section{Ideate: Vocabulary level \acs{RNN}}
 
-\section{Product name to tensors} \label{nametotensor}
+Inspired from the character level \acs{RNN} mentioned in section \ref{sec:chRNN}, author predicts category based on the name of the products by creating a vocabulary level \acs{RNN}. As described in section \ref{ch_countvector}, product names are converted into one-hot encoded format. Vector representation of vocabulary in product name across the data frame is created. These encoded pattern of name serves as an input to the machine learning model. Model learns these patterns and predicts the category in which these patterns belong to. In section \ref{nametotensor}, the input tensors are modified to fit for use case of predicting category based on product name.  
+
+\subsection{Convert product name to tensors} \label{nametotensor}
 
 \begin{lstlisting}[language=Python,label=productnametotensor, caption={Convert product name to tensors}]
     def nameToTensor(self,name):
@@ -21,19 +56,55 @@ Similarly, in this paper author predicts category based on the name of the produ
 
 \begin{enumerate}
     \item vectorizer: \\
-    In section \ref{pickle_vector}, using the Pickle module the vector object had been stored. Line number 2 loads the vectorizer.
+    In section \ref{pickle_vector}, using the Pickle module the vector object had been stored. The object contains the vector representation of vocabulary of product names. Code line number 2 loads the object and stores the value in vectorizer variable.
     \item vector size: \\
-    Line 3 gets the length of the vector vocabulary. Which is the number of unique words in the product name across entire column of \textit{ProductName}
+    Code line number 3 gets the length of the vector vocabulary. The number of unique words in the product name across entire column of \textit{ProductName}
     \item transform : \\
-    Based on the existing vocabulary, transform the array of name into the vectorized form.
+    As described in section \ref{sec:ngram_vector}, based on the existing vocabulary, vectorizer object's transform function returns token counts out of raw text documents using the vocabulary fitted with fit method or the array of tokens into the one hot encoded vectorized form. 
     \item torch.zero \footnote{https://pytorch.org/docs/stable/generated/torch.zeros.html}: \\
-    Create a tensor filled with scalar value 0, with size of the vocabulary.
-    % \begin{lstlisting}[language=Python, caption={Euclidean distance formula }]
-    %     dist(x, y) = sqrt(dot(x, x) - 2 * dot(x, y) + dot(y, y))
-    %         \end{lstlisting}
+    Initialize a tensor variable filled with scalar value 0.
+
     \item Set 1 for each vectorized index.
     
 \end{enumerate}
+
+For example, consider a vocabulary of 100 unique words in the \textit{ProductName} dataset. The name of the product is \textit{abc joint kit drive shaft}. Assuming the index value of each of the token are as per table \ref{table:names index} then the tensor value of the product will be as per table \ref{table:tensorvalue} 
+
+\begin{table}[htp!]
+    \centering
+    \caption{Example: Index value of product name}
+    \label{table:names index}
+    \begin{tabular}{ ll }
+          \toprule
+          
+          \textbf{Token} & \textbf{Index}\\
+          \midrule
+          abc&0\\
+          joint&10\\
+          kit&26\\
+          drive&78\\
+          shaft&99\\
+                 
+        
+          \bottomrule
+          \end{tabular}
+\end{table}
+
+\begin{table}[htp!]
+    \centering
+    \caption{Tensor value of example product name}
+    \label{table:tensorvalue}
+    \begin{tabular}{ llllllllll }
+          \toprule
+          
+          \textbf{0} & \textbf{...}& \textbf{10}&\textbf{...}&\textbf{26}&\textbf{...}&\textbf{78}&\textbf{...}&\textbf{99}\\
+          \midrule
+          1 & 0& 1& 0&1& 0& 1 & 0& 1\\
+                 
+        
+          \bottomrule
+          \end{tabular}
+\end{table}
 
 % \section{\Citeauthor{sean} input tensors vs Product name to tensor}
 
@@ -46,9 +117,9 @@ Similarly, in this paper author predicts category based on the name of the produ
 %         return tensor
 % \end{lstlisting}
 
-\section{\acf{RNN}}
-This \acs*{RNN} module copied from \parencite{sean} tutorial contains two linear layers which operate on input and hidden state, with LogSoftmax layer after the output layer,
-\begin{lstlisting}[language=Python,label=productnametotensor, caption={\acf{RNN} class}]
+\section{Architecture of \acf{RNN}}
+\acs{RNN} module copied from \parencite{sean} tutorial contains two linear layers which operate on input and hidden state, with LogSoftmax layer after the output layer. \acfp{RNN} \parencite{Rumelhart.1986} is best suited for machine learning problems that involve sequential data and use patterns to predict the output. This machine learning algorithm store information of previous states and holds the memory. 
+\begin{lstlisting}[language=Python,label=code:RNN-class, caption={\acf{RNN} class}]
 class RNN(nn.Module):
         
     def __init__(self, input_size, hidden_size, output_size):
@@ -63,16 +134,73 @@ class RNN(nn.Module):
         
         self.softmax = nn.LogSoftmax(dim=1)
 
-    def forward(self, input, hidden):
-        compbined = torch.cat((input, hidden), 1)
+    def forward(self, current_input, previous_hidden):
+        compbined = torch.cat((current_input, previous_hidden), 1)
         
-        hidden = self.i2h(compbined)
+        next_hidden = self.i2h(compbined)
         
-        output = self.h2o(hidden)
+        output = self.h2o(next_hidden)
         output = self.softmax(output)
         
-        return output, hidden
+        return output, next_hidden
 
     def initHidden(self):
         return torch.zeros(1, self.hidden_size)
 \end{lstlisting}
+
+The graphical representation of code listed in \ref{code:RNN-class} is illustrated in figure \ref{fig:archi}.
+
+\begin{itemize}
+    \item input\textunderscore size : Input parameter of class is size of the data. Size of one-hot encoded feature vector. 
+    \item  hidden\textunderscore size : Dimensionality of hidden state of the \acs{RNN} cell.
+    \item  output\textunderscore size : Number of categories in which the input need to be classified.
+    \item i2h : input-to-hidden, a fully connected linear layer gets the next hidden state from the current input and previous state.
+    \item i2o : input-to-output,a fully connected linear layer gets the next output state from the current input and previous hidden state.
+    \item softmax: Layer used for classification. 
+\end{itemize}
+
+\begin{enumerate}
+    \item Forward propagation begins with specification of initial state $\textit{\textbf{h}}^{(0)}$
+    \item For each time step from $t=1$ to $t=T$, we apply the following update equation.
+\end{enumerate}
+
+\begin{figure}
+    \centering
+    \caption{\acs{RNN} Architecture \parencite{sean}}
+    \label{fig:archi}
+\begin{tikzpicture}[
+    roundnode/.style={circle, draw=green!60, fill=green!5, very thick,minimum width={width("combined")},}
+    ]
+
+    %Nodes
+\node[roundnode]        (combined)     {combined};
+\coordinate[above of=combined] (ac);
+\coordinate[below of=combined] (bc);
+\node[roundnode]        (input)        [left=2cm of ac] {input};
+\node[roundnode]        (hidden)       [right =2cm of ac] {hidden};
+\node[roundnode]        (i2o)       [below=2cm of input] {i2o};
+\node[roundnode]        (i2h)       [below=2cm of hidden] {i2h};
+
+\node[roundnode]        (softmax)       [below =1cm of i2o] {softmax};
+
+\node[roundnode]        (12hidden)       [below =4cm of i2h] {hidden};
+
+\node[roundnode]        (output)       [below =of softmax] {output};
+
+
+
+
+
+%Lines
+
+\draw[->] (input.south) .. controls +(down:7mm) and +(left:7mm) ..  (combined.west);
+\draw[->] (hidden.south) .. controls +(down:7mm) and +(right:7mm) ..  (combined.east);
+\draw[->] (combined.south) .. controls +(down:7mm) and +(right:7mm) ..   (i2o.east);
+\draw[->] (combined.south).. controls +(down:7mm) and +(left:7mm) .. (i2h.west);
+\draw[->] (i2o.south) --  (softmax.north);
+\draw[->] (i2h.south) --  (12hidden.north);
+\draw[->] (softmax.south) --  (output.north);
+\draw[->] (12hidden.east) .. controls +(up:70mm) and +(right:15mm) ..  (hidden.east);
+\end{tikzpicture}
+
+\end{figure}
