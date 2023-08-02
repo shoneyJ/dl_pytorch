@@ -10,6 +10,7 @@
 \usepackage{booktabs,multirow,array}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{amsmath}
 
 \usepackage[font=small,labelfont=bf,tableposition=top]{caption}
 \usepackage{tikz}
@@ -21,6 +22,19 @@
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Define the page style "mystyle" for the fancyhdr package
+\fancypagestyle{mypagestyle}{
+     % Clear all header and footer fields
+     \fancyhf{}
+     % Set the header to display the chapter name on the right side
+     \fancyhead[R]{\leftmark}
+     % Set the footer to display the page number on the center
+     \fancyfoot[C]{\thepage}
+     % Set the footer line to appear (change 0pt to desired line thickness)
+     \renewcommand{\footrulewidth}{0.4pt}
+
+}
 
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},   
@@ -56,7 +70,8 @@ chapters/chapter2,%
 chapters/chapter3,%
 chapters/chapter4,%
 chapters/chapter5,%
-chapters/chapter6
+chapters/chapter6,%
+chapters/chapter7
 }
 
 \begin{document}
@@ -78,7 +93,7 @@ chapters/chapter6
 \include{preliminary/abstract.tex}
 
 
-\pagestyle{fancy}
+\pagestyle{mypagestyle}
 
 \tableofcontents
 \listoffigures
@@ -97,6 +112,7 @@ chapters/chapter6
 \include{chapters/chapter4}
 \include{chapters/chapter5}
 \include{chapters/chapter6}
+\include{chapters/chapter7}
 
 \appendix
 % \include{chapters/appendix.tex}

@@ -148,8 +148,52 @@ class RNN(nn.Module):
         return torch.zeros(1, self.hidden_size)
 \end{lstlisting}
 
-The graphical representation of code listed in \ref{code:RNN-class} is illustrated in figure \ref{fig:archi}.
+The class RNN represents the RNN model with an input layer, hidden layer, and output layer. It uses the nn.Linear and nn.LogSoftmax functions from PyTorch's neural network module.
 
+\textbf{Summary of the RNN class:}
+
+\textit{Constructor (\_\_init\_\_ method):} Initializes the RNN with the input size, hidden size, and output size. It creates the layers and initializes the hidden size. The \texttt{nn.Linear} objects \texttt{i2h} and \texttt{h2o} represent the weight matrices for the input-to-hidden and hidden-to-output transformations, respectively. The \texttt{nn.LogSoftmax} object \texttt{softmax} applies the logarithm and softmax operations to convert the output into log probabilities.
+
+\textit{Forward pass (\texttt{forward} method):} Takes the current input and previous hidden state as input and computes the forward pass of the RNN. It concatenates the current input and previous hidden state using \texttt{torch.cat}, passes the concatenated tensor through the input-to-hidden layer, calculates the output using the hidden-to-output layer, and applies the softmax operation to obtain the normalized log probabilities.
+
+\textit{Initialization of hidden state (\texttt{initHidden} method):} Returns the initial hidden state, which is a tensor of zeros with dimensions (1, hidden\_size).
+
+\clearpage
+The graphical representation of code listed in \ref{code:RNN-class} is illustrated in figure \ref{fig:archi}.
+\begin{figure}[h]
+    \centering
+    \caption{\acs{RNN} Architecture \parencite{sean}}
+    \label{fig:archi}
+    \begin{tikzpicture}[
+        roundnode/.style={circle, draw=green!60, fill=green!5, very thick, minimum width={width("hidden")},}
+        ]
+    
+        % Nodes
+        \node[roundnode] (combined) {Combined};
+        \coordinate[above of=combined] (ac);
+        \coordinate[below of=combined] (bc);
+        \node[roundnode] (input) [left=2cm of ac] {Input};
+        \node[roundnode] (hidden) [right=2cm of ac] {Hidden};
+        \node[roundnode] (i2o) [below=2cm of input] {In2Out};
+        \node[roundnode] (i2h) [below=2cm of hidden] {In2Hid};
+        \node[roundnode] (softmax) [below=1cm of i2o] {Softmax};
+        \node[roundnode] (12hidden) [below=4cm of i2h] {Hidden};
+        \node[roundnode] (output) [below=of softmax] {Output};
+            
+        % Lines
+        \draw[->] (input.south) .. controls +(down:7mm) and +(left:7mm) ..  (combined.west);
+        \draw[->] (hidden.south) .. controls +(down:7mm) and +(right:7mm) ..  (combined.east);
+        \draw[->] (combined.south) .. controls +(down:7mm) and +(right:7mm) ..   (i2o.east);
+        \draw[->] (combined.south).. controls +(down:7mm) and +(left:7mm) .. (i2h.west);
+        \draw[->] (i2o.south) --  (softmax.north);
+        \draw[->] (i2h.south) --  (12hidden.north);
+        \draw[->] (softmax.south) --  (output.north);
+        
+        \draw[->] (12hidden.east) .. controls +(up:1cm) and +(right:4cm) ..  (hidden.east);
+    
+    \end{tikzpicture}
+
+\end{figure}
 \begin{itemize}
     \item input\textunderscore size : Input parameter of class is size of the data. Size of one-hot encoded feature vector. 
     \item  hidden\textunderscore size : Dimensionality of hidden state of the \acs{RNN} cell.
@@ -159,48 +203,97 @@ The graphical representation of code listed in \ref{code:RNN-class} is illustrat
     \item softmax: Layer used for classification. 
 \end{itemize}
 
+\section{Forward propagation equation}
+The forward propagation equations for the recurrent neural network (RNN) depicted in code \ref{code:RNN-class}, assuming the tanh activation function for hidden units and a discrete output (used for predicting words or characters) \parencite{Goodfellow-et-al-2016}, are as follows
 \begin{enumerate}
-    \item Forward propagation begins with specification of initial state $\textit{\textbf{h}}^{(0)}$
-    \item For each time step from $t=1$ to $t=T$, we apply the following update equation.
+    \item Initialization: \\
+    Set initial state: $\textit{\textbf{h}}^{(0)}$ (hidden state at time $t=0$)
+    \item For each time step from $t=1$ to $t=\tau$: \\
+    \begin{align}
+        a(t) &= b + Wh(t-1) + Ux(t) \quad  \\
+        h(t) &= \tanh(a(t)) \quad  \\
+        o(t) &= c + Vh(t) \quad  \\
+        \hat{y}(t) &= \text{softmax}(o(t)) \quad 
+        \end{align}
 \end{enumerate}
 
-\begin{figure}
+Here:
+\begin{itemize}
+  \item $x(t)$ represents the input at time step $t$.
+  \item $h(t)$ is the hidden state at time step $t$, which is updated based on the previous hidden state $h(t-1)$ and the current input $x(t)$.
+  \item $a(t)$ is the activation vector at time step $t$, computed by adding the bias vector $b$ to the weighted sum of the previous hidden state $h(t-1)$ and the current input $x(t)$, where $W$ is the weight matrix for the recurrent connections and $U$ is the weight matrix for the input connections.
+  \item $\tanh()$ is the hyperbolic tangent activation function, which squashes the values between $-1$ and $1$, introducing non-linearity to the hidden state.
+  \item $o(t)$ is the output vector at time step $t$, computed by adding the bias vector $c$ to the weighted sum of the current hidden state $h(t)$ using the weight matrix $V$.
+  \item $\hat{y}(t)$ is the normalized probability vector (predicted probabilities) over the output, obtained by applying the softmax operation to $o(t)$, which converts the unnormalized log probabilities into valid probabilities summing up to $1$.
+\end{itemize}
+
+
+
+\section{Pytorch's nn.Softmax function and applying log }
+
+Pytorch's nn.LogSoftmax function applies $\text{log}\left(\text{Softmax}(\mathbf{x})\right)$ to an n-dimentional input tensors. \\
+
+
+
+\subsection{Softmax or normalized exponential \parencite{Book-Bishop-Neural}}
+
+Pytorch's nn.Softmax applies the Softmax function to an n-dimensional input Tensor rescaling them so that the elements of the n-dimensional output Tensor lie in the range [0,1] and sum to 1.
+
+\begin{table}[h]
     \centering
-    \caption{\acs{RNN} Architecture \parencite{sean}}
-    \label{fig:archi}
-\begin{tikzpicture}[
-    roundnode/.style={circle, draw=green!60, fill=green!5, very thick,minimum width={width("combined")},}
-    ]
+    \begin{tabular}{ccccccc}
+        \hline
+        $X$ & $X_1$ & $X_2$ & $X_3$ & $\dots$ & $X_n$ \\
+        \hline
+        $P(X)$ & $P_1$ & $P_2$ & $P_3$ & $\dots$ & $P_n$ \\
+        \hline
+    \end{tabular}
+    \caption{Probability Distribution $P(X)$ for Random Variable $X$}
+    \label{tab:probability-distribution}
+\end{table}
 
-    %Nodes
-\node[roundnode]        (combined)     {combined};
-\coordinate[above of=combined] (ac);
-\coordinate[below of=combined] (bc);
-\node[roundnode]        (input)        [left=2cm of ac] {input};
-\node[roundnode]        (hidden)       [right =2cm of ac] {hidden};
-\node[roundnode]        (i2o)       [below=2cm of input] {i2o};
-\node[roundnode]        (i2h)       [below=2cm of hidden] {i2h};
-
-\node[roundnode]        (softmax)       [below =1cm of i2o] {softmax};
-
-\node[roundnode]        (12hidden)       [below =4cm of i2h] {hidden};
-
-\node[roundnode]        (output)       [below =of softmax] {output};
+where \(P_i > 0\), \(i=1\) to \(n\) and \(P_1 + P_2 + P_3 + \ldots + P_n = 1\) \\
 
 
+\begin{align}
+    \text{Softmax}(x_i) = \frac{{\exp(x_i)}}{{\sum_{j=1}^n \exp(x_j)}} \label{eq:softmax}
+\end{align}
 
 
+In this representation, \(x_i\) is the \(i\)-th element of the input vector \(\mathbf{x} = [x_1, x_2, \ldots, x_n]\). The softmax function calculates the probability of the element \(x_i\) being chosen by dividing the exponential of \(x_i\) by the sum of the exponentials of all elements in the vector \(\mathbf{x}\). This calculation ensures that the resulting probabilities sum up to 1, forming a valid probability distribution over the elements in the vector \(\mathbf{x}\).
 
-%Lines
+The softmax function effectively transforms a vector of logits into a probability distribution, making it useful for tasks like classification, where the model needs to make a decision based on the input data.
 
-\draw[->] (input.south) .. controls +(down:7mm) and +(left:7mm) ..  (combined.west);
-\draw[->] (hidden.south) .. controls +(down:7mm) and +(right:7mm) ..  (combined.east);
-\draw[->] (combined.south) .. controls +(down:7mm) and +(right:7mm) ..   (i2o.east);
-\draw[->] (combined.south).. controls +(down:7mm) and +(left:7mm) .. (i2h.west);
-\draw[->] (i2o.south) --  (softmax.north);
-\draw[->] (i2h.south) --  (12hidden.north);
-\draw[->] (softmax.south) --  (output.north);
-\draw[->] (12hidden.east) .. controls +(up:70mm) and +(right:15mm) ..  (hidden.east);
-\end{tikzpicture}
+As per \parencite{Book-Bishop-Neural} the term softmax is used because this activation function represents a smooth version of the winner-takes-all activation model in which the unit with the largest input has output +1 while all other units have output 0.
 
-\end{figure}
+\clearpage
+
+\section{Why to apply log to Softmax Equation \eqref{eq:softmax} }
+
+ 
+
+\begin{align}
+    \log(\text{Softmax}(x_i)) = \log\left(\frac{{\exp(x_i)}}{{\sum_{j=1}^n \exp(x_j)}}\right) \label{eq:log_softmax}
+\end{align}
+
+Equation \eqref{eq:log_softmax} shows the logarithm of the Softmax function applied to the element \(x_i\) in the vector \(\mathbf{x}\). 
+
+Applying logarithm to the fraction: 
+\begin{align}
+    \log\left(\frac{a}{b}\right) = \log(a) - \log(b)
+\end{align}
+
+Substituting \(a = \exp(x_i)\) and \(b = \sum_{j=1}^n \exp(x_j)\) in Equation \eqref{eq:log_softmax}, we get:
+
+\begin{align}
+    \log(\text{Softmax}(x_i)) = \log(\exp(x_i)) - \log\left(\sum_{j=1}^n \exp(x_j)\right)
+\end{align}
+
+1. Reduce large numbers:  The softmax function normalizes any value from [-infy, +infy] by applying an exponential function. Exponential functions can lead to a very large numbers, resulting in  Nan as output. Applying logarithm effectively reduce these large numbers to manageable range.
+2. Logarithms and Multiplication: Logarithms convert multiplication to addition. Probabilities of independent events,  represented as \(P(A \cap B \cap C \cap \ldots)\). Logarithm of the product of these probabilities simplifies the computation to a sum. 
+
+3. Numerical Stability: When dealing with very small probabilities, the product of multiple probabilities can become exceedingly close to zero, leading to numerical underflow. Similarly, when dealing with very large probabilities, the product can exceed the representation range of standard floating-point numbers, causing numerical overflow. By taking the logarithm, these issues are avoided, and the values are represented in a more stable and manageable range.
+
+4. Log Probabilities and Addition: Log probabilities are additive when events are independent.\\ For example, if we have two independent events \(A\) and \(B\) with probabilities \(P(A) = p\) and \(P(B) = q\), the probability of both events occurring (\(P(A \cap B)\)) is \(P(A) \times P(B) = p \times q\). Taking the logarithm, we get \(\log(P(A \cap B)) = \log(p \times q) = \log(p) + \log(q)\). This additive property simplifies calculations involving multiple independent events.
+
+In summary, using log-softmax over softmax is the use of log probabilities over probabilities, a log probability is simply a logarithm of a probability. The use of log probabilities means representing probabilities on a logarithmic scale. Working with log probabilities allows for more stable and efficient computations, especially when dealing with products of probabilities of very small or large numbers. 

@@ -16,18 +16,18 @@ def main():
 
     # resp =es.searchProductFeatures(0,10000)
     # es.createIndexerProductFeature()
-    helper = Helper()
+    #helper = Helper()
    
     df=DataFrame(es)
-    df.createProductFeature()
+    #df.createProductFeature()
     # df_prod= df.setDfProductTaxonomy()
     # doc = df_prod.to_dict(orient='records')
 
     # es.ingestProductFeatures(doc)
     # dfProductTaxonomyEn=df.getProductTaxonomy(10000,0)    
-    # df_en = df.getNormal()
-    # # train = Train(df_en)
-    # # train.run(300000,30000,3000)
+    df_en = df.getNormal()
+    train = Train(df_en)
+    train.run(300000,30000,3000)
     # predict = Predict()
 
     # # predict.confusionMatix(df_en)
