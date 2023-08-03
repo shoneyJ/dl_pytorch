@@ -43,6 +43,8 @@ class Helper():
     def plot(self,data,name):
         plt.figure()
         plt.plot(data)
+        plt.xlabel("Training completion")
+        plt.ylabel("Loss")
         plt.savefig(name, dpi=400)
 
     

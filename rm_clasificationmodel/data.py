@@ -55,10 +55,6 @@ class Data():
         name =self.df_en.iloc[index]["name"]
         
         category_tensor = torch.tensor([self.all_category.index(randcategory)], dtype=torch.long)
-
-        # category_tensor=self.categoryTensor(randcategory)
-
-
         
         name_tensor = self.helper.nameToTensor(name)
         

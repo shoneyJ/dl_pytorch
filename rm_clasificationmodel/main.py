@@ -27,7 +27,7 @@ def main():
     # dfProductTaxonomyEn=df.getProductTaxonomy(10000,0)    
     df_en = df.getNormal()
     train = Train(df_en)
-    train.run(300000,30000,3000)
+    train.runBatch()
     # predict = Predict()
 
     # # predict.confusionMatix(df_en)
