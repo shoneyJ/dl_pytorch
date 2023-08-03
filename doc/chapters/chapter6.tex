@@ -235,7 +235,7 @@ Pytorch's nn.LogSoftmax function applies $\text{log}\left(\text{Softmax}(\mathbf
 
 
 
-\subsection{Softmax or normalized exponential \parencite{Book-Bishop-Neural}}
+\subsection{Softmax or normalized exponential \parencite{Book-Bishop-Neural}} \label{sec:softmax}
 
 Pytorch's nn.Softmax applies the Softmax function to an n-dimensional input Tensor rescaling them so that the elements of the n-dimensional output Tensor lie in the range [0,1] and sum to 1.
 
@@ -268,7 +268,7 @@ As per \parencite{Book-Bishop-Neural} the term softmax is used because this acti
 
 \clearpage
 
-\section{Why to apply log to Softmax Equation \eqref{eq:softmax} }
+\subsection{Why to apply log to Softmax Equation \eqref{eq:softmax} } \label{sec:Logsoft}
 
  
 
@@ -297,3 +297,14 @@ Substituting \(a = \exp(x_i)\) and \(b = \sum_{j=1}^n \exp(x_j)\) in Equation \e
 4. Log Probabilities and Addition: Log probabilities are additive when events are independent.\\ For example, if we have two independent events \(A\) and \(B\) with probabilities \(P(A) = p\) and \(P(B) = q\), the probability of both events occurring (\(P(A \cap B)\)) is \(P(A) \times P(B) = p \times q\). Taking the logarithm, we get \(\log(P(A \cap B)) = \log(p \times q) = \log(p) + \log(q)\). This additive property simplifies calculations involving multiple independent events.
 
 In summary, using log-softmax over softmax is the use of log probabilities over probabilities, a log probability is simply a logarithm of a probability. The use of log probabilities means representing probabilities on a logarithmic scale. Working with log probabilities allows for more stable and efficient computations, especially when dealing with products of probabilities of very small or large numbers. 
+
+
+\section{\acf{ALL}}
+
+Adaptive Softmax \parencite{Grave.14092016} is effective when large number of classes are to be handled. Traditional Softmax computation becomes computationally expensive and memory intensive if number of output classes are very high. As discussed in  \ref{sec:softmax}, Softmax requires calculating the exponential of the logits for each class. However, when the number of classes or labels are very high, the Softmax based classification becomes computationally expensive.
+
+
+
+Adaptive Softmax \parencite{Grave.14092016} counter this issue by clustering the classes according to their frequency of occurrence. A simple strategy to reduce the overall computation time is to partition the labels \(V\) into two clusters as \(V_h\) and \(V_l\), where \(V_h\) denotes the distribution consisting of the most frequent classes, and where \(V_l\) are many rare classes. The classifier frequently accesses \(V_h\), which motivates the fact that it should be computed efficiently. In contrast,  \(V_l\) less frequently, and the corresponding computation can be slower. This suggests defining clusters with unbalanced cardinalities \(|V_h| \geq |V_l|\) and probabilities \(P(V_h) \geq P(V_t)\).
+
+Pytorch's \parencite{Paszke.03122019} nn.AdaptiveLogSoftmaxWithLoss module implements \acf{ALL}
