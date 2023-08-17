@@ -16,7 +16,7 @@ class Train():
         self.rnn= RNN(self.inputSize, self.n_hidden, self.n_category)
         
         self.lr_low=0.00000000001
-        self.lr_max=0.04
+        self.lr_max=0.02
         self.learning_rate= 0.00000000000001
         self.criterion = nn.NLLLoss()
 
@@ -86,7 +86,7 @@ class Train():
 
         for n_iters in batch:
            
-            learn_rates=np.linspace(self.lr_low,self.lr_max,total)
+            learn_rates=np.linspace(self.lr_low,self.lr_max,n_iters)
             for epoch,lr in zip(range(1, n_iters + 1),learn_rates):
         
                 self.learning_rate=lr

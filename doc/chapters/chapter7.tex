@@ -326,4 +326,32 @@ The steps involved in training a model with \acs{CLR} are as follows :
     
     As illustrated in figure \ref{fig:Loss value at 0.2}, in the graph plotted of Loss Vs Learning rate. The model started to learn at learning rate $\epsilon = 0.04$ onwards. We will further reduce the $max\_lr$.
 
+    \item In the next experiment, we set the $max\_lr = 0.04$. \\
+    Notice in figure \ref{fig:Loss value at 0.04}, there is a plateau until $\epsilon = 0.010$. After which there is a descent until $\epsilon = 0.015$
+    \begin{figure}[H]
+        \centering    
+        \includegraphics[scale=0.9]{loss_004.png}
+        \caption{Loss vs Learning rate; where $max\_lr = 0.04$}
+        \label{fig:Loss value at 0.04}
+    \end{figure}
+
+    \item In the next experiment, we set the $max\_lr = 0.015$. \\
+    Notice in figure \ref{fig:Loss value at 0.015}, the loss had not neared zero and the model fails to predict the classification. 
+    \begin{figure}[H]
+        \centering    
+        \includegraphics[scale=0.9]{loss_0015.png}
+        \caption{Loss vs Learning rate; where $max\_lr = 0.015$}
+        \label{fig:Loss value at 0.015}
+    \end{figure}
+
+    \item From the above experiment  we concluded that  $max\_lr = 0.02$. works.
+    Notice in figure \ref{fig:Loss value at 0.015}, the loss had not neared zero and the model fails to predict the classification. 
+    \begin{figure}[H]
+        \centering    
+        \includegraphics[scale=0.9]{loss_002.png}
+        \caption{Loss vs Learning rate; where $max\_lr = 0.015$}
+        \label{fig:Loss value at 0.02}
+    \end{figure}
+    
+
 \end{enumerate}
