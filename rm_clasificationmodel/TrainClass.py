@@ -15,7 +15,7 @@ class Train():
         self.n_hidden = 128
         self.rnn= RNN(self.inputSize, self.n_hidden, self.n_category)
         
-        self.lr_low=0.00000000001
+        self.lr_low=0.0075
         self.lr_max=0.02
         self.learning_rate= 0.00000000000001
         self.criterion = nn.NLLLoss()
@@ -24,6 +24,10 @@ class Train():
         self.all_losses = []
 
         self.helper= Helper()
+
+        # Define the number of iterations or epochs for the up and down phases
+        self.up_iterations = 1000
+        self.down_iterations = 1000
  
 
     def train(self,category_tensor, name_tensor):
@@ -127,4 +131,61 @@ class Train():
         plt.xlabel('Learning rate')        
         # Title and display the plot
         plt.title('Learning Rates vs. Losses')
+        plt.savefig("lossinfo")
+
+
+
+    def runBatchWithTLR(self):
+        batch=[10000,10000,10000,10000,10000,10000,10000,10000,10000,10000]        
+        start = time.time()
+        no_batch=0
+        no_iterations=0
+        learning_rates =[]
+
+        for n_iters in batch:
+
+            no_batch =no_batch+1
+            isEven=no_batch % 2
+            learn_rates=np.linspace(self.lr_low,self.lr_max,n_iters)
+            if isEven==0:
+                learn_rates=np.flip(learn_rates)
+                
+            for epoch,lr in zip(range(1, n_iters + 1),learn_rates):
+                no_iterations= no_iterations+1
+        
+                self.learning_rate=lr              
+                category, name, category_tensor, name_tensor = self.data.randomTrainingExample()
+                
+                output, loss = self.train(category_tensor, name_tensor)
+                self.current_loss += loss
+                # Print ``iter`` number, loss, name and guess
+                if epoch % 5000 == 0:
+                    guess, guess_i = self.data.categoryFromOutput(output)
+                    correct = '✓' if guess == category else '✗ (%s)' % category
+                
+                    print('%d %d%% (%s) %.4f %s / %s %s %.10f' % (no_iterations, 
+                                                no_iterations / np.sum(batch) * 100,
+                                                self.helper.timeSince(start),
+                                                loss,
+                                                name, 
+                                                guess, 
+                                                correct, self.learning_rate))
+
+             
+                if epoch % 5000 == 0:
+                    if (math.isnan(self.current_loss)!=True):
+                        self.all_losses.append(self.current_loss / 5000)
+                        learning_rates.append(self.learning_rate)
+                        self.current_loss = 0
+                    else:
+                        break
+            
+        # Plot loss curve
+        
+        plt.figure()
+        plt.plot(self.all_losses)
+        plt.ylabel("Loss")
+        plt.xlabel('Epoch')        
+        # # Title and display the plot
+        plt.title('Losses Vs No of Epoch')
         plt.savefig("lossinfo")
