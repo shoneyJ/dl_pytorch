@@ -1,2 +1,20 @@
 \chapter*{Abstract}
-An abstract is a concise summary of a research paper or entire thesis. It is an original work, not an excerpted passage. An abstract must be fully self-contained and make sense by itself, without further reference to outside sources or to the actual paper.
+
+\begin{center}
+    Shoney Arickathil, School of Informatics, SRH Hochschule Heidelberg \\
+
+Master Thesis \\
+\textbf{Application of Natural language processing in ECommerce} 
+
+\end{center}
+
+
+Electronic commerce started in early 1990's in which the business transactions are conducted through computer networks. The ease of buying a product online has reduced physical work and time required for decision-making by compare the product features. A wide range of products are sold online. One of the challenge is to well define a products' taxonomy. A product taxonomy is a hierarchical structure to organize the products in an E-commerce platform in such a way that customers can find the product in the fewest possible clicks.
+Product taxonomy for the same product may differ based on the supplier and manufacturer (sources). Hence, product taxonomy details cannot be imported directly from the sources into the E-commerce platform. Product details cannot be live until its taxonomy is not well-defined, this delays the time of product availability for customers. \\
+
+In this thesis the author developed a machine learning classification model to predict the product taxonomy based on the features of the product. This is achieved with machine learning model. Experimenting and analyzing by varying  model's parameters facilitated to determine models performance. \\ 
+
+Initially, from the existing product taxonomy the features such as name and description were extracted. These extracted features were passed through process of text normalization, imputation of missing text to standardize it before converting it into One-Hot encoded format. These features and its lowest hierarchical level of category were processed by \acf*{RNN} machine learning model to learn the patterns of feature and classify it with the concept of probability distribution.\\
+
+The result of predicting the lowest hierarchical level of product category based only on product name formed a foundation to create a machine learning model to predict the complete product taxonomy. As the level of category to be predicted increases the model's weight and product features need to be adjusted. 
+

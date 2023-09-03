@@ -374,8 +374,8 @@ How triangular learning rate works?
 
 \begin{enumerate}
     \item \textbf{Initialize}: The step size $ t $, minimum bound or base learning rate $ base\_lr$ and maximum bound or the max learning rate  $max\_lr$ are initialized. These hyperparameters are tuned based on the architecture of the model. In this experiment, the values set are  $ base\_lr=0.0075 ; max\_lr=0.02; t=10000$.
-    \item  \textbf{Up}: During training, the learning rate is linearly increased from $ base\_lr$ to $max\_lr$ over a certain number of step size $ t $.
-    \item \textbf{Down}: During training, the learning rate is linearly decreased from $max\_lr$ to $base\_lr$.
+    \item  \textbf{Up phase}: During training, the learning rate is linearly increased from $ base\_lr$ to $max\_lr$ over a certain number of step size $ t $.
+    \item \textbf{Down phase}: During training, the learning rate is linearly decreased from $max\_lr$ to $base\_lr$.
 \end{enumerate}
 
 \begin{figure}[H]
@@ -385,4 +385,84 @@ How triangular learning rate works?
     }
     \label{fig:trl}
 \end{figure}
- In figure \ref{fig:trl}, the blue lines represent learning rate values changing between the bounds. The input parameter stepsize is the number of iterations in half a cycle \parencite{Smith.03062015}.
+ Figure \ref{fig:trl} is pictorial representation of triangular learning rate. The blue lines represent learning rate values changing between the bounds. The input parameter step-size is the number of iterations in half a cycle \parencite{Smith.03062015}.
+
+ \begin{lstlisting}[language=Python,label={code:triangularLR}, caption={Triangular learning rate}]
+def runBatchWithTLR(self):
+# each unit is half cycle iteration 
+    batch=[10000,10000,10000,10000,10000,10000,10000,10000,10000,10000]        
+    start = time.time()
+    no_batch=0
+    no_iterations=0
+    learning_rates =[]
+
+    for n_iters in batch:
+
+        no_batch =no_batch+1
+        rem=no_batch % 2
+        # linearly space the learning rate by number of iterations using np.linspace
+        learn_rates=np.linspace(self.lr_low,self.lr_max,n_iters)
+        # for even number of batch flip the array for down phase
+        if rem==0:
+            learn_rates=np.flip(learn_rates)
+        
+        # run the iterations along with the linearly spaced learning rate.
+        for epoch,lr in zip(range(1, n_iters + 1),learn_rates):
+            no_iterations= no_iterations+1
+    
+            self.learning_rate=lr              
+            category, name, category_tensor, name_tensor = self.data.randomTrainingExample()
+            
+            output, loss = self.train(category_tensor, name_tensor)
+            self.current_loss += loss
+            # Print ``iter`` number, loss, name and guess
+            if epoch % 5000 == 0:
+                guess, guess_i = self.data.categoryFromOutput(output)
+                correct = 'yes' if guess == category else 'no (%s)' % category
+            
+                print('%d %d%% (%s) %.4f %s / %s %s %.10f' % (no_iterations, 
+                                            no_iterations / np.sum(batch) * 100,
+                                            self.helper.timeSince(start),
+                                            loss,
+                                            name, 
+                                            guess, 
+                                            correct, self.learning_rate))
+
+         
+            if epoch % 5000 == 0:
+                if (math.isnan(self.current_loss)!=True):
+                    self.all_losses.append(self.current_loss / 5000)
+                    learning_rates.append(self.learning_rate)
+                    self.current_loss = 0
+                else:
+                    break
+\end{lstlisting}
+
+Listing \ref{code:triangularLR} is the code to train the model using triangular learning rate. Below is the explanation of the code.
+
+\begin{enumerate}
+    \item \textbf{Variable initialization}: 
+    \begin{itemize}
+        \item \textbf{batch}: \\ A list of elements representing number of iterations in a batch. Each batch represents half cycle or step-size.
+        \item \textbf{start = time.time()} :\\ This stores current time at the beginning of the training process.
+    \end{itemize}
+    \item Batch iteration: \\
+     \begin{itemize}
+        \item \textbf{rem = no\_batch \% 2}: \\ Calculates reminder of no\_batch. It determines whether to flip the learning rates array. If rem is 0 (indicating an even batch number), the array is fliped using numpy's \parencite{harris2020array} \textit{np.flip} method.
+        \item learn\_rates :\\ This stores linearly spaced learning rates between $base\_lr$ and $max\_lr$ divided into batch size.
+    \end{itemize}
+    
+    
+\end{enumerate}
+
+
+\subsection{Experimentation and analysis}
+In this experiment, the model is trained with and without triangular learning rate method. The total number of iterations is $10000 \times 10$. The graph of Loss Vs Learning rate and time taken to complete the iterations illustrates the performance of the model. The graph plotted for each $2500$ iterations provide insight on how the model is performing. The lesser the time taken  
+\begin{enumerate}
+    \item Triangular learning rate; where $base\_lr =0.0075$ and $max\_lr=0.02$: \\
+    
+     
+
+   
+    
+\end{enumerate}

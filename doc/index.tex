@@ -61,11 +61,11 @@
 \graphicspath{ {images/} }
 \addbibresource{References.bib}
 
-\includeonly{preliminary/title,%
-preliminary/dedication,%
-preliminary/abstract,%
-preliminary/acronyms,%
-chapters/introduction,%
+\includeonly{preliminary/title, %
+preliminary/affidavit, %
+preliminary/abstract, %
+preliminary/acronyms, %
+chapters/introduction, %
 chapters/chapter1,%
 chapters/chapter2,%
 chapters/chapter3,%
@@ -84,25 +84,17 @@ chapters/chapter7
 
 %--------------------------------------------
 \include{preliminary/title.tex}
-% \include{preliminary/copyright.tex}
-\include{preliminary/dedication.tex}
-% \include{preliminary/approval-sheet.tex}
-% \include{preliminary/certificate.tex}
-% \include{preliminary/acknowledgement.tex}
-
-\include{preliminary/dedication.tex}
+\include{preliminary/affidavit.tex}
 \include{preliminary/abstract.tex}
 
 
-\pagestyle{mypagestyle}
+
 
 \tableofcontents
-\listoffigures
-\listoftables
-\lstlistoflistings
-\include{preliminary/acronyms}
+
 
 %----------------- chapters --------------------
+\pagestyle{mypagestyle}
 \pagenumbering{arabic}
 
 %---------------------------------------
@@ -115,6 +107,15 @@ chapters/chapter7
 \include{chapters/chapter6}
 \include{chapters/chapter7}
 
+
+
+\pagenumbering{roman}
+\pagestyle{mypagestyle}
+
+\listoffigures
+\listoftables
+\lstlistoflistings
+\include{preliminary/acronyms}
 \appendix
 % \include{chapters/appendix.tex}
 
