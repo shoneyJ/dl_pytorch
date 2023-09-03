@@ -457,11 +457,17 @@ Listing \ref{code:triangularLR} is the code to train the model using triangular 
 
 
 \subsection{Experimentation and analysis}
-In this experiment, the model is trained with and without triangular learning rate method. The total number of iterations is $10000 \times 10$. The graph of Loss Vs Learning rate and time taken to complete the iterations illustrates the performance of the model. The graph plotted for each $2500$ iterations provide insight on how the model is performing. The lesser the time taken  
+In this experiment, the model is trained with and without triangular learning rate method. The total number of iterations is $10000 \times 10$. The graph of Loss Vs Learning rate and time taken to complete the iterations illustrates the performance of the model. The graph plotted for each $2500$ iterations provide insight on how the model is performing. 
 \begin{enumerate}
     \item Triangular learning rate; where $base\_lr =0.0075$ and $max\_lr=0.02$: \\
     
-     
+    \begin{figure}[H]
+        \centering    
+        \includegraphics[scale=0.5]{lossinfo_tlr.png}
+        \caption{Loss with TLR, where $base\_lr =0.0075$ and $max\_lr=0.02$
+        }
+        \label{fig:trl_loss}
+    \end{figure}
 
    
     

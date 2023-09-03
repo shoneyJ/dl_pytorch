@@ -40,6 +40,11 @@ class Helper():
         s -= m * 60
         return '%dm %ds' % (m, s)
     
+    def secondsSince(self,since):
+        now = time.time()
+        s = now - since
+        return s
+    
     def plot(self,data,name):
         plt.figure()
         plt.plot(data)

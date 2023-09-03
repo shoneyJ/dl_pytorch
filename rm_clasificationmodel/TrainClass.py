@@ -16,7 +16,7 @@ class Train():
         self.rnn= RNN(self.inputSize, self.n_hidden, self.n_category)
 
         self.lr_low=0.0075
-        self.lr_max=0.02
+        self.lr_max=0.0125
         self.learning_rate= 0.00000000000001
         self.criterion = nn.NLLLoss()
 
@@ -160,7 +160,7 @@ class Train():
                 output, loss = self.train(category_tensor, name_tensor)
                 self.current_loss += loss
                 # Print ``iter`` number, loss, name and guess
-                if epoch % 2500 == 0:
+                if epoch % 1000 == 0:
                     guess, guess_i = self.data.categoryFromOutput(output)
                     correct = '✓' if guess == category else '✗ (%s)' % category
 
@@ -173,28 +173,48 @@ class Train():
                                                 correct, self.learning_rate))
 
 
-                if epoch % 2500 == 0:
+                if epoch % 5000 == 0:
                     if (math.isnan(self.current_loss)!=True):
-                        self.all_losses.append(self.current_loss / 2500)
+                        self.all_losses.append(self.current_loss / 1000)
                         learning_rates.append(self.learning_rate)
-                        times.append(self.helper.timeSince(start))
+                        times.append(self.helper.secondsSince(start))
                         self.current_loss = 0
                     else:
                         break
 
         # Plot loss curve
         # Initialise the subplot function using number of rows and columns
-        figure, axs = plt.subplots(2,sharex=True)
-        figure.suptitle("Loss")
-        # plt.figure()
-        axs[0].plot(self.all_losses,learning_rates,'tab:orange')
-        axs[1].plot(self.all_losses,times,'tab:green')
+        # figure, axs = plt.subplots(2,sharex=True)
+        # figure.suptitle("Loss vs Learning rate and time with TLR")
+        # # plt.figure()
+        # axs[0].plot(self.all_losses,learning_rates,'tab:orange')
+        # axs[1].plot(self.all_losses,times,'tab:green')
 
-        for ax in axs.flat:
-            ax.set(xlabel='Loss')
+        # for ax in axs.flat:
+        #     ax.set(xlabel='Loss')
 
         # plt.ylabel("Loss")
         # plt.xlabel('Learning rate')
         # # # Title and display the plot
         # ax1.set_title('Losses Vs Learning rate')
+        plt.figure(figsize=(10, 5))
+        plt.subplot(1, 2, 1)
+
+        plt.plot(learning_rates, self.all_losses, marker='o', linestyle='-')
+        plt.title('Learning Rate vs. Loss')
+        plt.xlabel('Learning Rate')
+        plt.ylabel('Loss')
+        # plt.xscale('log')  # Log scale for learning rate for better visualization
+        plt.grid(True)
+
+        # Create a plot for time vs. loss
+        plt.subplot(1, 2, 2)
+        plt.plot(times, self.all_losses, marker='o', linestyle='-')
+        plt.title('Training Time vs. Loss')
+        plt.xlabel('Training Time (seconds)')
+        plt.ylabel('Loss')
+        plt.grid(True)
+
+        plt.tight_layout()
+
         plt.savefig("lossinfo")
