@@ -1,4 +1,4 @@
-\chapter{Model selection : Neural networks}
+\chapter{Model selection : Neural networks} \label{sec:feature-extraction}
 
 \section{Understanding Pytorch tutorial on \textit{classifying names with a character-level \acs{RNN}} } \label{sec:chRNN}
 
@@ -36,7 +36,7 @@ It is a character level \acs*{RNN} which reads words as a series of characters. 
 \end{figure}
 
 
-\section{Ideate: Vocabulary level \acs{RNN}}
+\section{Ideate: Vocabulary level \acs{RNN}} \label{sec:ideate}
 
 Inspired from the character level \acs{RNN} mentioned in section \ref{sec:chRNN}, author predicts category based on the name of the products by creating a vocabulary level \acs{RNN}. As described in section \ref{ch_countvector}, product names are converted into one-hot encoded format. Vector representation of vocabulary in product name across the data frame is created. These encoded pattern of name serves as an input to the machine learning model. Model learns these patterns and predicts the category in which these patterns belong to. In section \ref{nametotensor}, the input tensors are modified to fit for use case of predicting category based on product name.  
 
@@ -203,7 +203,7 @@ The graphical representation of code listed in \ref{code:RNN-class} is illustrat
     \item softmax: Layer used for classification. 
 \end{itemize}
 
-\section{Forward propagation equation}
+\section{Forward propagation equation} \label{sec:forward-propagation}
 The forward propagation equations for the recurrent neural network (RNN) depicted in code \ref{code:RNN-class}, assuming the tanh activation function for hidden units and a discrete output (used for predicting words or characters) \parencite{Goodfellow-et-al-2016}, are as follows
 \begin{enumerate}
     \item Initialization: \\

@@ -139,3 +139,9 @@ Pandas.DataFrame.median \parencite{mckinney-proc-scipy-2010} returns the median 
 \begin{lstlisting}[language=Python]
     df = df.fillna(df.median().iloc[0])
 \end{lstlisting}
+
+\section{Summary}
+
+Missing input values sometimes denoted as blanks or NaN's cannot be considered for transforming into a numerical representation value. Machine learning algorithm feed in input data as a numerical representation of data terms as extracted features. Removing the missing values from the dataset sometime may not be feasible. As this may lead to loss of vital information of the product. 
+
+Predicting the missing values, replacing the missing value with most frequent values, finding most similar value with K - nearest neighbors, replacing the values with median or mean values are some methods to replace the missing values from the dataset. 

@@ -1,0 +1,42 @@
+\chapter{Conclusion outlook}
+
+\begin{enumerate}[label=\textbf{RQ\arabic*:}]
+    \item What are the use cases in which natural language processing and machine learning model can be utilized in an E-Commerce industry?
+    
+    Machine learning model can generate well-defined product taxonomy. Author introduces a methodology for such a model section \ref{sec:ideate}. A well-defined product taxonomy is the foundation for many use cases as below in artificial intelligence in an E-commerce industry.
+    \begin{itemize}
+        \item User transaction history based product recommendation system. 
+        \item Auto completing the search bar.
+        \item Building a knowledge graph based on the textual details of a product. Refer section \ref{sec:building-kg}
+        \item Virtual customer support chatbot may leverage the knowledge graph to answer queries raised by customers.
+    \end{itemize}
+    
+    \item For a product classification task, how to define product features as an input for machine learning model?
+    
+   Based on the level of product taxonomy the number of features may vary. Table \ref{table:feature_decription} lists some features listed simply by prior knowledge of the product. However, section \ref{sec:feature-selection} describes various methods to determine the feature.
+
+    
+    \item How does a machine learn pattern in product features for classification?
+    
+    
+    In section \ref{sec:softmax}, gives description of valid probability distribution and its relevance in classification problem.
+
+    \begin{enumerate}[label=\textbf{SRQ\arabic*:}]
+        \item What are the mathematical equations behind the learning process?
+    
+        Section \ref{sec:forward-propagation} describes the forward propagation of the \acf*{RNN} and role of hidden states of a neural network is shown. This section describes how \acs{RNN} works? 
+
+        \item What are the mathematical reasons for applying certain pytorch functions during the training process? 
+        
+        Section \ref{sec:Logsoft} describes the reasons to use logarithmic values. This research enables author to understand the mathematical reasons behind using Pytorch's functions such as LogSoftMax.         
+
+    \end{enumerate}
+    
+    \item What is the algorithm to train the machine learning model to predict the product taxonomy?
+        
+    Author modified the algorithm of \parencite{sean}   classifying names with character-level RNN. Instead of series of tensor representation of characters, author use tensor representation of features. The RNN model learns the pattern and predicts the product taxonomy.
+
+  \end{enumerate}
+
+
+  

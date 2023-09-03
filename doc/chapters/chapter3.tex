@@ -12,8 +12,8 @@ In table \ref{table:TN}, displays the difference in text before and after normal
       \toprule 
                   &\textbf{Name} & \textbf{Category} \\ 
       \midrule
-      \textbf{Before}&VAICO V10-4245 Stoßdämpfer & Stoßdämpfer \\
-      \textbf{After}&vaico v104245 stoßdampfer & stoßdampfer \\
+      \textbf{Before}& Company V10-4245 Stoßdämpfer & Stoßdämpfer \\
+      \textbf{After}&company v104245 stoßdampfer & stoßdampfer \\
       
       \bottomrule
 \end{tabular}
@@ -53,9 +53,16 @@ A product detail text may contain non-word characters represented in regular exp
 
 \section{Normal form D - Unicode database}
 
-A product name in Deutsch language may contain umlaute characters such as \"A.  Pythons unicodedata \footnote{https://docs.python.org/3/library/unicodedata.html} module provides access to the Unicode Character Database (UCD) which defines the character properties for all Unicode characters. To change \"A to A, the Normal form D (NFD) should be applied which translated each character into its decomposed form. Further the text can be refined with the general category assigned to the character as string. Nonspacing mark characters \footnote{https://www.compart.com/en/unicode/category/Mn} are represented as "Mn". These characters could be removed by referring the the character category.
+A product name in Deutsch language may contain umlaute characters such as \"A.  Pythons unicodedata \footnote{https://docs.python.org/3/library/unicodedata.html} module provides access to the Unicode Character Database (UCD) which defines the character properties for all Unicode characters. To change \"A to A, the Normal form D (NFD) should be applied which translated each character into its decomposed form. Further the text can be refined with the general category assigned to the character as string. Nonspacing mark characters \footnote{https://www.compart.com/en/unicode/category/Mn} are represented as "Mn". These characters could be removed by referring the character category.
 \begin{lstlisting}[language=Python ,caption={NFD normalization}]
       ''.join(
             c for c in unicodedata.normalize('NFD', text)
             if unicodedata.category(c) != 'Mn')
 \end{lstlisting}
+
+
+\section{Summary}
+
+Before extracting the features (refer chapter \ref{sec:feature-extraction}) it is important to normalize and standardize the data set. If the text normalization step is skipped then while creating the numerical representation of the text the data will be inconsistent. For example, same text with proper case (Car) or lower case (car) will have two representation even though the semantic meaning is the same.  
+
+The methods involved in text normalization are lower casing the text, removing the HTML tags, removing irrelevant numerical data within the text such as product dimensionality, and making the text across the document with one Unicode database.

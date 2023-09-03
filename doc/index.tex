@@ -15,8 +15,15 @@
 
 \usepackage[font=small,labelfont=bf,tableposition=top]{caption}
 \usepackage{tikz}
+\usepackage{tocloft}
+\usepackage{enumitem}
 \usetikzlibrary{positioning}
 \captionsetup[table]{skip=5pt}
+
+% Customize list of figures appearance in table of contents
+\renewcommand{\cftfigpresnum}{\figurename\ }
+\setlength{\cftfigindent}{0pt}
+\setlength{\cftfignumwidth}{6.5em}
 
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -72,7 +79,8 @@ chapters/chapter4,%
 chapters/chapter5,%
 chapters/chapter6,%
 chapters/chapter7,%
-chapters/chapter1%
+chapters/chapter1,%
+chapters/conclusion%
 }
 
 \begin{document}
@@ -107,13 +115,20 @@ chapters/chapter1%
 \include{chapters/chapter6}
 \include{chapters/chapter7}
 \include{chapters/chapter1}
-
+\include{chapters/conclusion}
 
 \pagenumbering{roman}
 \pagestyle{mypagestyle}
 
+% Add the List of Figures to the table of contents
+\cleardoublepage % Ensure the correct page
+\addcontentsline{toc}{chapter}{\listfigurename}
 \listoffigures
+
+
+\addcontentsline{toc}{chapter}{\listtablename}
 \listoftables
+
 \lstlistoflistings
 \include{preliminary/acronyms}
 \appendix
@@ -123,7 +138,7 @@ chapters/chapter1%
 % \printglossary[type=\acronymtype]
 
 % \printglossary
-
+\addcontentsline{toc}{chapter}{Bibliography}
 \printbibliography
 
 \end{document}

@@ -1,8 +1,5 @@
 \chapter{Data collection}
 
-% One of the major challenge in an ecommerce industry is to categorize the products. The phenominal types of products in the ecommerce web application sold online may require an artificial inteligence generated category tree. The multi level product-categories in the taxonomy tree received and defined from the suppliers or manfucture may not be usable. Since the existing multi level category of those products in ecommerse application may defer. Importing product-category details directly from the various channels may lead to disambugution. The artificial inteligence generated category tree reduces the product ready to deploy time on the production environment. The product ready to deploy time here refers to the check lists of data correctness of the product before listing online.
-
-
 
 \section {Fetch existing product taxonomy using Elasticsearch}
 Elastic search \footnote{https://www.elastic.co/} is a fast and scalable search and analytics engine. It can build a powerful AI and machine learning enabled search experience. In this paper, author fetches labeled dataset of products to serve as the training data for the machine learning model.
@@ -33,16 +30,9 @@ The above code fetches indexed product name and its top hierarchy level category
 \end{tabular}
 \end{table}
 
-% In table \ref{table:enc}, the total number of products is mentioned.
 
 
-
-
-% Elasticsearch uses \acf{Tf-Idf}. \acs{Tf-Idf} is a technique to generate numeric representation of words. \acs{Tf-Idf} represents product of two terms, \acs{Tf} and \acs{Idf}.
-
-% \begin{math} x_i=tf(w_i) x idf(w_i) \end{math}
-
-\section {Feature selection and dataset sources}
+\section {Feature selection and dataset sources} \label{sec:feature-selection}
 
 A feature represents a dataset fine-tuned to serve as a training data for machine learning model. The feature selection API from Scikit learn \parencite{sklearn_api} name it as dimensionality reduction. In table \ref{table:enc} the dimensionality is only two. Hence, the obvious choice of feature is "Product name" and target is "Category". Selecting features from higher number of dimensionality is a challenge and a deciding factor to improve the estimators' accuracy scores.\\ 
 Various methods for feature selection with Scikit Learn API are:-
@@ -93,22 +83,12 @@ Various methods for feature selection with Scikit Learn API are:-
             \bottomrule
             \end{tabular}
 
-            % \begin{tabular}{llllll}
-            %       \toprule
-            %        catlevel0 & catlevel1 & catlevel2 & catlevel3 & catlevel4 & catlevel5 \\
-            %       \midrule
-            %       sparepart & cooling system & thermostat & NaN & NaN & NaN \\
-            
-            %       \bottomrule
-            % \end{tabular}
 
 \end{table}
 
 
-% \subsection{Dependency parsing for extracting nouns from features}
+\section{Summary}
 
-% \section {Data imputation techniques - on missing data} \label{dataimput}
+In this chapter, search analytic engine named Elastic search is introduced. The author as a prototype of classification model choose to include only two-dimensionality. One is the feature (product name) and other is the target to be predicted (category.)
 
-% \subsection {Forward and Backward fill}
-
-% \subsection {Impute with mode}
+Table \ref{table:feature_decription} list the features for determining the product taxonomy. These features are listed based on general knowledge and understanding. However, method for feature selection mentioned by Scikit learn API \parencite{sklearn_api} can be used to determine the features.
