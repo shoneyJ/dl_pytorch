@@ -12,9 +12,9 @@ The knowledge base is a dataset with formal semantics that can contain different
     \parencite[Chapter 4]{LisaEhrlinger}
 \end{figure}
 
-Figure \ref{fig:kg} illustrates the procsssing of plain text from various sources such as  Wikipedia API, PDF into a graph. This abstract architecture represented by \Citeauthor{LisaEhrlinger} of a \acl{kg} portraits the asumption that a \acl{kg} is more than a \acf{kb}. \acl{kg} is a combination of \acl{kb} and \acf{qe}. 
+Figure \ref{fig:kg} illustrates the processing of plain text from various sources such as  Wikipedia API, PDF into a graph. This abstract architecture represented by \Citeauthor{LisaEhrlinger} of a \acl{kg} portraits the assumption that a \acl{kg} is more than a \acf{kb}. \acl{kg} is a combination of \acl{kb} and \acf{qe}. 
 
-\Iac{qe} is a set of graph of possible questions that could be formed in reference to \iac{kb}. \acf{qg} for comprehensive reading is a challenging task. There are datasets available for  \acs{qg}, one of it is Stanford Question Answering Dataset v1.0 (SQuAD) consisting of questions posed by crowdworkers on a set of Wikipedia articles \parencite{PranavRajpurkar.}. The limitation with such a data set is that these do not contain unanserable questions. Building a machine learning model when no answer is supported was out of scope of SQuAD objective \parencite{LupeHernandez}.  Study on automatic question generation from an attention-based sequence learning model for  \ac{qg} and investigate the effect of encoding sentence- vs. paragraph-level information \parencite{DuXinya.29042017}, reduces reliance on handcrafted rule based systems.
+\Iac{qe} is a set of graph of possible questions that could be formed in reference to \iac{kb}. \acf{qg} for comprehensive reading is a challenging task. There are datasets available for  \acs{qg}, one of it is Stanford Question Answering Dataset v1.0 (SQuAD) consisting of questions posed by crowd workers on a set of Wikipedia articles \parencite{PranavRajpurkar.}. The limitation with such a data set is that these do not contain unanswerable questions. Building a machine learning model when no answer is supported was out of scope of SQuAD objective \parencite{LupeHernandez}.  Study on automatic question generation from an attention-based sequence learning model \parencite{Vaswani.12062017} for  \ac{qg} and investigate the effect of encoding sentence- vs. paragraph-level information \parencite{DuXinya.29042017}, reduces reliance on handcrafted rule based systems.
 
 \clearpage
 
@@ -22,7 +22,9 @@ Figure \ref{fig:kg} illustrates the procsssing of plain text from various source
 
 
 One of the first things required for \acf*{nlp} tasks is a creating a text corpus.
-In linguistics and \acs{nlp}, corpus refers to a collection of texts. One of the objective of this paper is to web crawl and extract data related to "Motor Oil". Our intention is to fetch the unstructred text corpus specifically related to "Motor Oil" and to create a graph-based knowledge. 
+In linguistics and \acs{nlp}, corpus refers to a collection of texts. An intriguing application of knowledge graphs within the e-commerce industry involves the creation of a comprehensive information network concerning products. Such a knowledge graph can serve as the basis for chatbots to provide answers to user queries. Converting unstructured text corpus into a directed acyclic graph. Knowledge base serve as a foundation for chatbot applications to traverse through the graph
+structure, locate relevant leafs nodes, and formulate human-readable response.
+
 
 Wikipedia\footnote{https://www.wikipedia.org/} is primarily an encyclopedia with the additional benefit of heavy linking between articles and without the size constraints of paper articles \parencite{TorstenZesch}. Wikipedia API \footnote{https://pypi.org/project/Wikipedia-API/}
 
@@ -47,11 +49,11 @@ Traversing further right of the dependency tree we can extract the \acsp{pobj}. 
 
 \section{Knowledge graph with Networkx}
 
-The directed graphs created with Networkx \parencite{hagberg2008exploring} is suitable for representing depedency parsing of a sentence mentioned in section \ref{dependencyparsing}. A knowledge base are represented as triples of \acf{SRO}. In which the subject and object are nodes or entities of a graph and relation are directed edges or links between the nodes.
+The directed graphs created with Networkx \parencite{hagberg2008exploring} is suitable for representing dependency parsing of a sentence mentioned in section \ref{dependencyparsing}. A knowledge base are represented as triples of \acf{SRO}. In which the subject and object are nodes are entities of a graph and relation are directed edges or links between the nodes.
 
 \subsection{What to use as nodes n(x) and edges e(y)?}
 
-In table \ref{table:1}, distigution of triples by  \acs{POS} tags is depicted. 
+In table \ref{table:1}, distingution of triples by  \acs{POS} tags is depicted. 
 \begin{table}[h!]
 \begin{center}
 \begin{tabular}{>{$}l<{$} l}

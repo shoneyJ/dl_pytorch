@@ -74,6 +74,23 @@ Another option is to replace the German characters to equivalent English soundin
             \end{tabular}
   \end{table}
 
+
+  \section{Avoided normalization processes}
+
+  In this project, some commonly practiced normalization process are being avoided. Which once and why are described below.
+
+  \begin{itemize}
+      \item Stemming 
+      
+      Stemming is a process of striping off any affixes. \acl{nlp} tools such as NLTK provide stemmers. The Porter and Lancaster
+      stemmers follow their own rules for stripping affixes \parencite{BirdKleinLoper09}. Author required not to deviate from the original vocabulary of features.
+
+      \item Lemmatization
+      
+      Lemmatization remove the affixes if the word is in the used libraries' dictionary. The vocabulary for corpora and any third party library such as WordNet cannot be synced.   
+
+  \end{itemize}
+
 \section{Summary}
 
 Before extracting the features (refer chapter \ref{sec:feature-extraction}) it is important to normalize and standardize the data set. If the text normalization step is skipped then while creating the numerical representation of the text the data will be inconsistent. For example, same text with proper case (Car) or lower case (car) will have two representation even though the semantic meaning is the same.  

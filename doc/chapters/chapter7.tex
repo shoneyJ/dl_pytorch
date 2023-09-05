@@ -186,7 +186,6 @@ The back propagation learning procedure proposed in  \parencite{Rumelhart.1986} 
     \item These gradients can be accessed to update the model parameters through an optimization algorithm  like \acf{SGD} . Iteratively trained neural network's  gradient-based optimizers drive the cost function($LogSoftmax$) to a very low value. 
 \end{enumerate}
 
-\clearpage
 
 \section{Experimentation: Variation in the training parameters.}
 
@@ -307,7 +306,7 @@ The steps involved in training a model with \acs{CLR} are as follows :
     The result of training process the model with $base\_lr =1 \times 10^{-11}$ and $max\_lr=0.9$.\\
     In figure \ref{fig:Loss value} notice that at 32 \% of training completion with learning rate $\approx$ 0.2 the loss started to explode. Hence, we conclude that the  $max\_lr < 0.2$
 
-    \begin{figure}[H]
+    \begin{figure}
         \centering    
         \includegraphics[scale=0.6]{loss_nan.png}
         \caption{Result: Loss value returning nan}
@@ -317,9 +316,9 @@ The steps involved in training a model with \acs{CLR} are as follows :
 
     \item In the next experiment, we set the $max\_lr = 0.2$. \\
     The classification model successfully completed the training and was able to predict the category.
-    \begin{figure}[H]
+    \begin{figure}
         \centering    
-        \includegraphics[scale=0.9]{loss_lr_02.png}
+        \includegraphics[scale=0.8]{loss_lr_02.png}
         \caption{Loss vs Learning rate; where $max\_lr = 0.2$}
         \label{fig:Loss value at 0.2}
     \end{figure}
@@ -328,7 +327,7 @@ The steps involved in training a model with \acs{CLR} are as follows :
 
     \item In the next experiment, we set the $max\_lr = 0.04$. \\
     Notice in figure \ref{fig:Loss value at 0.04}, there is a plateau until $\epsilon = 0.010$. After which there is a descent until $\epsilon = 0.015$
-    \begin{figure}[H]
+    \begin{figure}
         \centering    
         \includegraphics[scale=0.9]{loss_004.png}
         \caption{Loss vs Learning rate; where $max\_lr = 0.04$}
@@ -337,16 +336,16 @@ The steps involved in training a model with \acs{CLR} are as follows :
 
     \item In the next experiment, we set the $max\_lr = 0.015$. \\
     Notice in figure \ref{fig:Loss value at 0.015}, the loss had not neared zero and the model fails to predict the classification. 
-    \begin{figure}[H]
+    \begin{figure}
         \centering    
         \includegraphics[scale=0.9]{loss_0015.png}
         \caption{Loss vs Learning rate; where $max\_lr = 0.015$}
         \label{fig:Loss value at 0.015}
     \end{figure}
 
-    \item From the earlier mentioned experimentation with $max\_lr$,  the loss classification model is nearing zero by the end the training  when  $max\_lr > 0.015$ 
+    \item From the earlier mentioned experimentation with $max\_lr$,  the loss in classification model is nearing zero by the end the training  when  $max\_lr > 0.015$ 
     Figure \ref{fig:Loss value at 0.02} illustrates the loss reaching near zero when $max\_lr = 0.02$. The figure  \ref{fig:Loss value at 0.02}, there is a plateau until the $ \epsilon = 0.0075$. Indicating that the model did not learn until the learning rate $ \epsilon = 0.0075$.
-    \begin{figure}[H]
+    \begin{figure}
         \centering    
         \includegraphics[scale=0.9]{loss_002.png}
         \caption{Loss vs Learning rate; where $max\_lr = 0.02$}
@@ -355,7 +354,7 @@ The steps involved in training a model with \acs{CLR} are as follows :
 
     \item Updating the $base_lr=0.0075$ and $max_lr=0.02$, resulted a steady slop in the loss vs learning rate.  
     Figure \ref{fig:Loss value at 0.0075} illustrates the loss reaching near zero when $max\_lr = 0.02$ and $base_lr=0.0075$. The steady decent indicates the learning rate range is optimal.
-    \begin{figure}[H]
+    \begin{figure}
         \centering    
         \includegraphics[scale=0.9]{loss_0075_002.png}
         \caption{Loss vs Learning rate; where $base\_lr = 0.0075$ and $max\_lr = 0.02$ }
@@ -371,7 +370,6 @@ The steps involved in training a model with \acs{CLR} are as follows :
 
 
 How triangular learning rate works?
-
 \begin{enumerate}
     \item \textbf{Initialize}: The step size $ t $, minimum bound or base learning rate $ base\_lr$ and maximum bound or the max learning rate  $max\_lr$ are initialized. These hyperparameters are tuned based on the architecture of the model. In this experiment, the values set are  $ base\_lr=0.0075 ; max\_lr=0.02; t=10000$.
     \item  \textbf{Up phase}: During training, the learning rate is linearly increased from $ base\_lr$ to $max\_lr$ over a certain number of step size $ t $.

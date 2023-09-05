@@ -14,54 +14,45 @@ Data collection is simply a process of fetching the data from the data source. H
 In this project, author choose to create a classification model with only one feature that is the name of the product. However, author identifies the potential features to classify the target of n levels of category. These features have been identified based on the understanding of domain of the product. For products with many details will have many more features to be taken into consideration. In such case, selection based on common understanding of the nature of the product may not be sufficient. Hence, Scikit learn  \parencite{sklearn_api} provides methods to define feature appropriately. 
 
 
-\section {Fetch existing product taxonomy using Elasticsearch}
-Elastic search \footnote{https://www.elastic.co/} is a fast and scalable search and analytics engine. It can build a powerful AI and machine learning enabled search experience. In this paper, author fetches labeled dataset of products to serve as the training data for the machine learning model.
-For this project, python client elasticsearch 6.8.2 is installed as the client needs to be compatible with Elastic search version being used. The official Python client provides mapping with Elasticsearch REST APIs.
+\section {Feature selection methods} \label{sec:feature-selection}
 
-\begin{lstlisting}[language=Python]
-resp=self.es.search("english-name-category",{"_source":["id","name","category"],
-'from':_from,
-'size' :_size ,
-"query": {"match_all": {}}})
-\end{lstlisting}
+A feature represents a dataset fine-tuned to serve as a training data for machine learning model. Choosing obvious set of features could get a decent performance on classification task. However, carefully constructed relevant set of features could impact the learning ability and have a significant gain in performance. The feature selection API from Scikit learn \parencite{sklearn_api} also refers to it as dimensionality reduction. 
 
-The above code fetches indexed product name and its lowest hierarchy level category.  
-\begin{table}[h]
-      \caption{Index: english-name-category statistics}
-      \centering
-      \label{table:enc}
-\begin{tabular}{ll}
-      \toprule 
+\parencite{BirdKleinLoper09}  describes some approaches for feature selection as following:
 
-      Samples total&22160 \\
-      Dimensionality&2 \\
-      Features&name \\
-      Label&category \\
+\begin{itemize}
+      \item Kitchen sink 
       
-      \bottomrule
-\end{tabular}
-\end{table}
 
-Table \ref{table:enc} highlights the total number of products and category, which field is considered as feature and target. 
+      All the features are initially included later each are checked to determine whether they are actually helpful.
 
-\section {Feature selection and dataset sources} \label{sec:feature-selection}
+      \item Error analysis
+      
+      The data corpus is split into development-set and test-set. Development-set is subdivided into training set and dev-test set. Training set is used to train the model, dev-test set is employed for error analysis.  The individual error cases are examined for wrongly predicted labels.
+      
+      
+      \begin{figure}[H]
+            \centering    
+            \includegraphics[scale=0.5]{corpus-org.png}
+            \caption{Corpus organization for supervised classification \parencite{BirdKleinLoper09}}
+            \label{fig:corpus-supervised-classification}
+        \end{figure}
 
-A feature represents a dataset fine-tuned to serve as a training data for machine learning model. Choosing obvious set of features could get a decent performance on classification task. However, carefully constructed relevant set of features could impact the learning ability and again a significant gain in performance. The feature selection API from Scikit learn \parencite{sklearn_api} also refers to it as dimensionality reduction. A common approach for feature selection is ``kitchen sink''  in which all the features are initially included later each are checked to determine whether they are actually helptfull \parencite{BirdKleinLoper09}.
+\end{itemize}
 
-In table \ref{table:enc} the dimensionality is only two. Here, the feature is ``Product name'' and label is ``Category''. Selecting features from higher number of dimensionality is a challenge. Appropriate features are factors to improve the classification models' accuracy scores.\\ 
-Various methods for feature selection with Scikit Learn API are:-
-\begin{enumerate}
+ Methods for feature selection with Scikit Learn API are:-
+\begin{itemize}
       \item Removing features with low variance
       \item Univariate feature selection
       \item Recursive feature elimination
 
-\end{enumerate}
+\end{itemize}
 
-\section{Potential features}
+\section{Obvious feature selection}
 
 In this paper, the datasets used are of an ecommerce business specializing in automotive industry domain. Secondary dataset used is from the TecDoc catalogue by TecAlliance \footnote{https://www.tecalliance.net/}. 
 
- Refer table \ref{table:feature_decription} to view the potential features for an ecommerce domain. In this paper, five levels of categories are taken into consideration. The number of category levels differ for each product. Consider an example of category tree with three levels. 
+Table \ref{table:feature_decription} lists the obvious features for an ecommerce domain. In this paper, five levels of categories are taken into consideration. The number of category levels differ for each product. Consider an example of category tree with three levels. 
 
 \begin{quote} 
 \centering 
@@ -96,9 +87,39 @@ In this example, the lowest level of category is ``thermostat'' as level 4 and l
 
 \end{table}
 
+\section {Fetch existing product taxonomy (Corpus) using Elasticsearch}
+Elastic search \footnote{https://www.elastic.co/} is a fast and scalable search and analytics engine. It can build a powerful AI and machine learning enabled search experience. In this paper, author fetches labeled dataset of products to serve as the training data for the machine learning model.
+For this project, python client elasticsearch 6.8.2 is installed as the client needs to be compatible with Elastic search version being used. The official Python client provides mapping with Elasticsearch REST APIs.
+
+\begin{lstlisting}[language=Python]
+resp=self.es.search("english-name-category",{"_source":["id","name","category"],
+'from':_from,
+'size' :_size ,
+"query": {"match_all": {}}})
+\end{lstlisting}
+
+The above code fetches indexed product name and its lowest hierarchy level category.  
+\begin{table}[h]
+      \caption{Index: english-name-category statistics}
+      \centering
+      \label{table:enc}
+\begin{tabular}{ll}
+      \toprule 
+
+      Samples total&22160 \\
+      Dimensionality&2 \\
+      Features&name \\
+      Label&category \\
+      
+      \bottomrule
+\end{tabular}
+\end{table}
+
+Table \ref{table:enc} highlights the total number of products and category and name of fields considered as feature and label. 
+
 
 \section{Summary}
 
-In this chapter, search analytic engine named Elastic search is introduced. The author as a prototype of classification model choose to include only two-dimensionality. One is the feature (product name) and other is the target to be predicted (category.)
+In this chapter, search analytic engine named Elastic search is introduced. The author as a prototype of classification model choose to include only two-dimensionality. One is the feature (product name) and other is the label to be predicted (category.)
 
-Table \ref{table:feature_decription} list the features for determining the product taxonomy. These features are listed based on general knowledge and understanding. However, method for feature selection mentioned by Scikit learn API \parencite{sklearn_api} can be used to determine the features.
+Table \ref{table:feature_decription} list the features for determining the product taxonomy. These features are listed based on general knowledge and understanding. However, productive method for refining the feature such as error analysis can be utilized for feature selection. Scikit learn API \parencite{sklearn_api} also provides some functions for feature selection.

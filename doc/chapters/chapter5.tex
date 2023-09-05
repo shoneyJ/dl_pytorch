@@ -2,14 +2,10 @@
 
 Transforming text or image data into numerical representation usable for machine learning is called feature extraction. Raw sequence of data cannot be fed directly into a machine learning algorithm as they expect data in numerical vector and in fixed size. Whereas raw text document are of variable lengths. 
 
-\section{Tokenization}
+\section{Count Tokenization}
 
 Tokenization is splitting the text in sequential words which can be embedded in a vector space.
 For example, the normalized product name ``abc joint kit drive shaft'' can be tokenized into  ``abc'',``joint'',``kit'',``drive'',``shaft''. 
-
-
-
-\section{Counting}
 
 Number of occurrence of each token in a document is called counting in terms of numerical feature extraction.
 
@@ -77,6 +73,9 @@ Pickle \footnote{https://docs.python.org/3/library/pickle.html} module creates a
 \begin{lstlisting}[language=Python,label=pickle, caption={Pickle vectorization}]
     pickle.dump(self.vectorizer, open("vector.pickel", "wb"))
 \end{lstlisting}
+
+The memory use will grow as the vocabulary in the text corpus grows.  Pickling and un-pickling of vectorizer will slow for large vocabulary.
+This issue can be tackled by hashing the features. 
 
 \section{Summary}
 
