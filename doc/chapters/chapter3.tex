@@ -1,6 +1,6 @@
 \chapter{Text normalization} \label{text_normalization}
 
-Text normalization is a process of transforming the document into a standard and consistent form of a text. A document is a text from single source. Some examples of document are list of product names from databases, a pdf file, texts retrieved from web scraping. Text normalization enables to perform required operations on the text as the text inputs are consistent across the document. The process of text normalization varies based on the type of text that needs to normalize. There is no standard method for text normalization task. In this paper, text normalization of product name and category from the database source is performed. The text are of two languages, English and Deutsche.
+Text normalization is a process of transforming the document into a standard and consistent form of a text. A document is a text from single source. Some examples of document are list of product names from databases, a pdf file, texts retrieved from web scraping. Text normalization enables to perform required operations on the text as the text inputs are consistent across the document. The process of text normalization varies based on the type of text that needs to be normalize. There is no standard method for text normalization task. In this paper, text normalization of product name and category from the database source is performed. 
 
 In table \ref{table:TN}, displays the difference in text before and after normalization. 
 
@@ -13,7 +13,7 @@ In table \ref{table:TN}, displays the difference in text before and after normal
                   &\textbf{Name} & \textbf{Category} \\ 
       \midrule
       \textbf{Before}& Company V10-4245 Stoßdämpfer & Stoßdämpfer \\
-      \textbf{After}&company v104245 stoßdampfer & stoßdampfer \\
+      \textbf{After}&company v104245 stossdaempfer & stossdaempfer \\
       
       \bottomrule
 \end{tabular}
@@ -60,6 +60,19 @@ A product name in Deutsch language may contain umlaute characters such as \"A.  
             if unicodedata.category(c) != 'Mn')
 \end{lstlisting}
 
+Another option is to replace the German characters to equivalent English sounding characters. Table \ref{table:deu-eng} lists the common German characters and their equivalent English sounding series of characters. In this way, the reverse translation is easier.
+\begin{table}[h]
+      \centering
+      \caption{German characters to English}
+      \label{table:deu-eng}
+      \begin{tabular}{ llll }
+            \toprule
+            \"A& Ö&  Ü&ß \\
+            Ae&Oe & Ue&ss\\         
+          
+            \bottomrule
+            \end{tabular}
+  \end{table}
 
 \section{Summary}
 

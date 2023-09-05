@@ -1,9 +1,22 @@
-\chapter{Data collection}
+\chapter{Feature selection}
+
+Data collection is simply a process of fetching the data from the data source. However, feature selection is a process of selecting fields from which the target field will be predicted. Suppliers provide stock details along with associated product taxonomy. Importing well-defined taxonomy requires to train the classification model with already existing correct pair of features and label. The already existing pair of features and the correct label for each input is the training data set or training corpora. The classifier built on such a training corpora is termed as supervised classification \parencite{BirdKleinLoper09}.
+
+\begin{figure}[H]
+      \centering    
+      \includegraphics[scale=0.9]{supervised-classification.png}
+      \caption{Supervised classification \parencite{BirdKleinLoper09}}
+      \label{fig:supervised-classification}
+  \end{figure}
+
+  As illustrated in figure \ref{fig:supervised-classification}, during training, a pair of feature set and label are fed in to the machine learning algorithm to generate a classifier model. During prediction, same feature set are fed into the model to predict the label. Refer to chapter \ref{ch:feature-extraction} for details on feature extraction.
+
+In this project, author choose to create a classification model with only one feature that is the name of the product. However, author identifies the potential features to classify the target of n levels of category. These features have been identified based on the understanding of domain of the product. For products with many details will have many more features to be taken into consideration. In such case, selection based on common understanding of the nature of the product may not be sufficient. Hence, Scikit learn  \parencite{sklearn_api} provides methods to define feature appropriately. 
 
 
 \section {Fetch existing product taxonomy using Elasticsearch}
 Elastic search \footnote{https://www.elastic.co/} is a fast and scalable search and analytics engine. It can build a powerful AI and machine learning enabled search experience. In this paper, author fetches labeled dataset of products to serve as the training data for the machine learning model.
-Refer section \ref {pyenv} for installation detail of version specific python client of Elastic search. For this project, python client elasticsearch 6.8.2 is installed as the client needs to be compatible with Elastic search version being used. The official Python client provides mapping with Elasticsearch REST APIs.
+For this project, python client elasticsearch 6.8.2 is installed as the client needs to be compatible with Elastic search version being used. The official Python client provides mapping with Elasticsearch REST APIs.
 
 \begin{lstlisting}[language=Python]
 resp=self.es.search("english-name-category",{"_source":["id","name","category"],
@@ -12,8 +25,7 @@ resp=self.es.search("english-name-category",{"_source":["id","name","category"],
 "query": {"match_all": {}}})
 \end{lstlisting}
 
-The above code fetches indexed product name and its top hierarchy level category. This record serves as a foundation for multi level category prediction.  
-
+The above code fetches indexed product name and its lowest hierarchy level category.  
 \begin{table}[h]
       \caption{Index: english-name-category statistics}
       \centering
@@ -24,17 +36,19 @@ The above code fetches indexed product name and its top hierarchy level category
       Samples total&22160 \\
       Dimensionality&2 \\
       Features&name \\
-      Target&category \\
+      Label&category \\
       
       \bottomrule
 \end{tabular}
 \end{table}
 
-
+Table \ref{table:enc} highlights the total number of products and category, which field is considered as feature and target. 
 
 \section {Feature selection and dataset sources} \label{sec:feature-selection}
 
-A feature represents a dataset fine-tuned to serve as a training data for machine learning model. The feature selection API from Scikit learn \parencite{sklearn_api} name it as dimensionality reduction. In table \ref{table:enc} the dimensionality is only two. Hence, the obvious choice of feature is "Product name" and target is "Category". Selecting features from higher number of dimensionality is a challenge and a deciding factor to improve the estimators' accuracy scores.\\ 
+A feature represents a dataset fine-tuned to serve as a training data for machine learning model. Choosing obvious set of features could get a decent performance on classification task. However, carefully constructed relevant set of features could impact the learning ability and again a significant gain in performance. The feature selection API from Scikit learn \parencite{sklearn_api} also refers to it as dimensionality reduction. A common approach for feature selection is ``kitchen sink''  in which all the features are initially included later each are checked to determine whether they are actually helptfull \parencite{BirdKleinLoper09}.
+
+In table \ref{table:enc} the dimensionality is only two. Here, the feature is ``Product name'' and label is ``Category''. Selecting features from higher number of dimensionality is a challenge. Appropriate features are factors to improve the classification models' accuracy scores.\\ 
 Various methods for feature selection with Scikit Learn API are:-
 \begin{enumerate}
       \item Removing features with low variance
@@ -43,21 +57,17 @@ Various methods for feature selection with Scikit Learn API are:-
 
 \end{enumerate}
 
-% The datasets used primarly for extracting feautures will be from the existing product database. In this paper, the datasets used are of an ecommerce business belonging to automotive industry domain. Secondary dataset used is from the TecDoc catalogue by TecAlliance \footnote{https://www.tecalliance.net/}
+\section{Potential features}
 
- Author initially chose to experiment with two-dimensionality, a simple experiment of predicting target which is top level category with feature which is the name of the product. Refer table \ref{table:feature_decription} to view the potential features for an ecommerce domain. 
-%   five levels of categories are taken into consideration. The number of category levels differ for each product. Consider an example of category tree with three levels. 
+In this paper, the datasets used are of an ecommerce business specializing in automotive industry domain. Secondary dataset used is from the TecDoc catalogue by TecAlliance \footnote{https://www.tecalliance.net/}. 
 
-% \begin{quote} 
-% \centering 
-% sparepart/cooling-system/thermostat
-% \end{quote}
-% In such case, level 4 and level 5 will be appended with values using data imputation techniques, refer section \ref{dataimput}. 
-% \begin{figure}[h]
-%       \centering
-%       \small{This is text.  It's in a figure environment but it's still text}
-%       \caption{\label{fig_text}Some text that can float as a figure}
-%   \end{figure}
+ Refer table \ref{table:feature_decription} to view the potential features for an ecommerce domain. In this paper, five levels of categories are taken into consideration. The number of category levels differ for each product. Consider an example of category tree with three levels. 
+
+\begin{quote} 
+\centering 
+sparepart/cooling-system/thermostat
+\end{quote}
+In this example, the lowest level of category is ``thermostat'' as level 4 and level 5 does not exist and will be represented by black or NaN. These blank or NaN value records can go through data imputation as discussed in chapter \ref{ch:data-imputation}.
 
 
 

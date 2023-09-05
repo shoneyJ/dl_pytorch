@@ -1,12 +1,15 @@
 \documentclass[15pt,twoside]{report}
 
+
+
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
+
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{fancyhdr}
 \usepackage[nohyperlinks, printonlyused, withpage, smaller]{acronym}
-\usepackage[sorting=nyt,backend=biber,style=authoryear,block=par]{biblatex}
+\usepackage[sorting=nyt,backend=biber,style=authoryear]{biblatex}
 \usepackage[inkscapeformat=png]{svg}
 \usepackage{booktabs,multirow,array}
 \usepackage{listings}
@@ -17,6 +20,8 @@
 \usepackage{tikz}
 \usepackage{tocloft}
 \usepackage{enumitem}
+\usepackage{appendix}
+
 \usetikzlibrary{positioning}
 \captionsetup[table]{skip=5pt}
 
@@ -30,6 +35,9 @@
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+
 
 % Define the page style "mystyle" for the fancyhdr package
 \fancypagestyle{mypagestyle}{
@@ -66,6 +74,19 @@
 \lstset{style=mystyle}
 
 \graphicspath{ {images/} }
+
+\renewbibmacro*{url+urldate}{%
+  \printfield{url}%
+  \iffieldundef{urlyear}
+    {}
+    {\setunit*{\addspace}%
+     \printtext[urldate]{\printurldate}}}
+
+
+\DeclareFieldFormat{url}{Available at\addcolon\space\url{#1}}
+
+\DeclareFieldFormat{urldate}{\\Accessed on\addcolon\space#1}
+
 \addbibresource{References.bib}
 
 \includeonly{preliminary/title, %
@@ -80,15 +101,15 @@ chapters/chapter5,%
 chapters/chapter6,%
 chapters/chapter7,%
 chapters/chapter1,%
-chapters/conclusion%
+chapters/conclusion, %
+chapters/appendix%
 }
 
 \begin{document}
 
 
 %--------------- Prelimanary pages -------------
-\pagenumbering{roman}
-\pagestyle{plain}
+
 
 %--------------------------------------------
 \include{preliminary/title.tex}
@@ -97,10 +118,11 @@ chapters/conclusion%
 
 
 
-
+\pagenumbering{roman}
+\pagestyle{plain}
 \tableofcontents
 
-
+\clearpage
 %----------------- chapters --------------------
 \pagestyle{mypagestyle}
 \pagenumbering{arabic}
@@ -131,14 +153,26 @@ chapters/conclusion%
 
 \lstlistoflistings
 \include{preliminary/acronyms}
-\appendix
-% \include{chapters/appendix.tex}
+
+
 
 \clearpage
 % \printglossary[type=\acronymtype]
 
 % \printglossary
 \addcontentsline{toc}{chapter}{Bibliography}
-\printbibliography
+\printbibliography[title={References}]
+
+\defbibheading{bibempty}{}
+
+\let\oldbib\thebibliography
+\let\endoldbib\endthebibliography
+\renewenvironment{thebibliography}
+  {\vspace{\baselineskip}\begin{oldbib}}
+  {\end{oldbib}\vspace{\baselineskip}}
+
+\addcontentsline{toc}{chapter}{Appendices}
+\appendix
+\include{chapters/appendix.tex}
 
 \end{document}

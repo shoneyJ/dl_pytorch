@@ -1,11 +1,11 @@
-\chapter{Feature extraction}
+\chapter{Feature extraction} \label{ch:feature-extraction}
 
 Transforming text or image data into numerical representation usable for machine learning is called feature extraction. Raw sequence of data cannot be fed directly into a machine learning algorithm as they expect data in numerical vector and in fixed size. Whereas raw text document are of variable lengths. 
 
 \section{Tokenization}
 
 Tokenization is splitting the text in sequential words which can be embedded in a vector space.
-For example, the normalized product name "abc joint kit drive shaft" can be tokenized into "abc", "joint", "kit", "drive", "shaft". 
+For example, the normalized product name ``abc joint kit drive shaft'' can be tokenized into  ``abc'',``joint'',``kit'',``drive'',``shaft''. 
 
 
 
@@ -77,3 +77,9 @@ Pickle \footnote{https://docs.python.org/3/library/pickle.html} module creates a
 \begin{lstlisting}[language=Python,label=pickle, caption={Pickle vectorization}]
     pickle.dump(self.vectorizer, open("vector.pickel", "wb"))
 \end{lstlisting}
+
+\section{Summary}
+
+Feature extraction is a process of transforming the normalized text into numerical representation for machine learning.  Tokenization of text and Counting are terms to split the text in sequence of words and there occurrence. 
+
+In this thesis, author has used the n-grams vectorization method to convert the feature - product name into a vector format. This creates a vocabulary of product name. For example, consider total number of unique words in entire product name column is 100. The name of the product will be a vector shape of 1 \time 100 with each text represented in one-hot encoded format. Refer table \ref{table:countencode} for visual representation.

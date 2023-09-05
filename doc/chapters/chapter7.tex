@@ -5,7 +5,7 @@
 After processing the document into a standard and consistent from as discussed in chapter \ref{text_normalization}. the normalized form data can be stored in any database for frequently accessing the data for training purpose. In this experiment, the database used is Elastic Search. The author initially trained the classification model with only one feature ``Product name'' and the target being the lowest level of category.
 Table \ref{table:AfterNormal} displays the difference in the number of records after removing the duplicate records on the normalized text. An Index in elastic search is a logical namespace for storing data in JSON format. The indexer names ``english-taxonomy-all'' contains the data before normalization. ``english-taxonomy-normal'' contains the data after normalization and removing the duplicate entries.
 
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \caption{Record count before and after normalization}
     \label{table:AfterNormal}
@@ -309,7 +309,7 @@ The steps involved in training a model with \acs{CLR} are as follows :
 
     \begin{figure}[H]
         \centering    
-        \includegraphics[scale=0.7]{loss_nan.png}
+        \includegraphics[scale=0.6]{loss_nan.png}
         \caption{Result: Loss value returning nan}
         \label{fig:Loss value}
     \end{figure}
@@ -472,3 +472,23 @@ In this experiment, the model is trained with and without triangular learning ra
    
     
 \end{enumerate}
+
+
+\section{Summary}
+
+This chapter is about the result of classification model. How the normalized text data is indexed and fetched from the elastic search is mentioned in this chapter. Initialization of the Train class and its input parameters detailed explanation is given in this chapter.  
+
+What is \acf*{BPTT}? How its relevant backwards methods works? are mentioned in the chapter.
+
+Author experiments with the model parameters and evaluates the model based on the logarithmic loss value. 
+
+Few training experiments are:
+\begin{itemize}
+    \item Training model without any learning parameters.
+    \item Updating the number of hidden states in a neural network.
+    \item Determining the learning rate range.
+    \item Training with Triangular learning rate.
+\end{itemize}
+
+
+This chapter also describes the gradient decent \parencite{cauchy} step adjustment and compares the equation with the Pytorchs's tensor gradient method of adjustment with learning rate.  

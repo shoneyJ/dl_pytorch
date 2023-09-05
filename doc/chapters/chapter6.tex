@@ -106,17 +106,6 @@ For example, consider a vocabulary of 100 unique words in the \textit{ProductNam
           \end{tabular}
 \end{table}
 
-% \section{\Citeauthor{sean} input tensors vs Product name to tensor}
-
-
-% \begin{lstlisting}[language=Python,label=sean, caption={\Citeauthor{sean} input tensor}]
-%     def lineToTensor(line):
-%         tensor = torch.zeros(len(line), 1, n_letters)
-%         for li, letter in enumerate(line):
-%             tensor[li][0][letterToIndex(letter)] = 1
-%         return tensor
-% \end{lstlisting}
-
 \section{Architecture of \acf{RNN}}
 \acs{RNN} module copied from \parencite{sean} tutorial contains two linear layers which operate on input and hidden state, with LogSoftmax layer after the output layer. \acfp{RNN} \parencite{Rumelhart.1986} is best suited for machine learning problems that involve sequential data and use patterns to predict the output. This machine learning algorithm store information of previous states and holds the memory. 
 \begin{lstlisting}[language=Python,label=code:RNN-class, caption={\acf{RNN} class}]
@@ -202,6 +191,8 @@ The graphical representation of code listed in \ref{code:RNN-class} is illustrat
     \item i2o : input-to-output,a fully connected linear layer gets the next output state from the current input and previous hidden state.
     \item softmax: Layer used for classification. 
 \end{itemize}
+
+  
 
 \section{Forward propagation equation} \label{sec:forward-propagation}
 The forward propagation equations for the recurrent neural network (RNN) depicted in code \ref{code:RNN-class}, assuming the tanh activation function for hidden units and a discrete output (used for predicting words or characters) \parencite{Goodfellow-et-al-2016}, are as follows
@@ -308,3 +299,12 @@ Adaptive Softmax \parencite{Grave.14092016} is effective when large number of cl
 Adaptive Softmax \parencite{Grave.14092016} counter this issue by clustering the classes according to their frequency of occurrence. A simple strategy to reduce the overall computation time is to partition the labels \(V\) into two clusters as \(V_h\) and \(V_l\), where \(V_h\) denotes the distribution consisting of the most frequent classes, and where \(V_l\) are many rare classes. The classifier frequently accesses \(V_h\), which motivates the fact that it should be computed efficiently. In contrast,  \(V_l\) less frequently, and the corresponding computation can be slower. This suggests defining clusters with unbalanced cardinalities \(|V_h| \geq |V_l|\) and probabilities \(P(V_h) \geq P(V_t)\).
 
 Pytorch's \parencite{Paszke.03122019} nn.AdaptiveLogSoftmaxWithLoss module implements \acf{ALL}
+
+
+\section{Summary}
+
+In this chapter, author describes how he ideated the concept of vocabulary based RNN. This method is a modified version of character level RNN \parencite{sean}. The method of converting the product name into a tensor format is described in this chapter. 
+
+Architecture of the RNN and pictorial representation of flow of data within the neural network is depicted. It gives an overview of the activation functions and forward propagation method. 
+
+Research on mathematical representation of the RNN  is conducted in this chapter. Step by step formulation and equations with regard to probability distribution is explained in this chapter.
