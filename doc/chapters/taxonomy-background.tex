@@ -1,0 +1,71 @@
+\chapter{Literature Review}
+
+\section{E-commerce and Product Taxonomy}
+
+A product taxonomy is a hierarchical representation of product catalog organized logically so that the customer can find the product in the fewest possible clicks. The top levels of hierarchy are general terms and low levels are narrowed down to specific and semantically closer to the product.  
+
+
+Product taxonomy can be represented as a directed acyclic graph. The top level of root node traversing below to leaf nodes connected with unidirectional edges representing relationship between the nodes. 
+
+
+\begin{tikzpicture}[node distance=2.5cm]
+    % Nodes
+    \node (sparepart) {SparePart};
+    \node (break-system)[right=3cm of sparepart] {Break system};
+    \node (cylinder-head)[below right of=break-system] {Wheel Brake Cylinder};
+    \node (coolingsystem) [below left of=sparepart] {Cooling System};
+    \node (fan) [below left of=coolingsystem] {Fan};
+    \node (electricalsystem) [below right of=sparepart] {Electrical System};
+
+    \node (lightingsystem) [below right of=electricalsystem] {Lighting System};
+
+    \node (headlighgt) [below right of=lightingsystem] {Headlight};
+    
+    % Arrows
+    \draw[->] (sparepart) -- (coolingsystem);
+    \draw[->] (coolingsystem) -- (fan);
+    \draw[->] (sparepart) -- (electricalsystem);
+    \draw[->] (electricalsystem) -- (lightingsystem);
+    \draw[->] (lightingsystem) -- (headlighgt);
+    \draw[->] (break-system) -- (cylinder-head);
+  \end{tikzpicture}
+ 
+ 
+  What are the characteristics of this sample of product taxonomies?
+\begin{itemize}
+    \item Product taxonomy has different lowest levels of hierarchy. For example, category ``Fan'' is at third level and ``Headlight'' being a part of ``Electrical Systems'' is at fourth level.
+    \item Few categories having similar vocabulary are part of same graph. For example, category with the word ``Brake'' are connected with the edges.  Similary, the category ``Lighting system'' and its leaf node ``Headlight'' share a same semantically meaning word ``light''.
+    \item The root nodes ``Sparepart'' and ``Break system'' are isolated from each other, indicating that they do not have any common entity. 
+    \item The node ``Break system'' could also be a part of node ``Sparepart'' and yet the taxonomy will remain well-defined as it is a general term.
+\end{itemize}
+
+These enlisted characteristics could be an insight on developing an automated product taxonomy.
+
+How important is a well-defined product taxonomy?
+\begin{itemize}
+    \item Customer filters the category to narrow down the search result, enabling them to find the required product in the fewest possible clicks.
+    \item Product recommendation system analyze the purchase history of customer and returns the related products. A well-defined product taxonomy is important for mapping the related products.
+\end{itemize}
+
+\section{Product Taxonomy Prediction Approaches}
+
+
+A lot of research have been conducted on methodology for predicting taxonomy. Prediction of taxonomies narrows down to text classification. Text classification is a process of identifying the group or category in which the  text belongs to.  Few classification methods are decision trees, naive Bayes classifier and max entropy classifiers \parencite{BirdKleinLoper09}. 
+
+
+\begin{itemize}
+    \item Decision  tree
+    
+    A decision tree is a flowchart that selects labels for input values. This flowchart consists of decision nodes, which check feature values, and leaf nodes, which assign labels. 
+
+    \item Naive Bayes classifiers
+    
+    In naive Bayes classifiers, each feature values determining which label should be assigned to a given input value. It begins by calculating prior probability of each label. It is determined by frequency of each label in the training set. Upon combining these prior probability, the likelihood estimation is calculated for each label. The with the highest likelihood estimate is assigned to the input values.
+\end{itemize}
+
+\section{Related work}
+
+\parencite{AliCevahir.} describes implementing classification model by chunking the process to predict at every level using the \acl*{KNN} classifier. \parencite{Gupta.20062016}  proposes a distributional semantics representation for predicting the product taxonomies.
+
+
+

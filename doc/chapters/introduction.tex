@@ -39,9 +39,8 @@ The e-commerce industry is growing substantially, and wide range of products bei
 
 Developing a machine learning model to predict the multi level product categories has series of task and is a complex process. In this paper, to reduce the complexity and primarily focus on the classification problem, author choose to develop a model which predicts the lowest level of category only based on one feature that is the name of the product. Once the smaller working prototype is developed, more features can be integrated along with multiple levels of category. 
 
-\subsection{Data collection}
-The data on which the research will be conducted belongs to an E-commerce industry specializing in automotive parts \footnote{\url{www.retromotion.com}; Accessed on : 05-09-2023}. Ebay, Amazon are few of the third party business partners from which the source of data is fetched. Automotive parts manufacturing companies such as Mahle GmbH and others furnish stock details. These data from various suppliers will be processed and stored into search analytic engine-Elastic search. In this project, author fetches product features from Elastic search. Author uses Pytorch a machine learning library to create a classification model.
-
+% \subsection{Data collection}
+% The labelled training data set belongs to an E-commerce industry specializing in automotive parts \footnote{\url{www.retromotion.com}; Accessed on : 05-09-2023}. In this project, supervised classification model is developed using  the pair of feature set and label. These data from various suppliers will be processed and stored into search analytic engine-Elastic search. 
 
 \subsection{Ideate: Vocabulary pattern}
 Initial approach of finding a solution to product categorization is to analyze already existing solution to a different type of classification problem. For example, \parencite{sean} demonstrates the working of character level RNN. In which, the pattern of series of characters forming a name of a person are classified to predict which language the name belongs to. Analyzing this example author created a vocabulary level RNN to predict the lowest level of category based on the pattern of product name.
