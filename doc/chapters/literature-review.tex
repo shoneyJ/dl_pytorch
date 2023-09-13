@@ -100,6 +100,54 @@ A lot of research have been conducted on methodology for predicting taxonomy. Pr
 
 \end{itemize}
 
+
+
+\section{Supervised Learning}
+
+The machine learning model built using existing dataset is called supervised learning. ´Figure \ref{fig:sup learinig workflow} illustrates the supervised learning workflow. In this paper, author builds a supervised learning model to predict the product taxonomies. The work flow starts with data collection, this steps involves fetching the corpus of raw data. This raw data processed before creating a training data set out of it. The data preprocessing steps involves feature selection, text normalization, data imputation and feature extraction. The training data is passed an input to the model which compares its results with the actual value to self evaluate and learn. If any hyperparameter tuning for the machine learning model is required then it is trained again with new parameters. The model is then evaluated and then deployed for production use.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        node distance=1cm,
+        every node/.style={font=\footnotesize},
+        arrow/.style={->,>=Stealth},
+        process/.style={rectangle, draw, text centered, minimum width=2.5cm},
+        data/.style={rectangle, draw, text centered, text width=2.5cm},
+        decision/.style={diamond, draw, text centered, aspect=2},
+        arrowlabel/.style={midway, above, font=\scriptsize},
+    ]
+        % Nodes
+        \node (start) [process] {Data Collection};
+        \node (data) [data, below=of start] {Data Preprocessing};
+        \node (split) [process, below=of data] {Training dataset};
+        \node (model) [process, below=of split] {Initial Model};
+        \node (train) [process, below=of model] {Train Model};
+        \node (evaluate) [process, below=of train] {Evaluate Model};
+        \node (deploy) [process, below=of evaluate] {Deploy Model};
+     
+        
+        % Arrows
+        \draw [arrow] (start) -- (data);
+        \draw [arrow] (data) -- (split);
+        \draw [arrow] (split) -- (model);
+        \draw [arrow] (model) -- (train);
+        \draw [arrow] (train) -- (evaluate);
+        \draw [arrow] (evaluate) -- (deploy);
+
+        
+        % Decision point
+        \node (decision) [decision, right=of model, xshift=1cm] {Tune Model?};
+        \draw [arrow] (model) -- (decision);
+        \coordinate[right=of decision] (temp);
+        \draw [arrow] (decision) -| node[arrowlabel] {Yes} (temp) |- (train);
+        \draw [arrow] (decision) |- node[arrowlabel] {No} (evaluate);
+    \end{tikzpicture}
+    \caption{Supervised Learning Workflow}
+    \label{fig:sup learinig workflow}
+\end{figure}
+
+
 \section{Related Works}
 
 \parencite{AliCevahir.} describes implementing classification model by chunking the process to predict at every level using the \acl*{KNN} classifier. \parencite{Gupta.20062016}  proposes a distributional semantics representation for predicting the product taxonomies.
@@ -143,27 +191,4 @@ Learning to rank is a machine learning algorithm for \acf{IR}. The application o
  
  One of the use case of conversational commerce is in the reverse logistics- return and exchange. For example, if the user has ordered and wrong product and would like to return it while being on the go. He may use the chatbot assistance and type "I want to return." The chatbot lists the delivered products list and customer selects the product to be returned. 
 
-%  \begin{figure}
-%     \centering
-%     \begin{tikzpicture}[node distance=2.5cm, auto,
-%         rect/.style={rectangle, draw, text centered},
-%         ellipse/.style={ellipse, draw, text centered}
-%     ]
-%         % Nodes
-%         \node [rect] (user) {User};
-%         \node [ellipse, below of=user] (order) {Order Wrong Product};
-%         \node [rect, below of=order] (chatbot) {Chatbot};
-%         \node [rect, below of=chatbot] (list) {List Delivered Products};
-%         \node [rect, below of=list] (select) {Select Product to Return};
-
-%         % Arrows
-%         \draw [->] (user) -- (order);
-%         \draw [->] (order) -- (chatbot);
-%         \draw [->] (chatbot) -- (list);
-%         \draw [->] (list) -- (select);
-
-%     \end{tikzpicture}
-%     \caption{Process of Returning a Wrong Product Using Chatbot}
-% \end{figure}
- 
 Application of knowledge graphs within the e-commerce industry involves the creation of network of information concerning the products. This knowledge graph can serve as the basis for chatbots to provide answers to user queries. 

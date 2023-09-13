@@ -356,7 +356,11 @@ Pandas.DataFrame.median \parencite{mckinney-proc-scipy-2010} returns the median 
     df = df.fillna(df.median().iloc[0])
 \end{lstlisting}
 
+\section{Log transformation of data}
 
+Log transformation is a mathematical operation applied on data to change its scale and to reduce its skewness and to make data more symmetric.  Skewness is a measure of the asymmetry of a distribution, and a right-skewed distribution has a long tail on the right side of the distribution \parencite{BonnieMa}.
+
+The numpy library provides natural logarithmic function to apply log transformation on array of data.
 
 
 \section{Feature extraction} \label{ch:feature-extraction}

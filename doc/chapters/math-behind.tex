@@ -1,0 +1,37 @@
+\chapter{Mathematical Foundations of Classification Model}
+
+
+
+\section{Probability Distribution}
+
+A probability distribution is the information of how likely a random variable or set of variables is to take each of its possible states. The way the probability distribution is described depended on whether the variables are discrete (finite set of variables) or continuous \parencite[Page 54]{Goodfellow-et-al-2016}. 
+
+In this paper, the finite number of categories to be predicted indicate that the probability distribution variable is of discrete type.  The probability that variable $X = x$ is denoted by $ P(x) $, with a probability of 1 indicating that $x-x$ is certain and probability of 0 indicating an impossible event \parencite[Page 55]{Goodfellow-et-al-2016}.
+
+
+The probability values ranging between 0  and 1 are called \acf{PMF} denoted as $ P $. To ensure that \acs*{PMF} provides valid probabilities the function $P$ must satisfy following propertise.
+
+
+\begin{itemize}
+    \item Domain of PMF must be defined for all possible states of random variable $x$. It should specify probabilities for each value $x$. For example, of the variable of vector representation of product name ``X'' the $P$ must be defined for all categories.
+    \item The $ P(x) $ must satisfy $0 \leq  P(x) \leq  1$.
+    \item Impossible events have probability 0.
+    \item Certain events have probability 1.
+    \item Normalization property indicating sum of all probabilities equals to 1.
+\end{itemize}
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ccccccc}
+        \hline
+        $x$ & $x_1$ & $x_2$ & $x_3$ & $\dots$ & $x_n$ \\
+        \hline
+        $P(x)$ & $P_1$ & $P_2$ & $P_3$ & $\dots$ & $P_n$ \\
+        \hline
+    \end{tabular}
+    \caption{Probability Distribution $P(x)$ for Random Variable $x$}
+    \label{tab:probability-distribution}
+\end{table}
+
+where \(P_i > 0\), \(i=1\) to \(n\) and \(P_1 + P_2 + P_3 + \ldots + P_n =1\) \\
