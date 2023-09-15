@@ -246,35 +246,6 @@ As per \parencite{Book-Bishop-Neural} the term softmax is used because this acti
 
 \clearpage
 
-\subsection{Why to apply log to Softmax Equation \eqref{eq:softmax} } \label{sec:Logsoft}
-
- 
-
-\begin{align}
-    \log(\text{Softmax}(x_i)) = \log\left(\frac{{\exp(x_i)}}{{\sum_{j=1}^n \exp(x_j)}}\right) \label{eq:log_softmax}
-\end{align}
-
-Equation \eqref{eq:log_softmax} shows the logarithm of the Softmax function applied to the element \(x_i\) in the vector \(\mathbf{x}\). 
-
-Applying logarithm to the fraction: 
-\begin{align}
-    \log\left(\frac{a}{b}\right) = \log(a) - \log(b)
-\end{align}
-
-Substituting \(a = \exp(x_i)\) and \(b = \sum_{j=1}^n \exp(x_j)\) in Equation \eqref{eq:log_softmax}, we get:
-
-\begin{align}
-    \log(\text{Softmax}(x_i)) = \log(\exp(x_i)) - \log\left(\sum_{j=1}^n \exp(x_j)\right)
-\end{align}
-
-1. Reduce large numbers:  The softmax function normalizes any value from [-infy, +infy] by applying an exponential function. Exponential functions can lead to a very large numbers, resulting in  Nan as output. Applying logarithm effectively reduce these large numbers to manageable range.
-2. Logarithms and Multiplication: Logarithms convert multiplication to addition. Probabilities of independent events,  represented as \(P(A \cap B \cap C \cap \ldots)\). Logarithm of the product of these probabilities simplifies the computation to a sum. 
-
-3. Numerical Stability: When dealing with very small probabilities, the product of multiple probabilities can become exceedingly close to zero, leading to numerical underflow. Similarly, when dealing with very large probabilities, the product can exceed the representation range of standard floating-point numbers, causing numerical overflow. By taking the logarithm, these issues are avoided, and the values are represented in a more stable and manageable range.
-
-4. Log Probabilities and Addition: Log probabilities are additive when events are independent.\\ For example, if we have two independent events \(A\) and \(B\) with probabilities \(P(A) = p\) and \(P(B) = q\), the probability of both events occurring (\(P(A \cap B)\)) is \(P(A) \times P(B) = p \times q\). Taking the logarithm, we get \(\log(P(A \cap B)) = \log(p \times q) = \log(p) + \log(q)\). This additive property simplifies calculations involving multiple independent events.
-
-In summary, using log-softmax over softmax is the use of log probabilities over probabilities, a log probability is simply a logarithm of a probability. The use of log probabilities means representing probabilities on a logarithmic scale. Working with log probabilities allows for more stable and efficient computations, especially when dealing with products of probabilities of very small or large numbers. 
 
 
 \section{\acf{ALL}}

@@ -1,15 +1,16 @@
 \documentclass[15pt,twoside]{report}
-
+\usepackage[utf8]{inputenc}
 
 
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
+\usepackage[british]{babel}
+\usepackage{csquotes}
 
-\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{fancyhdr}
 \usepackage[nohyperlinks, printonlyused, withpage, smaller]{acronym}
-\usepackage[sorting=nyt,backend=biber,style=authoryear]{biblatex}
+\usepackage[backend=biber, sorting=nyt, style=ext-authoryear-icomp,dashed=false]{biblatex}
 \usepackage[inkscapeformat=png]{svg}
 \usepackage{booktabs,multirow,array}
 \usepackage{listings}
@@ -21,6 +22,8 @@
 \usepackage{tocloft}
 \usepackage{enumitem}
 \usepackage{appendix}
+\usepackage{mathrsfs}
+
 
 \usetikzlibrary{shapes,arrows,positioning,arrows.meta}
 \captionsetup[table]{skip=5pt}
@@ -75,16 +78,69 @@
 
 \graphicspath{ {images/} }
 
-\renewbibmacro*{url+urldate}{%
-  \printfield{url}%
-  \iffieldundef{urlyear}
-    {}
-    {\setunit*{\addspace}%
-     \printtext[urldate]{\printurldate}}}
+% \renewbibmacro*{url+urldate}{%
+%   \printfield{url}%
+%   \iffieldundef{urlyear}
+%     {}
+%     {\setunit*{\addspace}%
+%      \printtext[urldate]{\printurldate}}}
 
 \DeclareFieldFormat{url}{Available at\addcolon\space\url{#1}}
+\DeclareFieldFormat{urldate}{Accessed on\addcolon\space{#1}}
 
-\DeclareFieldFormat{urldate}{\\Accessed on\addcolon\space#1}
+\DeclareFieldFormat{biblabeldate}{#1}
+\DeclareDelimFormat{nameyeardelim}{\addcomma\space}% comma before the year
+% \DeclareFieldFormat{url}{\bibstring{urlfrom}\addcolon\space\url{#1}}
+% \DeclareFieldFormat{urldate}{\mkbibbrackets{\bibstring{urlseen}\addcolon\space#1}}
+
+% \renewbibmacro*{url+urldate}{% changes the default order of the fields url and urldate
+%                              \usebibmacro{urldate}%
+%                              \newunit
+%                              \usebibmacro{url}%
+%                             }
+
+%                             \makeatletter
+%                             \setlength{\bibitemsep}{0.5\baselineskip plus 0.5\baselineskip}
+                            
+%                             \newsavebox\ay@labelbox
+%                             \newlength{\labwidthsameline}
+%                             \setlength{\labwidthsameline}{6em}
+                            
+%                             % \newbibmacro{labelwidthbib}{%
+%                             %   \begingroup
+%                             %   \delimcontext{parencite}%
+%                             %   \DeclareFieldFormat{bibhyperref}{##1}%
+%                             %   \csuse{blx@hook@cite}%
+%                             %   \csuse{blx@hook@citekey}%
+%                             %   \global\undef\cbx@lasthash
+%                             %   \global\undef\cbx@lastyear
+%                             %   \citetrackerfalse\pagetrackerfalse\backtrackerfalse
+%                             %   \defcounter{maxnames}{\blx@maxcitenames}%
+%                             %   \printtext[brackets]{\usebibmacro{cite}}%
+%                             %   \endgroup
+%                             % } 
+%                             %-----------------------
+%                             \newbibmacro{kicklabel}{% 
+%                               \sbox\ay@labelbox{\usebibmacro{labelwidthbib}}%
+%                               \global\togglefalse{blx@insert}%
+%                               \ifdim\wd\ay@labelbox>\labwidthsameline
+%                                 \leavevmode\newline
+%                               \fi
+%                             }
+                            
+%                             \defbibenvironment{bibliography}%
+%                               {\list
+%                                 {\usebibmacro{labelwidthbib}}%
+%                                 {\setlength{\labelwidth}{\labwidthsameline}%
+%                                  \setlength{\leftmargin}{\labelwidth}%
+%                                  \setlength{\labelsep}{\biblabelsep}%
+%                                  \addtolength{\leftmargin}{\labelsep}%
+%                                  \setlength{\itemsep}{\bibitemsep}%
+%                                  \setlength{\parsep}{\bibparsep}%
+%                                  \renewcommand*{\makelabel}[1]{##1\hss}}}%
+%                               {\endlist}%
+%                               {\item\usebibmacro{kicklabel}}
+%                             \makeatother
 
 \addbibresource{References.bib}
 
@@ -133,7 +189,6 @@ chapters/appendix%
 \include{chapters/training-hypertuning}
 \include{chapters/math-behind}
 \include{chapters/building-kg}
-
 \include{chapters/conclusion}
 
 \pagenumbering{roman}
@@ -149,8 +204,6 @@ chapters/appendix%
 \listoftables
 
 \lstlistoflistings
-\include{preliminary/acronyms}
-
 
 
 \clearpage
@@ -158,15 +211,20 @@ chapters/appendix%
 
 % \printglossary
 \addcontentsline{toc}{chapter}{Bibliography}
+
+
+
 \printbibliography[title={References}]
 
-\defbibheading{bibempty}{}
 
-\let\oldbib\thebibliography
-\let\endoldbib\endthebibliography
-\renewenvironment{thebibliography}
-  {\vspace{\baselineskip}\begin{oldbib}}
-  {\end{oldbib}\vspace{\baselineskip}}
+
+% \defbibheading{bibempty}{}
+
+% \let\oldbib\thebibliography
+% \let\endoldbib\endthebibliography
+% \renewenvironment{thebibliography}
+%   {\vspace{\baselineskip}\begin{oldbib}}
+%   {\end{oldbib}\vspace{\baselineskip}}
 
 \addcontentsline{toc}{chapter}{Appendices}
 \appendix
