@@ -109,6 +109,36 @@ Substituting \(a = \exp(x_i)\) and \(b = \sum_{j=1}^n \exp(x_j)\) in equation \e
     \item Logarithms and Multiplication: Logarithms convert multiplication to addition. Probabilities of independent events,  represented as \(P(A \cap B \cap C \cap \ldots)\). Logarithm of the product of these probabilities simplifies the computation to a sum. 
 \end{itemize}
 
+\section{ \acs*{RNN} - Forward and Backward Propagation}
+
+\acfp{RNN} \parencite{Rumelhart.1986} is best suited for machine learning problems that involve sequential data and use patterns to predict the output. A recurrent neural network is specialized for processing sequence of values $ x^{(1)},\ldots,x^{(t)}$.
+
+\begin{figure}[H]
+    \centering    
+    \includegraphics[scale=0.9]{rnn_wno.png}
+    \caption{A \acl*{RNN} with no output \parencite[Page 370]{Goodfellow-et-al-2016}}
+    \label{fig:RNN without output}
+\end{figure}
+
+
+\begin{align}
+    h^{(t)} = f(h^{(t-1)}, x^{(t)}; \theta)
+ \end{align}
+
+Properties of a RNN are as follows \parencite[Chapter 10]{Goodfellow-et-al-2016}:- 
+\begin{itemize}
+    \item Graph un-rolling and parameter sharing.
+    
+
+    
+
+
+\end{itemize}
+
+This machine learning algorithm store information of previous states and holds the memory. 
+
+
+
 
 \section{Summary}
 

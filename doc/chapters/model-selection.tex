@@ -107,7 +107,7 @@ For example, consider a vocabulary of 100 unique words in the \textit{ProductNam
 \end{table}
 
 \section{Architecture of \acf{RNN}}
-\acs{RNN} module copied from \parencite{sean} tutorial contains two linear layers which operate on input and hidden state, with LogSoftmax layer after the output layer. \acfp{RNN} \parencite{Rumelhart.1986} is best suited for machine learning problems that involve sequential data and use patterns to predict the output. This machine learning algorithm store information of previous states and holds the memory. 
+\acs{RNN} module copied from \parencite{sean} tutorial contains two linear layers which operate on input and hidden state, with LogSoftmax layer after the output layer. 
 \begin{lstlisting}[language=Python,label=code:RNN-class, caption={\acf{RNN} class}]
 class RNN(nn.Module):
         
