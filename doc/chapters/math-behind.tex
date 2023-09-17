@@ -1,5 +1,177 @@
 \chapter{Mathematical Foundations of Classification Model}
 
+\section{Neural Networks and Loss Minimization}
+
+\subsection*{Neurons}
+
+A neural network is a connection of neurons. A Neuron takes input, do some computation and returns an output.  Figure \ref{fig:basic neuron} illustrates a basic unit of neuron, which is multiplying each unit of inputs with weight $w$ and weighted input are added with bias $b$. Finally, the sum is passed though a sigmoid activation function $ f $.  
+\begin{figure}[H]
+    \centering    
+    \includegraphics[scale=0.4]{neuron.png}
+    \caption{Basic unit of Neuron \parencite{VictorZhou}}
+    \label{fig:basic neuron}
+\end{figure}
+
+
+\begin{align}
+    y = f(x_1 * w_1 + x_2 * w_2 + b) \label{eq:single_n}
+\end{align}
+
+The equation \ref{eq:single_n} is the mathematical representation of the sample neuron.
+
+\subsection*{Neural Network}
+
+
+% \begin{align}
+% {\displaystyle \sigma (x)\doteq {\frac {1}{1+e^{-x}}}}$ \label{eg:sigmoid}
+% \end{align}
+
+
+
+\begin{figure}[H]
+    \centering
+
+    % Define block styles
+\tikzstyle{input} = [draw, circle, minimum width=0.5cm, minimum height=0.5cm, text centered, text width=1cm, fill=blue!20]
+\tikzstyle{hidden} = [draw, circle, minimum width=0.5cm, minimum height=0.5cm, text centered, text width=0.5cm, fill=green!20]
+\tikzstyle{output} = [draw, circle, minimum width=0.5cm, minimum height=0.5cm, text centered, text width=0.5cm, fill=red!20]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\begin{tikzpicture}[node distance=2cm]
+
+% Input layer
+\node (input1) [input] {$x_1$};
+\node (input2) [input, below of=input1] {$x_2$};
+
+% Hidden layer 1
+\node (hidden1) [hidden, right of=input1, xshift=2cm] {$ h_1 $};
+\node (hidden2) [hidden, below of=hidden1] {$ h_2 $};
+\node [above=0.5cm] at (hidden1) {$ b_1 $} ;
+\node [above=0.5cm] at (hidden2) {$ b_2 $} ;
+
+
+
+
+
+% Output layer
+\node (output) [output, right of=hidden1, yshift=-1cm] {$ y $};
+\node [above=0.5cm] at (output) {$ b_3 $} ;
+% Arrows
+\draw [arrow] (input1) -- node[above] {$w_1$} (hidden1);
+\draw [arrow] (input1) -- node[above, right=0.5cm ] {$w_2$} (hidden2);
+\draw [arrow] (input2) -- node[above, left=0.5cm ] {$w_3$} (hidden1);
+\draw [arrow] (input2) -- node[above] {$w_4$} (hidden2);
+\draw [arrow] (hidden1) -- node[above] {$w_5$} (output);
+\draw [arrow] (hidden2) -- node[above] {$w_6$} (output);
+
+
+
+\end{tikzpicture}
+\caption{Example of feedforward neural network: two neuron hidden layer added between input and output.}
+   \label{fig:nn_hl} 
+\end{figure}
+
+Figure \ref{fig:nn_hl}, illustrates addition of two neurons hidden layers $h_1$ and $h_2$ between input layer (first) and output layer (last). The data flow is represented with directed arrows, this process of passing input forward to get an output is called feed-forward.
+
+\subsection*{Training a Network}
+
+Training a network simply means to compare the actual machine learned output ($ y_{ml} $) and correct or true output ($ y_ {true} $) at each time step and determine how good it is at the current time step and what to do to make it better in next time step. Loss function ($ L $) is a way to determine it. 
+
+Let us use the network of figure \ref{fig:nn_hl} to predict the gender based on weight and height. $x_1$ is weight and $x_2$ is height. Table \ref{table:Sample Training Dataset} is a sample of dataset, genders are valued as 0 and 1. The numerical values of height and weight are adjusted to for easier calculation. 
+
+\begin{table}[h]
+    \centering
+    \caption{Sample Training Dataset}
+    \label{table:Sample Training Dataset}
+    \begin{tabular}{ llll }
+          \toprule
+          
+          \textbf{Name}& \textbf{Weight} & \textbf{Height}  & \textbf{Gender}\\
+          \midrule
+          Mary&-2 & -1 & 1\\
+          John&25 & 6 & 0\\         
+         
+          \bottomrule
+          \end{tabular}
+\end{table}
+
+
+Equation \ref{eq:MSE} is \acf{MSE} which is one loss functions. 
+\begin{align}
+    \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_ {true} - y_{ml})^2 \label{eq:MSE}
+\end{align}
+
+
+\begin{itemize}
+    \item $n$ is a number of samples. In table \ref{table:Sample Training Dataset} there are two entities.
+    \item $y$ is the value the machine needs to generate, in this case ``Gender''.
+    \item $y_ {true}$ is the correct value, for name ``Mary'' the correct gender value is 1. $y_ {ml}$ is the machine  predicted value.
+    \item $(y_ {true} - y_{ml})^2$ is known as squared error. This loss function takes average of the squared error.
+\end{itemize}
+
+
+
+If the machine always returns the value 0, what is the loss?
+
+\begin{table}[h]
+    \centering
+    \caption{Sample Training Dataset}
+    \label{table:Sample Training Dataset}
+    \begin{tabular}{ cccc }
+          \toprule
+          
+          \textbf{Name}& \textbf{$y_ {true}$} & \textbf{$y_ {ml}$}  & \textbf{$(y_ {true} - y_{ml})^2$}\\
+          \midrule
+          Mary&1 & 0 & 1\\
+          John&0 & 0 & 0\\         
+         
+          \bottomrule
+          \end{tabular}
+\end{table}
+
+\begin{align}
+    \text{MSE} = \frac{1}{2} (1+0)^2 = 0.5
+\end{align}
+
+Lower loss indicate the network is trained well. The goal of training is minimizing the loss. 
+
+
+\subsection*{Minimizing the Loss}
+
+From equation \ref{eq:single_n} it is known that tweaking weights ($w$) and biases ($b$) changes the output value.  How do we change the networks weights and biases such that the loss is decreased at each time step? Answer to this question is partial derivatives. Partial derivatives is a method of small change in one of the variable of a multivariable function leading to a small change in the output of the function. For example, making a small change in variable $w_1$ keeping all other variables constant leading to a small change in Loss $L$ can be represented by equation \ref{eq:loss_partial}.
+
+\begin{align}
+    \frac{\partial L }{\partial w_1} = \frac{\partial L}{\partial y_{ml}} * \frac{\partial y_{ml}}{\partial w_1}
+    \label{eq:loss_partial}
+\end{align}
+
+Referring to the network architecture of figure \ref{fig:nn_hl} $w_1$ does not affect $h_2$ but only $h_1$, the equation \ref{eq:loss_partial} can be rewritten as equation \ref{eq:backprop}.
+
+\begin{align}
+    \frac{\partial y_{ml}}{\partial w_1} = \frac{\partial y_{ml}}{\partial h_{1}} * \frac{\partial h_{1}}{\partial w_1}
+    \label{eq:loss_partial2}
+\end{align}
+
+\begin{align}
+    \frac{\partial L }{\partial w_1} = \frac{\partial L}{\partial y_{ml}} * \frac{\partial y_{ml}}{\partial h_{1}} * \frac{\partial h_{1}}{\partial w_1} \label{eq:backprop}
+\end{align}
+
+Calculating partial derivatives by working backwards is known as back propagation. 
+
+The final output of the network can be represented as equation \ref{eq:yml}.
+
+\begin{align}
+   y_{ml} = o_1 = f(w_5h_1 + w_6h_2 + b_3)
+    \label{eq:yml}
+\end{align}
+
+\subsection*{\acf{SGD}}
+
+Optimization problem is to find the value for set of variable that minimizes the scalar-valued loss function \parencite[Page 273]{pml1Book}. \acs{SGD} is an optimization algorithm to change weights and biases at time step $t$. Weight of the next time step ($w_{t+1}$) is calculated by subtracting partial derivatives of Loss function with respect to the weight of current time step ($w_t$).  The constant $l$ represents the step size or learning rate. The resulting equation is given \ref{eq:sgd}.  
+
+\begin{align}
+ w_{t+1} = w_{t} - l \frac{\partial L }{\partial w_t} \label{eq:sgd}
+\end{align}
 
 
 \section{Probability Distribution}
@@ -80,7 +252,7 @@ Listing \ref{code:sample_softmax} is an example of applying Softmax function to 
 
 
 
-\subsection*{Why to apply log to Softmax function } \label{sec:Logsoft}
+\subsection*{Reasons to apply log to $SoftMax$ function} \label{sec:Logsoft}
 
  
 \begin{align}
@@ -111,7 +283,7 @@ Substituting \(a = \exp(x_i)\) and \(b = \sum_{j=1}^n \exp(x_j)\) in equation \e
 
 \section{ \acs*{RNN} - Forward and Backward Propagation}
 
-\acfp{RNN} \parencite{Rumelhart.1986} is best suited for machine learning problems that involve sequential data and use patterns to predict the output. A recurrent neural network is specialized for processing sequence of values $ x^{(1)},\ldots,x^{(t)}$.
+When a feedforward neural network are extended to include feedback connections, they are called \acfp{RNN} \parencite[Chapter 6, Page 164]{Goodfellow-et-al-2016}. \acfp{RNN} \parencite{Rumelhart.1986} is best suited for machine learning problems that involve sequential data and use patterns to predict the output. A recurrent neural network is specialized for processing sequence of values $ x^{(1)},\ldots,x^{(t)}$.
 
 \begin{figure}[H]
     \centering    
@@ -121,21 +293,31 @@ Substituting \(a = \exp(x_i)\) and \(b = \sum_{j=1}^n \exp(x_j)\) in equation \e
 \end{figure}
 
 
+Figure \ref{fig:RNN without output} illustrates the connected hidden units indicating the output of previous hidden state $h_{(t-1)}$ is the input of current hidden state $h_{(t)}$.  The network can be seen as unfolded computational graphs, here each node is associated with one time instance. This machine learning algorithm store information of previous states and holds the memory. 
+
+Equation \ref{eq:rnn} depicts the common representation of RNN to define the hidden units.
+
 \begin{align}
-    h^{(t)} = f(h^{(t-1)}, x^{(t)}; \theta)
+    h^{(t)} = f(h^{(t-1)}, x^{(t)}; \theta) \label{eq:rnn}
  \end{align}
 
 Properties of a RNN are as follows \parencite[Chapter 10]{Goodfellow-et-al-2016}:- 
 \begin{itemize}
     \item Graph un-rolling and parameter sharing.
     
-
+    Here graph is referred to as the structure of a set of computations, such as the data flow from input layer to output layer for mapping the loss. Unfolding the equation \ref{eq:rnn} for $t=3$ times, we obtain:
     
+    \begin{align}
+        h^{(3)} = f(h^{(2)}, x^{(2)}; \theta) = f(f(h^{(1)},x^{(1)}; \theta)) \label{eq:rnn_new}
+     \end{align}
+    
+
+    The equation \ref{eq:rnn} is recurrent without the external signal $x^{(t)}$. This expression can be represented by \acl{DAG}.  Unfolding this graph results in the sharing of parameters across a network structure.
 
 
 \end{itemize}
 
-This machine learning algorithm store information of previous states and holds the memory. 
+
 
 
 

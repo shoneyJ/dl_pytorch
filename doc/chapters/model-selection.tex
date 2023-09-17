@@ -107,8 +107,9 @@ For example, consider a vocabulary of 100 unique words in the \textit{ProductNam
 \end{table}
 
 \section{Architecture of \acf{RNN}}
-\acs{RNN} module copied from \parencite{sean} tutorial contains two linear layers which operate on input and hidden state, with LogSoftmax layer after the output layer. 
-\begin{lstlisting}[language=Python,label=code:RNN-class, caption={\acf{RNN} class}]
+\acs{RNN} architecture is from \parencite{sean} tutorial, this module contains two linear layers which operate on input and hidden state, with $LogSoftmax$ layer after the output layer. The class RNN represents the RNN model with an input layer, hidden layer, and output layer. It uses the nn.Linear and nn.LogSoftmax functions from PyTorch's neural network module.  The code listing \ref{code:rnn_arch} is a snippet of python code to define class named RNN.
+
+\begin{lstlisting}[language=Python,label=code:RNN-class, caption={\acf{RNN} class}, label={code:rnn_arch}]
 class RNN(nn.Module):
         
     def __init__(self, input_size, hidden_size, output_size):
@@ -137,18 +138,22 @@ class RNN(nn.Module):
         return torch.zeros(1, self.hidden_size)
 \end{lstlisting}
 
-The class RNN represents the RNN model with an input layer, hidden layer, and output layer. It uses the nn.Linear and nn.LogSoftmax functions from PyTorch's neural network module.
+\subsection*{Summary of the RNN class:}
 
-\textbf{Summary of the RNN class:}
+\begin{itemize}
+    \item \textit{Constructor (\_\_init\_\_ method):} \\ Initializes the RNN with the input size, hidden size, and output size. It creates the layers and initializes the hidden size. The \texttt{nn.Linear} objects \texttt{i2h} and \texttt{h2o} represent the weight matrices for the input-to-hidden and hidden-to-output transformations, respectively. The \texttt{nn.LogSoftmax} function applies the logarithm and softmax operations to convert the output into log probabilities.
+    \item \textit{Forward pass (\texttt{forward} method):} Takes the current input and previous hidden state as input and computes the forward pass of the RNN. It concatenates the current input and previous hidden state using \texttt{torch.cat}, passes the concatenated tensor through the input-to-hidden layer, calculates the output using the hidden-to-output layer, and applies the $LogSoftmax$ operation to obtain the normalized log probabilities.
+    \item \textit{Initialization of hidden state (\texttt{initHidden} method):} Returns the initial hidden state, which is a tensor of zeros with dimensions (1, hidden\_size).
+\end{itemize}
 
-\textit{Constructor (\_\_init\_\_ method):} Initializes the RNN with the input size, hidden size, and output size. It creates the layers and initializes the hidden size. The \texttt{nn.Linear} objects \texttt{i2h} and \texttt{h2o} represent the weight matrices for the input-to-hidden and hidden-to-output transformations, respectively. The \texttt{nn.LogSoftmax} object \texttt{softmax} applies the logarithm and softmax operations to convert the output into log probabilities.
 
-\textit{Forward pass (\texttt{forward} method):} Takes the current input and previous hidden state as input and computes the forward pass of the RNN. It concatenates the current input and previous hidden state using \texttt{torch.cat}, passes the concatenated tensor through the input-to-hidden layer, calculates the output using the hidden-to-output layer, and applies the softmax operation to obtain the normalized log probabilities.
 
-\textit{Initialization of hidden state (\texttt{initHidden} method):} Returns the initial hidden state, which is a tensor of zeros with dimensions (1, hidden\_size).
+
+
+
 
 \clearpage
-The graphical representation of code listed in \ref{code:RNN-class} is illustrated in figure \ref{fig:archi}.
+The graphical representation of code listed in \ref{code:rnn-arch} is illustrated in figure \ref{fig:archi}.
 \begin{figure}[h]
     \centering
     \caption{\acs{RNN} Architecture \parencite{sean}}
@@ -194,67 +199,69 @@ The graphical representation of code listed in \ref{code:RNN-class} is illustrat
 
   
 
-\section{Forward propagation equation} \label{sec:forward-propagation}
-The forward propagation equations for the recurrent neural network (RNN) depicted in code \ref{code:RNN-class}, assuming the tanh activation function for hidden units and a discrete output (used for predicting words or characters) \parencite{Goodfellow-et-al-2016}, are as follows
-\begin{enumerate}
-    \item Initialization: \\
-    Set initial state: $\textit{\textbf{h}}^{(0)}$ (hidden state at time $t=0$)
-    \item For each time step from $t=1$ to $t=\tau$: \\
-    \begin{align}
-        a(t) &= b + Wh(t-1) + Ux(t) \quad  \\
-        h(t) &= \tanh(a(t)) \quad  \\
-        o(t) &= c + Vh(t) \quad  \\
-        \hat{y}(t) &= \text{softmax}(o(t)) \quad 
-        \end{align}
-\end{enumerate}
+% \section{Forward propagation equation} \label{sec:forward-propagation}
+% The forward propagation equations for the recurrent neural network (RNN) depicted in code \ref{code:RNN-class}, assuming the tanh activation function for hidden units and a discrete output (used for predicting words or characters) \parencite{Goodfellow-et-al-2016}, are as follows
+% \begin{enumerate}
+%     \item Initialization: \\
+%     Set initial state: $\textit{\textbf{h}}^{(0)}$ (hidden state at time $t=0$)
+%     \item For each time step from $t=1$ to $t=\tau$: \\
+%     \begin{align}
+%         a(t) &= b + Wh(t-1) + Ux(t) \quad  \\
+%         h(t) &= \tanh(a(t)) \quad  \\
+%         o(t) &= c + Vh(t) \quad  \\
+%         \hat{y}(t) &= \text{softmax}(o(t)) \quad 
+%         \end{align}
+% \end{enumerate}
 
-Here:
-\begin{itemize}
-  \item $x(t)$ represents the input at time step $t$.
-  \item $h(t)$ is the hidden state at time step $t$, which is updated based on the previous hidden state $h(t-1)$ and the current input $x(t)$.
-  \item $a(t)$ is the activation vector at time step $t$, computed by adding the bias vector $b$ to the weighted sum of the previous hidden state $h(t-1)$ and the current input $x(t)$, where $W$ is the weight matrix for the recurrent connections and $U$ is the weight matrix for the input connections.
-  \item $\tanh()$ is the hyperbolic tangent activation function, which squashes the values between $-1$ and $1$, introducing non-linearity to the hidden state.
-  \item $o(t)$ is the output vector at time step $t$, computed by adding the bias vector $c$ to the weighted sum of the current hidden state $h(t)$ using the weight matrix $V$.
-  \item $\hat{y}(t)$ is the normalized probability vector (predicted probabilities) over the output, obtained by applying the softmax operation to $o(t)$, which converts the unnormalized log probabilities into valid probabilities summing up to $1$.
-\end{itemize}
-
-
-
-\section{Pytorch's nn.Softmax function and applying log }
-
-Pytorch's nn.LogSoftmax function applies $\text{log}\left(\text{Softmax}(\mathbf{x})\right)$ to an n-dimentional input tensors. \\
+% Here:
+% \begin{itemize}
+%   \item $x(t)$ represents the input at time step $t$.
+%   \item $h(t)$ is the hidden state at time step $t$, which is updated based on the previous hidden state $h(t-1)$ and the current input $x(t)$.
+%   \item $a(t)$ is the activation vector at time step $t$, computed by adding the bias vector $b$ to the weighted sum of the previous hidden state $h(t-1)$ and the current input $x(t)$, where $W$ is the weight matrix for the recurrent connections and $U$ is the weight matrix for the input connections.
+%   \item $\tanh()$ is the hyperbolic tangent activation function, which squashes the values between $-1$ and $1$, introducing non-linearity to the hidden state.
+%   \item $o(t)$ is the output vector at time step $t$, computed by adding the bias vector $c$ to the weighted sum of the current hidden state $h(t)$ using the weight matrix $V$.
+%   \item $\hat{y}(t)$ is the normalized probability vector (predicted probabilities) over the output, obtained by applying the softmax operation to $o(t)$, which converts the unnormalized log probabilities into valid probabilities summing up to $1$.
+% \end{itemize}
 
 
 
-\subsection{Softmax or normalized exponential \parencite{Book-Bishop-Neural}} \label{sec:softmax}
+\section{Pytorch's $SoftMax$ function and its variations}
 
-Pytorch's nn.Softmax applies the Softmax function to an n-dimensional input Tensor rescaling them so that the elements of the n-dimensional output Tensor lie in the range [0,1] and sum to 1.
-
-
-
+\subsection*{Softmax or normalized exponential.} \label{sec:softmax}
 
 \begin{align}
     \text{Softmax}(x_i) = \frac{{\exp(x_i)}}{{\sum_{j=1}^n \exp(x_j)}} \label{eq:softmax}
 \end{align}
 
-
-In this representation, \(x_i\) is the \(i\)-th element of the input vector \(\mathbf{x} = [x_1, x_2, \ldots, x_n]\). The softmax function calculates the probability of the element \(x_i\) being chosen by dividing the exponential of \(x_i\) by the sum of the exponentials of all elements in the vector \(\mathbf{x}\). This calculation ensures that the resulting probabilities sum up to 1, forming a valid probability distribution over the elements in the vector \(\mathbf{x}\).
-
-The softmax function effectively transforms a vector of logits into a probability distribution, making it useful for tasks like classification, where the model needs to make a decision based on the input data.
-
-As per \parencite{Book-Bishop-Neural} the term softmax is used because this activation function represents a smooth version of the winner-takes-all activation model in which the unit with the largest input has output +1 while all other units have output 0.
-
-\clearpage
+\begin{itemize}
+    \item Pytorch's nn.Softmax applies the Softmax function to an n-dimensional input Tensor rescaling them so that the elements of the n-dimensional output Tensor lie in the range [0,1] and sum to 1.
+    \item In this representation, \(x_i\) is the \(i\)-th element of the input vector \(\mathbf{x} = [x_1, x_2, \ldots, x_n]\). The softmax function calculates the probability of the element \(x_i\) being chosen by dividing the exponential of \(x_i\) by the sum of the exponentials of all elements in the vector \(\mathbf{x}\). This calculation ensures that the resulting probabilities sum up to 1, forming a valid probability distribution over the elements in the vector \(\mathbf{x}\).
+    \item The softmax function transforms a vector of logits into a probability distribution, making it useful for tasks like classification, where the model needs to make a decision based on the input data.
+\end{itemize}
 
 
 
-\section{\acf{ALL}}
+
+
+
+
+
+
+
+
+% As per \parencite{Book-Bishop-Neural} the term softmax is used because this activation function represents a smooth version of the winner-takes-all activation model in which the unit with the largest input has output +1 while all other units have output 0.
+
+
+
+
+
+\subsection*{\acf{ALL}}
 
 Adaptive Softmax \parencite{Grave.14092016} is effective when large number of classes are to be handled. Traditional Softmax computation becomes computationally expensive and memory intensive if number of output classes are very high. As discussed in  \ref{sec:softmax}, Softmax requires calculating the exponential of the logits for each class. However, when the number of classes or labels are very high, the Softmax based classification becomes computationally expensive.
 
 
 
-Adaptive Softmax \parencite{Grave.14092016} counter this issue by clustering the classes according to their frequency of occurrence. A simple strategy to reduce the overall computation time is to partition the labels \(V\) into two clusters as \(V_h\) and \(V_l\), where \(V_h\) denotes the distribution consisting of the most frequent classes, and where \(V_l\) are many rare classes. The classifier frequently accesses \(V_h\), which motivates the fact that it should be computed efficiently. In contrast,  \(V_l\) less frequently, and the corresponding computation can be slower. This suggests defining clusters with unbalanced cardinalities \(|V_h| \geq |V_l|\) and probabilities \(P(V_h) \geq P(V_t)\).
+Adaptive Softmax counter this issue by clustering the classes according to their frequency of occurrence. A simple strategy to reduce the overall computation time is to partition the labels \(V\) into two clusters as \(V_h\) and \(V_l\), where \(V_h\) denotes the distribution consisting of the most frequent classes, and where \(V_l\) are many rare classes. The classifier frequently accesses \(V_h\), which motivates the fact that it should be computed efficiently. In contrast,  \(V_l\) less frequently, and the corresponding computation can be slower. This suggests defining clusters with unbalanced cardinalities \(|V_h| \geq |V_l|\) and probabilities \(P(V_h) \geq P(V_t)\).
 
 Pytorch's \parencite{Paszke.03122019} nn.AdaptiveLogSoftmaxWithLoss module implements \acf{ALL}
 
