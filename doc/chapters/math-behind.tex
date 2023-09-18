@@ -136,7 +136,7 @@ If the machine always returns the value 0, what is the loss?
 Lower loss indicate the network is trained well. The goal of training is minimizing the loss. 
 
 
-\subsection*{Minimizing the Loss}
+\subsection*{Minimizing the Loss} \label{sec:minloss}
 
 From equation \ref{eq:single_n} it is known that tweaking weights ($w$) and biases ($b$) changes the output value.  How do we change the networks weights and biases such that the loss is decreased at each time step? Answer to this question is partial derivatives. Partial derivatives is a method of small change in one of the variable of a multivariable function leading to a small change in the output of the function. For example, making a small change in variable $w_1$ keeping all other variables constant leading to a small change in Loss $L$ can be represented by equation \ref{eq:loss_partial}.
 
@@ -281,9 +281,9 @@ Substituting \(a = \exp(x_i)\) and \(b = \sum_{j=1}^n \exp(x_j)\) in equation \e
     \item Logarithms and Multiplication: Logarithms convert multiplication to addition. Probabilities of independent events,  represented as \(P(A \cap B \cap C \cap \ldots)\). Logarithm of the product of these probabilities simplifies the computation to a sum. 
 \end{itemize}
 
-\section{ \acs*{RNN} - Forward and Backward Propagation}
+\section{ \acs*{RNN} - Forward and Backward Propagation} \label{sec:math-rnn}
 
-When a feedforward neural network are extended to include feedback connections, they are called \acfp{RNN} \parencite[Chapter 6, Page 164]{Goodfellow-et-al-2016}. \acfp{RNN} \parencite{Rumelhart.1986} is best suited for machine learning problems that involve sequential data and use patterns to predict the output. A recurrent neural network is specialized for processing sequence of values $ x^{(1)},\ldots,x^{(t)}$.
+When a feedforward neural network are extended to include feedback connections, they are called \acfp{RNN} \parencite[Chapter 6, Page 164]{Goodfellow-et-al-2016}. \acfp{RNN} is best suited for machine learning problems that involve sequential data and use patterns to predict the output. A recurrent neural network is specialized for processing sequence of values $ x^{(1)},\ldots,x^{(t)}$. 
 
 \begin{figure}[H]
     \centering    
@@ -301,7 +301,7 @@ Equation \ref{eq:rnn} depicts the common representation of RNN to define the hid
     h^{(t)} = f(h^{(t-1)}, x^{(t)}; \theta) \label{eq:rnn}
  \end{align}
 
-Properties of a RNN are as follows \parencite[Chapter 10]{Goodfellow-et-al-2016}:- 
+
 \begin{itemize}
     \item Graph un-rolling and parameter sharing.
     
@@ -324,4 +324,6 @@ Properties of a RNN are as follows \parencite[Chapter 10]{Goodfellow-et-al-2016}
 
 \section{Summary}
 
-In this chapter, the mathematical theories and formulas related to multi level classification task is described. Author discusses the approach for numerical stability to avoid overflow and underflow of value resulting into a not-a-number values. In this chapter, an overview of the Probability Distribution and one of its type Multinoulli Distribution is given. Author illustrates the relationship between the task of product feature classification into category and the mathematical formulas.  
+In this chapter, the mathematical theories on neural network is described. Author illustrates mathematical equation for feedforward computational graphs and back propagation. Some mathematical concepts such as partial differentials to calculate the effect of small change in any one of the variable of a neural network is explained with step by step equation. Author describes the using sigmoid, softmax activation function in the output layer of neural network to bound the output values. In this chapter, author explains the \acl{MSE} loss function with a sample of training data. Author discusses the approach for numerical stability to avoid overflow and underflow of value resulting into a not-a-number values.
+
+Further, the author describes multi level classification task.  In this chapter, an overview of the Probability Distribution and one of its type Multinoulli Distribution is given. Author describes the basic architecture of a \acl{RNN} and explains the reason of using this network for categorizing the products based on product name.  

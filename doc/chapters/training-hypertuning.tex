@@ -23,6 +23,8 @@ Table \ref{table:AfterNormal} displays the difference in the number of records a
 
 Pandas data frame \parencite{mckinney-proc-scipy-2010} provides the \textit{drop\_duplicates()} method to remove duplicate entries in the document. Code snippet in listing \ref{code:nt} has two methods ``normalize'' and ``clean''. In Pandas \parencite{mckinney-proc-scipy-2010}, ``apply'' method executes a function along a specified axis of data frame. Here for every text in the document of data frame variable ``df\_eng'', the method ``normalize'' is called to process the data. ``normalize'' function excepts a ``document'' as a parameter.  These texts are processed to remove any html tags using Beautiful Soup a python library. Using regular expression library the digits in between the characters are removed, white spaces are removed. Any special character within the text has been transformed to its normal form.
 
+\clearpage
+
 \begin{lstlisting}[language=Python,caption={Function to normalize text and remove duplicate},label={code:nt}]
     def clean(self):
 
@@ -73,11 +75,13 @@ As illustrated in code listing \ref{code:ootc}, the class Train is instantiated 
     train = Train(df_en)
 \end{lstlisting}
 
-The code snippet listing \ref{code:tcc} shows the initialization for attributes.
+\clearpage
+
 \begin{lstlisting}[language=Python,caption={Train class constructor},label={code:tcc}]
 from sklearn.feature_extraction.text import CountVectorizer
 class Train():
     def __init__(self,df_en):
+
         self.vectorizer = CountVectorizer(1,1)
         self.df_en = df_en
         self.df_category = self.df_en.groupby("category")
@@ -93,6 +97,8 @@ class Train():
         self.all_losses = []
 \end{lstlisting}
 
+The code snippet listing \ref{code:tcc} shows the initialization of \textit{Train} class attributes. Code listing \ref{code:tcc} describes the  initialization the required attributes qualifying the building blocks of a neural network, such as object of class \textit{RNN} defining the input size, number of hidden layers, and size of the output. The loss function $L$, learning rate $l$, training dataset containing the true labels $y_{true}$ are initialized.
+
 \begin{enumerate}
     \item self.vectorizer : Is an instance of \textbf{CountVectorizer} from scikit-learn \parencite{sklearn_api}. The details of Count vectorization is in section \ref {ch_countvector}.  The argument (1,1) indicates that the vectorizer will consider individual words as the vocabulary.
     \item self.df\_category: Stores the categorical classification of input data df\_en
@@ -104,9 +110,11 @@ class Train():
     \item self.all\_losses and self.current\_loss: These attributes are used to track the loss values during the training process.
 \end{enumerate}
 
-\section{Generating random training examples}
+\clearpage
 
-The code listing \ref{code:rtcc} defines a method ``randomTrainingExample''. This method is responsible for generating training examples that will be used during the training process of the neural network.
+\section{Fetch Training Dataset}
+
+The code listing \ref{code:rtcc} defines a method ``randomTrainingExample''. This method is responsible for generating training examples that will be used during the training process of the neural network. This function fetches the pair of vectorized input $x^i$ that is the tensor representation of product name and true target label $y^i_{true}$ which is the tensor representation of category.
 
 \begin{lstlisting}[language=Python,caption={Train class constructor},label={code:rtcc}]
 def randomTrainingExample(self):
@@ -126,7 +134,7 @@ def randomTrainingExample(self):
     return randcategory, name, category_tensor, name_tensor
 \end{lstlisting}
 
-\begin{enumerate}
+\begin{itemize}
     \item randcategory = random.choice(self.all\_category) : This fetches random category from the list of categories extracted during the initialization of ``Train'' class  
     \item random\_feature\_indices = self.df\_category.indices[randcategory]: The indices of the randomly obtained category from step 1 is stored from the grouped dataframe ```df\_category'''
     \item index = random\_feature\_indices[random.randint(0, len(random\_feature\_indices) - 1)] :\\ Random index is obtained from the list of indices of data sample belonging to the selected category.
@@ -135,67 +143,72 @@ def randomTrainingExample(self):
     \item name\_tensor = self.helper.nameToTensor(name): The product name is converted into a tensor with a custom defined ``helper'' class. Code listing \ref{productnametotensor} is defined within the helper class.
     
 
-\end{enumerate}
+\end{itemize}
 
+\clearpage
 
-\section{\acl{NLLLoss}}
+\section{Training Execution}
 
-The negative log likelihood loss is useful to train a classification problem with ``C'' classes or target labels \parencite{Paszke.03122019}. These labels are integers representing class indices. The \acl{NLLLoss} is often used with LogSfotmax activation function. In the final layer of the neural network, adding the 
-$LogSoftMax$ functions return the predicted log-probabilities. The loss is calculated by comparing the predicted log probabilities with the true target labels. 
-
-
-
-
-
+In code listing \ref{code:train_function} the \acl{NLLLoss} is calculated between the output of the \acf{RNN} $ y_{pred} $ which is the predicted-log-probabilities and the ground truth category tensor $y_true$.
 
 \begin{lstlisting}[language=Python,caption={Train function},label={code:train_function}]
     
-def train(self,category_tensor, name_tensor):
+    def train(self,category_tensor, name_tensor):
+        
+        hidden = self.rnn.initHidden()
     
-    hidden = self.rnn.initHidden()
+        self.rnn.zero_grad()
+            
+        output, hidden = self.rnn(name_tensor, hidden)
+        loss = self.criterion(output, category_tensor)
+        loss.backward()
+       
+        # Add parameters' gradients to their values, multiplied by learning rate
+        for p in self.rnn.parameters():
+            p.data.add_(p.grad.data, alpha=-self.learning_rate)
+    
+    
+        return output, loss.item()
+    \end{lstlisting}
 
-    self.rnn.zero_grad()
-    # for i in range(name_tensor.size()[0]):     
-
-    #     output, hidden = self.rnn(name_tensor[i], hidden)
-
-    output, hidden = self.rnn(name_tensor, hidden)
-    loss = self.criterion(output, category_tensor)
-    loss.backward()
-   
-    # Add parameters' gradients to their values, multiplied by learning rate
-    for p in self.rnn.parameters():
-        p.data.add_(p.grad.data, alpha=-self.learning_rate)
+\subsection{\acl{NLLLoss}} 
+The negative log likelihood loss is useful to train a classification problem with ``C'' classes or target labels \parencite{Paszke.03122019}. These labels are integers representing class indices. The \acl{NLLLoss} is often used with $LogSoftMax$ activation function. In the final layer of the neural network, adding the 
+$LogSoftMax$ functions return the predicted log-probabilities. The loss is calculated by comparing the predicted log probabilities with the true target labels $y_{true}$. 
 
 
-    return output, loss.item()
-\end{lstlisting}
 
-In code listing \ref{code:train_function} the \acl{NLLLoss} is calculated between the output of the RNN which is the predicted-log-probabilities and the ground truth category tensor.
 
-\section{\acf{BPTT}}
 
-The back propagation learning procedure proposed in  \parencite{Rumelhart.1986} minimizes the measure of difference in actual output vector and the desired output vector. This can be achieved with the backward() method of the loss function.
 
-\subsection{How the backward() method works?} \label{sec:backward}
+\subsection{\acf{BPTT}}
+
+Detailed explanation of back propagation is given in section \ref{sec:minloss}. \\ In code listing \ref{code:train_function} the loss.backward() method of the loss function performs back propagation. RNN is a computational graph with parameters holding memory of previous time step. A computational graph is a record of all data (tensors) and all executed operations in a \acf{DAG}. The leaves of a \acsp{DAG} are the input tensor, roots are the output tensors. Unrolling the computational graph and then applying the back propagation algorithm is called \acl{BPTT} \parencite[section 15.2.5]{pml1Book}.
+
+\subsection*{How the backward() method works?} \label{sec:backward}
 
 \begin{enumerate}
-    \item During forward pass (refer code listing \ref{code:RNN-class}) of \acs{RNN} module, the log probabilities computation operations are recorded along with the computational graphs. A computational graph is a record of all data (tensors) and all executed operations in a \acf{DAG}. The leaves of a \acsp{DAG} are the input tensor, roots are the output tensors. 
+    \item During forward propagation of \acs{RNN} module (refer section \ref{sec:math-rnn}) with output of $LogSoftMax$ activation function, the log probabilities computation operations are recorded along with the computational graphs.  
     \item The \textbf{backward()} on a scalar tensor start traversing the computational graph in reverse order (from \acs{DAG} root to leaves). For each step it applies chain rules of calculus flowing backward through the network in order to compute the gradients \parencite[section 6.5.2]{Goodfellow-et-al-2016}.
-    \item  The gradients are accumulated in the pytorchs  \textbf{torch.Tensor.grad} attributes of the input tensors. \footnote{https://pytorch.org/tutorials/beginner/blitz/autograd\_tutorial.html}
-    \item These gradients can be accessed to update the model parameters through an optimization algorithm  like \acf{SGD} . Iteratively trained neural network's  gradient-based optimizers drive the cost function($LogSoftmax$) to a very low value. 
-\end{enumerate}
 
+\end{enumerate}
+\clearpage
+\subsection{Model Parameter Optimization}
+At line number 13 of code listing \ref{code:train_function}, the loop updates the model parameter.
+\begin{itemize}
+    \item  The gradients are accumulated in the Pytorchs  \textbf{torch.Tensor.grad} attributes of the input tensors. \footnote{https://pytorch.org/tutorials/beginner/blitz/autograd\_tutorial.html}
+    \item These gradients can be accessed to update the model parameters through an optimization algorithm  like \acf{SGD} (refer chapter \ref{ch:math-behid} for more details).
+    \item Iteratively trained neural network's  gradient-based optimizers drive the cost function($LogSoftmax$) to a very low value. 
+\end{itemize}
 
 \section{Experimentation: Variation in the training parameters.}
 
-\subsection{Training without \acs{BPTT}}
+\subsection*{Training without \acs{BPTT}}
 
 These are the observations when \textbf{loss.backward()} function in code listing \ref{code:train_function} is not used.
 
 \begin{enumerate}
     \item Pytorch's tensor.grad value is None. Hence, the manual optimization step does not update the model parameters.
-    \item Commenting the line number 16 and 17 from code listing \ref{code:train_function}, completes the training process. However, the model does not learn anything.  
+    \item Commenting the line number 9 and 10 from code listing \ref{code:train_function}, completes the training process. However, the model does not learn anything.  
     \item The figure \ref{fig:nograd} shows the loss across the training process. As the loss are not nearing to zero this shows that the model has failed in supervised learning of classification task.
     \begin{figure}[H]
         \centering    
@@ -207,7 +220,7 @@ These are the observations when \textbf{loss.backward()} function in code listin
 \end{enumerate}
 
 
-\subsection{Training without updating the model parameters}
+\subsection*{Training without updating the model parameters}
 In this experiment, the \textbf{loss.backward()} method calculated the gradients. However, the model parameters were not updated by commenting the line number 16 and 17 from code listing \ref{code:train_function}. Notice in the figure \ref{fig:nograd} and figure \ref{fig:womp}, the loss is not reaching zero towards the end of the training. Indicating that in both the cases the model has not learned the product name patterns for the classification task.
 
 \begin{figure}[H]
@@ -237,11 +250,11 @@ In code \ref{code:mump}, the parameter ``p.data'' is a tensor. The method  ``add
 \end{figure}
 
 
-\subsection{Updating the hidden number of units}
+\subsection*{Updating the hidden number of units}
 
 The model is described as a \acl{DAG} describing how functions are composed together. Consider having three functions $f(x) = f_3(f_2(f_1(x)))$ connected in a chain. $f_1$ is the first layer of the network, $f_2$ the second and so on. In the example of a classifier, $y=f_*(x)$ maps an input $ x $ to a category $ y $. The final layer of the network is called the output layer. The training data specifies what the output layer must do at each point $x$, that is to produce a value close to $y$. As the training data does not show the desired output for other layers, they are called \textbf{hidden layers}  \parencite[Chapter 3]{Goodfellow-et-al-2016}.  \parencite{zhang2021dive} describes the concept of \textbf{hidden state} which are inputs at step $t$ can only be computed with previous input at step $ t-1 $. \acf{RNN} are neural network with hidden states.
 
-\subsubsection{Model with only one hidden state}
+\subsubsection*{Model with only one hidden state}
 In this experiment, only one hidden state has been assigned to the \acs{RNN} network. As illustrated in figure \ref{fig:unihidden}, the loss reduces gradually. However, the model is yet under fit for the classification task. The loss not reaching zero towards the end of the training indicates that the model has not learned anything significant.
 
 \begin{figure}[H]
@@ -251,7 +264,7 @@ In this experiment, only one hidden state has been assigned to the \acs{RNN} net
     \label{fig:unihidden}
 \end{figure}
 
-\subsubsection{Model with only 10 hidden state}
+\subsubsection*{Model with only 10 hidden state}
 Increasing the number of hidden state to 10 units gave the desired result.  As seen in figure \ref{fig:10hidden}, the loss has reached near zero by end of the training. This model is able to predict the category based on the pattern of name.
 \begin{figure}[H]
     \centering    
@@ -260,7 +273,7 @@ Increasing the number of hidden state to 10 units gave the desired result.  As s
     \label{fig:10hidden}
 \end{figure}
 
-\subsection{Gradient decent step adjustment}
+\section{Gradient decent step adjustment}
 
 As stated in section \ref{sec:backward}, the method \textbf{loss.backward()} computes the gradients by applying chain rule of calculus for each function $f(x)$. The derivative of this function is denoted as $f'(x)$ \\ or as $\frac{dy}{dx}$. $f(x)$ can be reduced by moving $x$ in small with steps opposite sign of derivative is called gradient decent \parencite{cauchy}.  \parencite[section 4.3]{Goodfellow-et-al-2016} presents an equation \ref{eq:update_rule}.
 
@@ -297,7 +310,7 @@ The steps involved in training a model with \acs{CLR} are as follows :
 \end{enumerate}
 
 
-\subsection{Experimentation and analysis to determine learning rate range}
+\subsection*{Experimentation and analysis to determine learning rate range}
 
 \begin{enumerate}
     \item Experiment by setting $base\_lr$ and $max\_lr$  manually : \\
