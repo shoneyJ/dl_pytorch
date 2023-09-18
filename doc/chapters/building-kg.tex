@@ -21,52 +21,32 @@ Figure \ref{fig:kg} illustrates the processing of plain text from various source
 \section{Fetching text corpus}
 
 
-One of the first things required for \acf*{nlp} tasks is a creating a text corpus.
-In linguistics and \acs{nlp}, corpus refers to a collection of texts. An intriguing application of knowledge graphs within the e-commerce industry involves the creation of a comprehensive information network concerning products. Such a knowledge graph can serve as the basis for chatbots to provide answers to user queries. Converting unstructured text corpus into a directed acyclic graph. Knowledge base serve as a foundation for chatbot applications to traverse through the graph
-structure, locate relevant leafs nodes, and formulate human-readable response.
-
-
-Wikipedia\footnote{https://www.wikipedia.org/} is primarily an encyclopedia with the additional benefit of heavy linking between articles and without the size constraints of paper articles \parencite{TorstenZesch}. 
-
-\section{spaCy - Dependency Parsing} \label{dependencyparsing}
-
-spaCy \parencite{spacy2} features neural models for parsing and entity recognition. These models can be trained for \acf{ner} , tagging and parsing. Its official page on usage\footnote {https://v2.spacy.io/usage/} provides in-depth code example for information extraction.
-
-In figure \ref{fig:dp}, we see a complex sentence's dependency parsing. It has a \acf{nsubj}, connecting \acfp{pobj} with \acfp{adp} and no \acf{dobj}.
-
-\begin{figure}[htp!]
-    \centering    
-    \includesvg[scale=0.16]{dependency-parser.svg}
-    \caption{Navigating the parse tree and subtrees}
-    \label{fig:dp}
-\end{figure}
-
-The \acs{nsubj} "oil", itself does not give a complete meaning. However, upon combining its dependency noun "Motor", which is "Motor oil"  gives us an understanding of the topic. Traversing from \acs{nsubj} to  \acfp{conj} provides us with three related compound nouns belonging to a similar group.
-
-"Motor oil", "Engine Oil", "Engine Lubricant"
-
-Traversing further right of the dependency tree we can extract the \acsp{pobj}.  An \acf{amod} "internal" is connecting compound noun "combustion engine".
+An intriguing application of knowledge graphs within the e-commerce industry involves the creation of a comprehensive information network concerning products. Such a knowledge graph can serve as the basis for chatbots to provide answers to user queries. Converting unstructured text corpus into a directed acyclic graph. Knowledge base serve as a foundation for chatbot applications to traverse through the graph structure, locate relevant leafs nodes, and formulate human-readable response. Wikipedia\footnote{https://www.wikipedia.org/} is primarily an encyclopedia with the additional benefit of heavy linking between articles and without the size constraints of paper articles \parencite{TorstenZesch}. 
 
 \section{Knowledge graph with Networkx}
 
 The directed graphs created with Networkx \parencite{hagberg2008exploring} is suitable for representing dependency parsing of a sentence mentioned in section \ref{dependencyparsing}. A knowledge base are represented as triples of \acf{SRO}. In which the subject and object are nodes are entities of a graph and relation are directed edges or links between the nodes.
 
-\subsection{What to use as nodes n(x) and edges e(y)?}
+\subsection*{What to use as nodes n(x) and edges e(y)?}
 
-In table \ref{table:1}, distingution of triples by  \acs{POS} tags is depicted. 
-\begin{table}[h!]
-\begin{center}
-\begin{tabular}{>{$}l<{$} l}
+In table \ref{table:SRO},  triples by  \acs{POS} tags is depicted. 
 
-triples   &   \acf{POS} tags   \\
-\hline
-n(subject)   &   \acs{nsubj} , \acs{pron}                          \\
-n(object)  &   \acs{dobj}    , \acs{pobj}                     \\
-e(relation)  &   \acs{adp}, verb
-\end{tabular}
-\end{center}
-\caption{\acs{SRO} and \acs{POS} tags mappings}
-\label{table:1}
+
+\begin{table}[h]
+    \centering
+    \caption{\acs{SRO} and \acs{POS} tags mappings}
+    \label{table:SRO}
+    \begin{tabular}{ ll }
+          \toprule
+          
+          \textbf{tripples}& \textbf{ \acf{POS} tags} \\
+          \midrule
+          n(subject)& \acs{nsubj} , \acs{pron}     \\
+          n(object) & \acs{dobj}    , \acs{pobj}    \\      
+          e(relationship) &\acs{adp}, verb  \\       
+         
+          \bottomrule
+          \end{tabular}
 \end{table}
 
 \section{Summary}

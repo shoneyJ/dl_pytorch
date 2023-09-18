@@ -8,7 +8,14 @@
 \section{List of Abbreviations}
 \input{preliminary/acronyms}
 \section{Appendix A}
+For this project, python client elasticsearch 6.8.2 is installed as the client needs to be compatible with Elastic search version being used. The official Python client provides mapping with Elasticsearch REST APIs.
 
+\begin{lstlisting}[language=Python,caption={Elastic search},label={code:es_search}]
+    resp=self.es.search("english-name-category",{"_source":["id","name","category"],
+    'from':_from,
+    'size' :_size ,
+    "query": {"match_all": {}}})
+    \end{lstlisting}
 % Content for Appendix A goes here...
 
 \section{Appendix B}

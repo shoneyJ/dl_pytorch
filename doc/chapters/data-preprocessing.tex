@@ -90,15 +90,8 @@ In this example, the lowest level of category is ``thermostat'' as level 4 and l
 \end{table}
 
 \subsection {Fetch Existing Product Taxonomy (Corpus) using Elasticsearch}
-Elastic search \footnote{https://www.elastic.co/} is a fast and scalable search and analytics engine. It can build a powerful AI and machine learning enabled search experience. In this paper, author fetches labeled dataset of products to serve as the training data for the machine learning model.
-For this project, python client elasticsearch 6.8.2 is installed as the client needs to be compatible with Elastic search version being used. The official Python client provides mapping with Elasticsearch REST APIs.
+Elastic search \footnote{https://www.elastic.co/} is a fast and scalable search and analytics engine. It can build a powerful AI and machine learning enabled search experience. In this paper, author fetches labeled dataset of products to serve as the training data for the machine learning.
 
-\begin{lstlisting}[language=Python]
-resp=self.es.search("english-name-category",{"_source":["id","name","category"],
-'from':_from,
-'size' :_size ,
-"query": {"match_all": {}}})
-\end{lstlisting}
 
 The above code fetches indexed product name and its lowest hierarchy level category.  
 \begin{table}[h]
@@ -142,40 +135,40 @@ In table \ref{table:TN}, displays the difference in text before and after normal
 
 \subsection{Lower Case Conversion}
 
-Using Pandas - vectorized string method, a text can be lower cased across the document. These methos exclude the missing  / NA values automatically \parencite{mckinney-proc-scipy-2010}.
+Using Pandas - vectorized string method, a text can be lower cased across the document. These methos exclude the missing  / NA values automatically \parencite{mckinney-proc-scipy-2010}, shown in code \ref{code:pvsm}.
 
-\begin{lstlisting}[language=Python, caption={Pandas vectorized string method }]
+\begin{lstlisting}[language=Python, caption={Pandas vectorized string method },label={code:pvsm}]
       df_de["name"]= df_de["name"].str.lower()
 \end{lstlisting}
 
 \subsection{HTML Parsing}
 
-Probability of getting html tags in a document increases if the source of document is from web scraping or also if the document from database source has inline html tags. In such case, fetching normal texts from a html text is required. One of the method would be to use regular expressions to get text in between angel brackets \textless \textgreater text \textless \textgreater. However, this method would require to have the tags to be well formed.
-\begin{lstlisting}[language=Python, caption={Regular expression to get text from html}]
+Probability of getting HTML tags in a document increases if the source of document is from web scraping or also if the document from database source has inline HTML tags. In such case, fetching normal texts from an HTML text is required. One of the method would be to use regular expressions to get text in between angel brackets \textless \textgreater text \textless \textgreater, as in code \ref{cd:html}. However, this method would require to have the tags to be well-formed.
+\begin{lstlisting}[language=Python, caption={Regular expression to get text from html},label={cd:html}]
       text = re.sub('<[^>]*>', '', text)
 \end{lstlisting}
 
 
 
-The better option would be to use Beautiful Soup \footnote{https://www.crummy.com/software/BeautifulSoup/bs4/doc/} a Python library for pulling data out of HTLM and XML.
-\begin{lstlisting}[language=Python, caption={Beautiful soap API to get text from html}]
+The better option would be to use Beautiful Soup \footnote{https://www.crummy.com/software/BeautifulSoup/bs4/doc/} a Python library for pulling data out of HTLM and XML, using code \ref{cd:bs}.
+\begin{lstlisting}[language=Python, caption={Beautiful soap API to get text from html},label={cd:bs}]
       # Remove html tags 
       soup = BeautifulSoup(doc, 'html.parser')
       text =soup.get_text()
 \end{lstlisting}
 
 \subsection{Cleaning Text}
-A product detail text may contain non-word characters represented in regular expression as \textbackslash W. It may also contain space separated decimals describing the dimensional values of the product such as weight, height. Regular expressions could be used for removing the non-character words and spaces between the decimal values. 
+A product detail text may contain non-word characters represented in regular expression as \textbackslash W. It may also contain space separated decimals describing the dimensional values of the product such as weight, height. Regular expressions could be used for removing the non-character words and spaces between the decimal values, using code \ref{cd:ct}. 
 
-\begin{lstlisting}[language=Python,,caption={Clean text with Regular expression}]
+\begin{lstlisting}[language=Python,,caption={Clean text with Regular expression},label={cd:ct}]
       text = (re.sub('[-\W]+', ' ', text))
       text = (re.sub('(?<=\d) (?=\d)', '', text))
 \end{lstlisting}
 
 \subsection{Normal form D - Unicode database}
 
-A product name in Deutsch language may contain umlaute characters such as \"A.  Pythons unicodedata \footnote{https://docs.python.org/3/library/unicodedata.html} module provides access to the Unicode Character Database (UCD) which defines the character properties for all Unicode characters. To change \"A to A, the Normal form D (NFD) should be applied which translated each character into its decomposed form. Further the text can be refined with the general category assigned to the character as string. Nonspacing mark characters \footnote{https://www.compart.com/en/unicode/category/Mn} are represented as "Mn". These characters could be removed by referring the character category.
-\begin{lstlisting}[language=Python ,caption={NFD normalization}]
+A product name in Deutsch language may contain umlaute characters such as \"A.  Pythons unicodedata \footnote{https://docs.python.org/3/library/unicodedata.html} module provides access to the Unicode Character Database (UCD) which defines the character properties for all Unicode characters. To change \"A to A, the Normal form D (NFD) should be applied which translated each character into its decomposed form. Further the text can be refined with the general category assigned to the character as string. Nonspacing mark characters \footnote{https://www.compart.com/en/unicode/category/Mn} are represented as ``Mn''. These characters could be removed by referring the character category as shown in code \ref{cd:nd}.
+\begin{lstlisting}[language=Python ,caption={NFD normalization},label={cd:nd}]
       ''.join(
             c for c in unicodedata.normalize('NFD', text)
             if unicodedata.category(c) != 'Mn')
@@ -252,9 +245,9 @@ In an iterated round-robin fashion, at every step a missing feature column  \tex
 
 \subsection{Mode imputation}
 
-Replacing the most frequent categorical value in a column is known as mode imputation.  Pandas.DataFrame.mode \parencite{mckinney-proc-scipy-2010} function returns most often value. Code snippet will fill the missing values for each column using its own most frequent value.
+Replacing the most frequent categorical value in a column is known as mode imputation.  Pandas.DataFrame.mode \parencite{mckinney-proc-scipy-2010} function returns most often value. Code snippet \ref{cd:ml} will fill the missing values for each column using its own most frequent value.
 
-\begin{lstlisting}[language=Python, caption={Pandas DataFrames mode function}]
+\begin{lstlisting}[language=Python, caption={Pandas DataFrames mode function},label={cd:ml}]
     df = df.fillna(df.mode().iloc[0])
 \end{lstlisting}
 
@@ -279,9 +272,9 @@ The most common distance metrics functions are:-
 
 sklearn.neighbors.KNeighborsClassifier \parencite{scikit-learn} does an instance-based learning, it does not construct a model, but stores instance of training data. Classification is computed from majority vote of nearest neighbors of each point.
 
-The \textit{k}-neighbors classification implements learning based on  \textit{k} nearest neighbors of each query point, where \textit{k} is integer value specified by user. The optimal \textit{k} value can be evaluated by iterating the classifier with different  \textit{n\textunderscore neighbors} parameter and finding the minimum value of error rate. As per \parencite{scikit-learn}, larger \textit{k} suppresses the effects of noise, but makes the classification boundaries less distinct.
+The \textit{k}-neighbors classification implements learning based on  \textit{k} nearest neighbors of each query point, where \textit{k} is integer value specified by user. The optimal \textit{k} value can be evaluated by iterating the classifier with different  \textit{n\textunderscore neighbors} Parameter and finding the minimum value of error rate, refer code \ref{cd:kn}. Larger \textit{k} suppresses the effects of noise, but makes the classification boundaries less distinct.
 
-\begin{lstlisting}[language=Python, caption={Find optimal \textit{k} value in \acl{KNN} }]
+\begin{lstlisting}[language=Python, caption={Find optimal \textit{k} value in \acl{KNN} },label={cd:kn}]
     error_rate = []
     for i in range(1,40):
         knn = KNeighborsClassifier(n_neighbors=i)
@@ -319,16 +312,12 @@ As per the example category hierarchy in table \ref{table:KNN_implementation}
 
 \end{table}
 
-\begin{itemize}
-    \item Collect independent data features into the X data frame and target field into a y data frame.
-    \item  Split data into training and testing. 
-    \item  Import the classifier model from sklearn library and fit the model with  \textit{k} value equal to the optimal value.
-\end{itemize}
-
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,caption={Finding k-nearest neighbor},label={cd:fkn}]
+    from sklearn import preprocessing
+   
     X = df.drop(['catL3'], axis = 1)
     y = df['catL3']
-    from sklearn import preprocessing
+
     X = preprocessing.StandardScaler().fit(X).transform(X.astype(float))
     from sklearn.model_selection import train_test_split
     X_train, X_test, y_train, y_test = train_test_split( X, y, test_size=0.2, random_state=4)
@@ -342,25 +331,33 @@ As per the example category hierarchy in table \ref{table:KNN_implementation}
 \end{lstlisting}
 
 
+Code snippet \ref{cd:fkn} performs the following tasks:
+
+\begin{itemize}
+    \item Collect independent data features into the X data frame and target field into a y data frame.
+    \item  Split data into training and testing. 
+    \item  Import the classifier model from sklearn library and fit the model with  \textit{k} value equal to the optimal value.
+\end{itemize}
+
+
+
 
 \subsection{Mean/median imputation}
 
-Pandas.DataFrame.median \parencite{mckinney-proc-scipy-2010} returns the median value. These can be applied to the features represented in numerical value. In reference to table \ref{table:feature_imputation}, \textit{price} could be a column on which median value can be filled. However, using median to fill missing value could underestimate or overestimate the value.
+Pandas.DataFrame.median \parencite{mckinney-proc-scipy-2010} returns the median value, refer code \ref{cd:mim}. These can be applied to the features represented in numerical value. In reference to table \ref{table:feature_imputation}, \textit{price} could be a column on which median value can be filled. However, using median to fill missing value could underestimate or overestimate the value.
 
 \begin{enumerate}
     \item Median - The mid point value
     \item Mean - The average value
 \end{enumerate}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,caption={Mean imputation},label={cd:mim}]
     df = df.fillna(df.median().iloc[0])
 \end{lstlisting}
 
 \section{Log transformation of data}
 
-Log transformation is a mathematical operation applied on data to change its scale and to reduce its skewness and to make data more symmetric.  Skewness is a measure of the asymmetry of a distribution, and a right-skewed distribution has a long tail on the right side of the distribution \parencite{BonnieMa}.
-
-The numpy library provides natural logarithmic function to apply log transformation on array of data.
+Log transformation is a mathematical operation applied on data to change its scale and to reduce its skewness and to make data more symmetric.  Skewness is a measure of the asymmetry of a distribution, and a right-skewed distribution has a long tail on the right side of the distribution \parencite{BonnieMa}. The Numpy library provides natural logarithmic function to apply log transformation on array of data.
 
 
 \section{Feature extraction} \label{ch:feature-extraction}
@@ -370,9 +367,7 @@ Transforming text or image data into numerical representation usable for machine
 \subsection{Count Tokenization}
 
 Tokenization is splitting the text in sequential words which can be embedded in a vector space.
-For example, the normalized product name ``abc joint kit drive shaft'' can be tokenized into  ``abc'',``joint'',``kit'',``drive'',``shaft''. 
-
-Number of occurrence of each token in a document is called counting in terms of numerical feature extraction.
+For example, the normalized product name ``abc joint kit drive shaft'' can be tokenized into  ``abc'',``joint'',``kit'',``drive'',``shaft''. Number of occurrence of each token in a document is called counting in terms of numerical feature extraction.
 
 \subsection{Count Vectorization or One-Hot encoding} \label{ch_countvector}
 
@@ -423,25 +418,26 @@ The length of the vocabulary is the number of unique tokens in the data frame co
 
 Count Vectorization can also be performed on range of grams of words. 
 
-\begin{lstlisting}[language=Python,label=ngramcode, caption={\textit{n-gram} vectorization}]
+\begin{lstlisting}[language=Python,label=ngramcode, caption={\textit{n-gram} vectorization},label={cd:cv}]
     bigram_vectorizer = CountVectorizer(ngram_range=(1, 2))
     bigram_vectorizer.fit(df["ProductName"])
 \end{lstlisting}
 
 
-The code in listing \ref{ngramcode}, will add additional vocabularies of two words such as "drive shaft". This enables to preserve local ordering information. 
+The code in listing \ref{cd:cv}, will add additional vocabularies of two words such as "drive shaft". This enables to preserve local ordering information. 
 
 \subsection{Pickling the Vectorizer} \label{pickle_vector}
 
-Pickle \footnote{https://docs.python.org/3/library/pickle.html} module creates a portable serialized representation of python object. Reusing the CountVectorizer object once it has been fit with the document can be enabled by Pickle module. 
+Pickle \footnote{https://docs.python.org/3/library/pickle.html} module creates a portable serialized representation of python object. Reusing the CountVectorizer object once it has been fit with the document can be enabled by Pickle module, refer code \ref{cd:pv}. 
 
-\begin{lstlisting}[language=Python,label=pickle, caption={Pickle vectorization}]
+\begin{lstlisting}[language=Python,label=pickle, caption={Pickle vectorization},label={cd:pv}]
     pickle.dump(self.vectorizer, open("vector.pickel", "wb"))
 \end{lstlisting}
 
 The memory use will grow as the vocabulary in the text corpus grows.  Pickling and un-pickling of vectorizer will slow for large vocabulary.
 This issue can be tackled by hashing the features. 
 
+\clearpage
 \section{Summary}
 
 In this chapter, search analytic engine named Elastic search is introduced. The author as a prototype of classification model choose to include only two-dimensionality. One is the feature (product name) and other is the label to be predicted (category.)

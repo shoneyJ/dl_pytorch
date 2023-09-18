@@ -85,9 +85,9 @@
 %     {\setunit*{\addspace}%
 %      \printtext[urldate]{\printurldate}}}
 
-\DeclareFieldFormat{url}{Available at\addcolon\space\url{#1}}
-\DeclareFieldFormat{urldate}{Accessed on\addcolon\space{#1}}
-
+\DeclareFieldFormat{url}{\newline Available at\addcolon\space\url{#1}}
+\DeclareFieldFormat{urldate}{\newline Accessed on\addcolon\space{#1} \newline}
+\DeclareFieldFormat{title}{\newline{#1}}
 \DeclareFieldFormat{biblabeldate}{#1}
 \DeclareDelimFormat{nameyeardelim}{\addcomma\space}% comma before the year
 % \DeclareFieldFormat{url}{\bibstring{urlfrom}\addcolon\space\url{#1}}

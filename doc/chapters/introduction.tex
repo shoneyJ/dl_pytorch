@@ -2,9 +2,9 @@
 
 \section{Background and context}
 
-While working at an e-commerce industry, specializing in sales of automobile parts, author realized that manufactures and suppliers of similar automobile parts often utilize different product taxonomies. Product taxonomy is hierarchical multi level categorization of the product.  Suppliers rely on online platforms to reach out to the customers. In the business context, the term "supplier" encompasses entity contributing to production and distribution of goods and services. Therefore, in this thesis, the term "supplier" include both manufactures or any source which provides information on the product for sale. Suppliers are business partners who provide the stocks of products along with associated product details.
+While working at an e-commerce industry, specializing in sales of automobile parts, author realized that manufactures and suppliers of similar automobile parts often utilize different product taxonomies. Product taxonomy is hierarchical multi level categorization of the product.  Suppliers rely on online platforms to reach out to the customers. In the business context, the term ``supplier'' encompasses entity contributing to production and distribution of goods and services. Therefore, in this thesis, the term ``supplier'' include both manufactures or any source which provides information on the product for sale. Suppliers are business partners who provide the stocks of products along with associated product details.
 
-However, due to inconsistencies in the product taxonomies among various suppliers, directly importing these product taxonomies into the online platform is not feasible. The inconsistency could be due to use of different vocabulary for the similar product. For example, supplier A may use the term "Motor oil" and supplier B may use the term "Engine oil" for the same product. The process of product deployment is as following: suppliers furnish the product details, online retailers update the product taxonomies with their specific vocabulary. Once the taxonomies are updated these products details are accessible for the customers.
+However, due to inconsistencies in the product taxonomies among various suppliers, directly importing these product taxonomies into the online platform is not feasible. The inconsistency could be due to use of different vocabulary for the similar product. For example, supplier A may use the term ``Motor oil'' and supplier B may use the term ``Engine oil'' for the same product. The process of product deployment is as following: suppliers furnish the product details, online retailers update the product taxonomies with their specific vocabulary. Once the taxonomies are updated these products details are accessible for the customers.
 
 Defining the product taxonomy is a prior and crucial task of product deployment. A well-defined product taxonomy enables customers to search the product with the fewest possible clicks.  Manually defining the product taxonomies requires a significant amount of time and are prone to human error. 
 
@@ -20,18 +20,27 @@ The e-commerce industry is growing substantially, and wide range of products bei
 
 \begin{enumerate}[label=\textbf{RQ\arabic*:}]
     \item What are the use cases in which natural language processing and machine learning model can be utilized in an E-Commerce industry?
-    \item What are the use cases in E-commerce industry akin to classification problem?
-    \item For product categorization, how to define product features as an input for machine learning model?
-    \item How does a machine learn patterns for classification?
-    \begin{enumerate}[label=\textbf{SRQ\arabic*:}]
-        \item What are the mathematical equations behind the machine learning process?
-        \item What are the mathematical reasons for applying a certain Pytorch function during the training process? 
-    \end{enumerate}
+   
+    
+    \item For a product classification task, how to define product features as an input for machine learning model?
+    
+    \item How does a machine learn pattern in product features for classification?
+    
 
-    \item What algorithm could be used to train the machine learning model to predict the product taxonomy?
-    \item Which are the tasks indirectly dependent on a well-defined product taxonomies? 
-    \item What are the future research areas around the created product category prediction model?
-\end{enumerate}
+    \begin{enumerate}[label=\textbf{SRQ\arabic*:}]
+        \item What are the mathematical equations behind the learning process?
+    
+        
+        \item What are the mathematical reasons for applying certain pytorch functions during the training process? 
+        
+         
+
+    \end{enumerate}
+    
+    \item What is the algorithm to train the machine learning model to predict the product taxonomy?
+  
+
+  \end{enumerate}
 
 \section{Methodology}
 
@@ -43,28 +52,30 @@ Developing a machine learning model to predict the multi level product categorie
 % The labelled training data set belongs to an E-commerce industry specializing in automotive parts \footnote{\url{www.retromotion.com}; Accessed on : 05-09-2023}. In this project, supervised classification model is developed using  the pair of feature set and label. These data from various suppliers will be processed and stored into search analytic engine-Elastic search. 
 
 \subsection{Ideate: Vocabulary pattern}
-Initial approach of finding a solution to product categorization is to analyze already existing solution to a different type of classification problem. For example, \parencite{sean} demonstrates the working of character level RNN. In which, the pattern of series of characters forming a name of a person are classified to predict which language the name belongs to. Analyzing this example author created a vocabulary level RNN to predict the lowest level of category based on the pattern of product name.
+Initial approach of finding a solution to product categorization is to analyze already existing solution to a different type of classification problem. For example, \parencite{sean} demonstrates the working of character level RNN. In which, the pattern of series of characters forming a name of a person are classified to predict which language the name belongs to. Analyzing this example author created a vocabulary level RNN to predict the lowest level of category based on the pattern of product name. In this thesis, author has recognized the complexity of task and has opted to base prediction solely on the product feature pattern. Analyzing the confusion matrix of predicted vs actual category will provide a visual evaluation of the model. The result of the model for all the existing data of product will be stored in search analytic engine Elastic search in order to manually check the falsely predicted category.
 
 Machine learning model to text classification for predicting the product taxonomy is a methodology in which a lot of research have been conducted. \cite{AliCevahir.} implements classification model at every level using the \acl*{KNN} classifier. Like wise \parencite{Gupta.20062016}  proposes a distributional semantics representation for predicting the product taxonomies.  Some classifying methods are supervised classification, decision trees, naive Bayes classifier and max entropy classifiers \parencite{BirdKleinLoper09}
 
-\subsection{Classification model evaluation}
+\subsection{Do the math.}
 
-In this thesis, author has recognized the complexity of task and has opted to base prediction solely on the product feature pattern. Analyzing the confusion matrix of predicted vs actual category will provide a visual evaluation of the model. The result of the model for all the existing data of product will be stored in search analytic engine Elastic search in order to manually check the falsely predicted category.
+In this paper, author researches on the relevance of the mathematical concept with respect to the machine learning process. Understanding the math behind reducing the loss for prediction enables to completely understand the algorithms. Especially the training algorithm applies the activation functions. Author describes the theoretical knowledge with reasoning to apply these activation functions.  
+
+\clearpage
 
 \section{Structure of the Thesis}
 
-In the first chapter, gives the introduction of the thesis along with research questions and methodology.
+In the first chapter, author introduces the domain of research,the importance of the research, research questions and methodology.
 
-In the second chapter, defining or selecting the features from a document is described. It introduces various analytic engine tools and methods for feature selection. 
+The second chapter indulges the reader to understand the basics of machine learning and product taxonomy before diving into the implementation.
 
-The third chapter describes various methods to standardize the text data and preprocess it before making it as an input to the classification model.
+In the third chapter, defining or selecting the features from a document is described. It introduces various analytic engine tools and methods for feature selection. It describes various methods to standardize the text data and preprocess it before making it as an input to the classification model. The chapter focuses on retaining the missing textual data from the dataset from which the classification model will be predicting the product category. The chapter is a guideline on vectoring or transforming the text into machine usable numerical form called feature extraction.
 
-The fourth chapter focuses on retaining the missing textual data from the dataset from which the classification model will be predicting the product category. 
+In the fourth chapter, how author classifies the product by representing the features of the product into vector of entire vocabulary of dataset is depicted. The architecture of neural network used for the prediction is described in this chapter. Mathematical equations on probability distribution, Softmax and why to apply log to softmax is formulated. 
 
-The fifth chapter is a guideline on vectoring or transforming the text into machine usable numerical form called feature extraction.
+In the fifth chapter, the author describes the classification models training process. The experimentation and analysis of model with different parameters are conducted. This chapter also describes the python code related to back propagation. Experimentation with learning rate parameter of the model is conducted.
 
-In the sixth chapter, how author classifies the product by representing the features of the product into vector of entire vocabulary of dataset is depicted. The architecture of neural network used for the prediction is described in this chapter. Mathematical equations on probability distribution, Softmax and why to apply log to softmax is formulated. 
+The sixth chapter, is research on mathematical relationship between a basic neural network and its functions such as feedforward and back propagation. This chapter has a detailed description of the machine learning process. Mathematical concepts such as partial derivatives, \acl{MSE}, log of a value, probability distribution is described in this chapter. It also describes \acl{RNN} and its mathematical equation.  
 
-In the seventh chapter, the model is trained to classification. The experimentation and analysis of model with different approaches and varying model parameters is conducted.
+The seventh chapter, describes the application of natural language processing into developing knowledge graph.
 
-The eight chapter, is research on creating a knowledge graph with natural language processing.
+The final chapter, concludes the thesis along with research questions and future scope of research. Author also describes the research boundaries chosen for this thesis.  
