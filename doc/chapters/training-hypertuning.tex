@@ -484,6 +484,24 @@ In this experiment, the model is trained with and without triangular learning ra
     
 \end{enumerate}
 
+\section{Model Evaluation}
+
+The model is evaluated using the confusion matrix. Confusion matrix is square matrix of predicted label $y_{pred}$ verses the true target label $y_{true}$.
+Figure \ref{fig:meval} is the confusion matrix of the model trained only for 20 categories. The actual model is trained to predict around 300 categories. Author choose to attach the miniature version of the confusion matrix.  Refer Appendix A code \ref{code:confusion matrix} for the python code to generate a confusion matrix.
+
+\begin{figure}[H]
+    \centering    
+    \includegraphics[scale=0.5]{confusion._200epoch.png}
+    \caption{Confusion matrix: with little training.
+    }
+    \label{fig:meval}
+\end{figure}
+
+\section{Model Deployment}
+
+A \textbf{.pt} file represents the PyTorch model checkpoint file. These files store the parameter and architecture of trained PyTorch model. The PyTorch's torch.save and torch.load function uses the pythons  Pickle (refer section \ref{sec:ngram_vector}) utility for serialization \parencite{savept}.
+
+As the \acl{PIM} systems get updated with the latest details of product information, the model requires retraining for accurate prediction. Refer Appendix A code \ref{code:Loadpt} for Python code to load the trained PyTorch model.
 
 \section{Summary}
 

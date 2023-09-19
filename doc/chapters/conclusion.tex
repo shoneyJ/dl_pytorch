@@ -54,20 +54,26 @@
 
   There is a scope of research on image classification and its use cases in the E-commerce industry. Images are vital component of an E-commerce website. There is saying ``A picture is worth a thousand words''. The product image itself has so much information  to be tapped. 
 
+  Few of them are listed below:
   \begin{itemize}
     \item Image captioning.
     
-    Generating text based on image, describing its features such as color.
+    Generating text from the image is a useful process in E-commerce. For example, product image also describes its features such as color. Such information can be added to the caption of the image. \parencite[Section 15.4.7]{pml1Book} describes an example of image captioning using the sequential data processing network with \textbf{attention algorithm}.
     
+    \item Attention based image classification.
+    
+    \parencite{Vaswani.12062017} proposes a network architecture named Transformers which uses attention in the encoder and decoder in the machine translation tasks. Using the transformer model to process the sequence of pixels in a product image to identify the clustered components or to identify which other product could be a part of the product.
+    For example, image from Appendix B figure \ref{fig:sparepart} is product image, using attention based image classification, identifying the products which fit in and around the processed product image could enable E-Commerce industries cluster the products.
+ 
+
+
     \item Image based categorization.
     
     A Machine learning model can generate product taxonomy based on the image of the product. Clustering the products based on the image could also enable to define a better product taxonomy. 
 
     \item Image to image translation.
    
-    Using \acfp{GAN} \parencite{Goodfellow.31122016}, a sketch can be converted to photorealistic image. 
-
-    
+    Using \acfp{GAN} \parencite{Goodfellow.31122016}, a sketch can be converted to photorealistic image.     
     
 
   \end{itemize}

@@ -70,6 +70,55 @@ In figure \ref{fig:sample-product-taxonomy}, is a sample of product taxonomy rep
 
 \end{enumerate}
 
+\section{\acf{PIM}}
+\acl{PIM} system is an information system that facilitates the manufactures and distribution channel such as an e-commerce website with a central hub of product data \parencite{iceclog}. \acs{PIM} system manages products details such name, description, manufacturer, price as well as the products' taxonomy. A PIM system may also include the \acf{SKU}. \acsp{SKU} enables the distribution channels to determine which product require reordering and also provides sales data. Distribution channels may also have an extended version of the \acs{SKU} than the one provided by the suppliers.
+
+\acsp{PIM} are the point of source to verify whether the products' taxonomy are correct and also if the stock is available before distribution channels make it publically available for sales.
+
+
+% \begin{tikzpicture}[
+%     node distance=1cm,
+%     every node/.style={font=\footnotesize},
+%     arrow/.style={->,>=Stealth},
+%     process/.style={rectangle, draw, text centered, minimum width=2.5cm, text width=2.5cm},
+%     decision/.style={diamond, draw, text centered, aspect=2},
+%     arrowlabel/.style={midway, above, font=\scriptsize},
+% ]
+%     % Define nodes
+%     \node (dc) [process] {Distribution Channels};
+%     \node (dp) [process, below=3cm of dc] {Available for Sale};
+%     \node (ms) [process, right=6cm of dc] {Source};
+%     \node (pim) [process, right=3cm of dc, yshift=-1.5cm] {PIM System};
+%     \node (check) [decision, below=of dc] {Verify};
+   
+%     % Define arrows and labels
+%     \draw [arrow] (dc) -- (check);
+%     \draw [arrow] (check) -- node[arrowlabel] {Yes} (dp);
+%     \draw [arrow] (check.east) -- node[anchor=south] {No} ++(1.5,0) |- ($(pim.west) + (0,0.5)$) -- (pim.west);
+%     \draw [arrow] (ms) -- (pim.east) ; 
+%     \draw [arrow] (pim.north) -- (dc.east);
+% \end{tikzpicture}
+
+
+% \begin{itemize}
+%     \item Getting updated lists of products from suppliers.
+%     \begin{itemize}
+%         \item What is the current method to get the updates?
+%         \item In which cycle do these updates occur? Is it the same cycle for every supplier or is it individual?
+%     \end{itemize}
+%     \item Best way to activate / deactive products.
+%     \begin{itemize}
+%         \item Would it make sense to have article level toggles in the interface that will (de)activate a product from the Reorder?
+        
+%         \item Would a standardised document import be a better solution?
+%     \end{itemize}
+% \end{itemize}
+
+
+
+
+
+
 \section{Product Taxonomy Prediction Approaches}
 
 

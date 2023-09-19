@@ -10,7 +10,7 @@
 \usepackage{float}
 \usepackage{fancyhdr}
 \usepackage[nohyperlinks, printonlyused, withpage, smaller]{acronym}
-\usepackage[backend=biber, sorting=nyt, style=ext-authoryear-icomp,dashed=false,block=par]{biblatex}
+\usepackage[backend=biber, sorting=nyt, style=ext-authoryear-comp,dashed=false,block=par]{biblatex}
 \usepackage[inkscapeformat=png]{svg}
 \usepackage{booktabs,multirow,array}
 \usepackage{listings}
@@ -25,7 +25,7 @@
 \usepackage{mathrsfs}
 
 
-\usetikzlibrary{shapes,arrows,positioning,arrows.meta}
+\usetikzlibrary{shapes,arrows,positioning,arrows.meta,calc}
 \captionsetup[table]{skip=5pt}
 
 % Customize list of figures appearance in table of contents
@@ -213,7 +213,7 @@ chapters/appendix%
 \addcontentsline{toc}{chapter}{Bibliography}
 
 
-
+\nocite{*}
 \printbibliography[title={References}]
 
 

@@ -283,7 +283,7 @@ Substituting \(a = \exp(x_i)\) and \(b = \sum_{j=1}^n \exp(x_j)\) in equation \e
 
 \section{ \acs*{RNN} - Forward and Backward Propagation} \label{sec:math-rnn}
 
-When a feedforward neural network are extended to include feedback connections, they are called \acfp{RNN} \parencite[Chapter 6, Page 164]{Goodfellow-et-al-2016}. \acfp{RNN} is best suited for machine learning problems that involve sequential data and use patterns to predict the output. A recurrent neural network is specialized for processing sequence of values $ x^{(1)},\ldots,x^{(t)}$. 
+When a feedforward neural network are extended to include feedback connections, they are called \acfp{RNN} \parencite[Chapter 6, Page 164]{Goodfellow-et-al-2016}. \acfp{RNN} is best suited for machine learning problems that involve sequential data such as sequence translation, generation and classification. A recurrent neural network is specialized for processing sequence of values $ x^{(1)},\ldots,x^{(t)}$. The prediction of output $y^t$ also depends on the hidden state of the system $h^t$, which gets updated overtime as the sequence is processed \parencite[Chapter 15, Page 501]{pml1Book}.
 
 \begin{figure}[H]
     \centering    
