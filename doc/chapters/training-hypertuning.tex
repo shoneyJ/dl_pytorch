@@ -497,6 +497,26 @@ Figure \ref{fig:meval} is the confusion matrix of the model trained only for 20 
     \label{fig:meval}
 \end{figure}
 
+\subsection*{Actual vs Predicted category}
+Author tested the model with test data of 10000 pairs of product name and category.
+Analyzing the falsely predicted result of 1455 records gained insight of incorrect categorization of existing products.  Table \ref{table:false_negative} refers to a sample of record which the model falsely predicted the category.\\ Which means  $y_{pred} \neq y_{true}$. However, this records indicate a false negative record, which means the $y_{pred}$ is incorrectly saved possibly due to human error. 
+
+     
+\begin{table}[h]
+    \centering
+    \caption{False negative - sample data}
+    \label{table:false_negative}
+    \begin{tabular}{ lll }
+          \toprule
+          
+          \textbf{Name} & \textbf{$y_{true}$} & \textbf{$y_{pred}$} \\
+          \midrule
+          RPM Sensor, engine management&Sensor&RPM Sensor \\
+        
+          \bottomrule
+          \end{tabular}
+\end{table}
+
 \section{Model Deployment}
 
 A \textbf{.pt} file represents the PyTorch model checkpoint file. These files store the parameter and architecture of trained PyTorch model. The PyTorch's torch.save and torch.load function uses the pythons  Pickle (refer section \ref{sec:ngram_vector}) utility for serialization \parencite{savept}.
