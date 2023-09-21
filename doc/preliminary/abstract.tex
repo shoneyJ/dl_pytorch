@@ -2,21 +2,19 @@
     
 
 \begin{center}
-    Shoney Arickathil, School of Informatics, SRH Hochschule Heidelberg \\
-
-Master Thesis \\
-\textbf{Application of Natural language processing in ECommerce}\\
-\textbf{Predicting product taxonomy}
-
+    Shoney Arickathil, School of Information, Media and Design, SRH University Heidelberg \\ [0.3cm] Master Thesis \\
+    {{\normalsize \bfseries Application of Natural Language Processing and Machine Learning in E-Commerce}\\[0.1cm]{\small Predicting Product Taxonomy}}
 \end{center}
 
 
-Electronic commerce started in early 1990's in which the business transactions are conducted through computer networks. The ease of buying a product online has reduced physical work and time required for decision-making by compare the product features. A wide range of products are sold online. One of the challenge is to well define a products' taxonomy. A product taxonomy is a hierarchical structure to organize the products in an E-commerce platform in such a way that customers can find the product in the fewest possible clicks.
-Product taxonomy for the same product may differ based on the supplier and manufacturer (sources). Hence, product taxonomy details cannot be imported directly from the sources into the E-commerce platform. Product details cannot be live on E-commerce platform until its taxonomy is well-defined, this delays the time of product availability for customers. 
+Business-to-business or business-to-consumer transactions conducted online is increasing substantially. Manufacturers and suppliers rely on various sales channels such as an E-commerce website to gain a market share. E-commerce platforms fetches manufacture's or supplier's version of multilingual product information including the products' taxonomy from the \acf{PIM} systems. Vocabulary used in defining a product taxonomy may differ from one source to another. In E-commerce platform, mediation of machine learning model to predict the product taxonomy eases the process of product information deployment.
 
-In this thesis, the author developed a machine learning classification model to predict the product taxonomy based on the features of the product. Author created a prototype of predicting the leaf node level of product category. This prototype formed as a foundation to create a machine learning model to predict the complete product taxonomy. Author describes the process of reducing dimensionality, text normalization, imputation of missing text.
+In this thesis, the author developed a supervised classification model to predict the product taxonomy using open source deep learning framework PyTorch. Author described the data pre-processing methods, architecture of \acf{RNN}, parameter tuning, model evaluation and deployment. The concepts of neural networks, classification problem and machine learning process were analyzed from a mathematical point of view. 
 
-In this paper, author developed a supervised \acl{RNN} for text classification. Author also describes the mathematical foundations behind the machine learning process. Author evaluates the model with confusion matrix.
+Initially, research on impact of well-defined product taxonomy on a recommendation system, virtual agents, \acf{SEO}, in an E-commerce was conducted. The concept of supervised learning and classification methods was presented. Recent developments and research related to E-Commerce and its reliance on \acf{nlp} and machine learning algorithm were shown. In the following chapters, the step by step implementation of an RNN based classification model were described. Finally, the model was evaluated using the confusion matrix.
+
+Comparing the falsely predicted category along with the actual category, indicated some records were false negative. Meaning the model predicted the category correctly. However, due to prior human error the actual category itself was incorrectly saved. Author concluded that leveraging this thesis study with the image based machine learning algorithm to image captioning, image translation, image classification can generate better product taxonomies.  
+
 
 \end{abstract}
 
