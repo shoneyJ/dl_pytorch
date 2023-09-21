@@ -329,53 +329,62 @@ The steps involved in training a model with \acs{CLR} are as follows :
 
     \item In the next experiment, we set the $max\_lr = 0.2$. \\
     The classification model successfully completed the training and was able to predict the category.
-    \begin{figure}
-        \centering    
-        \includegraphics[scale=0.8]{loss_lr_02.png}
-        \caption{Loss vs Learning rate; where $max\_lr = 0.2$}
-        \label{fig:Loss value at 0.2}
-    \end{figure}
+  
     
     As illustrated in figure \ref{fig:Loss value at 0.2}, in the graph plotted of Loss Vs Learning rate. The model started to learn at learning rate $\epsilon = 0.04$ onwards. We will further reduce the $max\_lr$.
 
     \item In the next experiment, we set the $max\_lr = 0.04$. \\
     Notice in figure \ref{fig:Loss value at 0.04}, there is a plateau until $\epsilon = 0.010$. After which there is a descent until $\epsilon = 0.015$
-    \begin{figure}
-        \centering    
-        \includegraphics[scale=0.9]{loss_004.png}
-        \caption{Loss vs Learning rate; where $max\_lr = 0.04$}
-        \label{fig:Loss value at 0.04}
-    \end{figure}
+
 
     \item In the next experiment, we set the $max\_lr = 0.015$. \\
     Notice in figure \ref{fig:Loss value at 0.015}, the loss had not neared zero and the model fails to predict the classification. 
-    \begin{figure}
-        \centering    
-        \includegraphics[scale=0.9]{loss_0015.png}
-        \caption{Loss vs Learning rate; where $max\_lr = 0.015$}
-        \label{fig:Loss value at 0.015}
-    \end{figure}
+ 
 
     \item From the earlier mentioned experimentation with $max\_lr$,  the loss in classification model is nearing zero by the end the training  when  $max\_lr > 0.015$ 
     Figure \ref{fig:Loss value at 0.02} illustrates the loss reaching near zero when $max\_lr = 0.02$. The figure  \ref{fig:Loss value at 0.02}, there is a plateau until the $ \epsilon = 0.0075$. Indicating that the model did not learn until the learning rate $ \epsilon = 0.0075$.
-    \begin{figure}
-        \centering    
-        \includegraphics[scale=0.9]{loss_002.png}
-        \caption{Loss vs Learning rate; where $max\_lr = 0.02$}
-        \label{fig:Loss value at 0.02}
-    \end{figure}
+
 
     \item Updating the $base_lr=0.0075$ and $max_lr=0.02$, resulted a steady slop in the loss vs learning rate.  
     Figure \ref{fig:Loss value at 0.0075} illustrates the loss reaching near zero when $max\_lr = 0.02$ and $base_lr=0.0075$. The steady decent indicates the learning rate range is optimal.
-    \begin{figure}
-        \centering    
-        \includegraphics[scale=0.9]{loss_0075_002.png}
-        \caption{Loss vs Learning rate; where $base\_lr = 0.0075$ and $max\_lr = 0.02$ }
-        \label{fig:Loss value at 0.0075}
-    \end{figure}
     
 
 \end{enumerate}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\linewidth]{loss_004.png}
+        \caption{Loss vs Learning rate; where $max\_lr = 0.04$}
+        \label{fig:Loss value at 0.04}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\textwidth}
+       
+        \includegraphics[width=\linewidth]{loss_lr_02.png}
+        \caption{Loss vs Learning rate; where $max\_lr = 0.2$}
+        \label{fig:Loss value at 0.2}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\linewidth]{loss_0015.png}
+        \caption{Loss vs Learning rate; where $max\_lr = 0.015$}
+        \label{fig:Loss value at 0.015}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\linewidth]{loss_002.png}
+        \caption{Loss vs Learning rate; where $max\_lr = 0.02$}
+        \label{fig:Loss value at 0.02}
+    \end{subfigure}
+     \vspace{1cm} % Add vertical space between rows of images
+     \begin{subfigure}{0.4\textwidth}
+         \includegraphics[width=\linewidth]{loss_0075_002.png}
+         \caption{Loss vs Learning rate; where $base\_lr = 0.0075$ and $max\_lr = 0.02$ }
+         \label{fig:Loss value at 0.0075}
+     \end{subfigure}
+
+\end{figure}
 
 \section{Triangular learning rate}
 

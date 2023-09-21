@@ -140,6 +140,7 @@ class RNN(nn.Module):
         return torch.zeros(1, self.hidden_size)
 \end{lstlisting}
 
+\clearpage
 \subsection*{Summary of the RNN class:}
 
 \begin{itemize}
@@ -155,8 +156,8 @@ class RNN(nn.Module):
 
 
 \clearpage
-The graphical representation of code listed in \ref{code:rnn-arch} is illustrated in figure \ref{fig:archi}.
-\begin{figure}[h]
+The graphical representation of code listed in \ref{code:rnn_arch} is illustrated in figure \ref{fig:archi}.
+\begin{figure}
     \centering
     \caption{\acs{RNN} Architecture \parencite{sean}}
     \label{fig:archi}
@@ -225,7 +226,7 @@ The graphical representation of code listed in \ref{code:rnn-arch} is illustrate
 %   \item $\hat{y}(t)$ is the normalized probability vector (predicted probabilities) over the output, obtained by applying the softmax operation to $o(t)$, which converts the unnormalized log probabilities into valid probabilities summing up to $1$.
 % \end{itemize}
 
-
+\clearpage
 
 \section{Pytorch's $SoftMax$ function and its variations}
 

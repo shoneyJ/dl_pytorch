@@ -1,10 +1,22 @@
-\chapter{Mathematical Foundations of Classification Model} \label{ch:math-behid}
+\chapter{Mathematical Foundations of Neural Networks} \label{ch:math-behid}
+
+Understanding the mathematical foundations of the deep neural network is important for searching suitable network architecture. The approach of implementing a model without understanding the mathematical foundation could lead to unexpected failure in getting the desired results from the model. Understanding fundamental mathematics of \acl{AI} is necessary as further development in this field is on going.   \parencite{Kutyniok.16032022} states two different research direction intersects with mathematics and \acl{AI}. One which place the network architecture and training process on theory of mathematics and another with a goal to develop  mathematical problem settings such as partial derivatives equations aiming to tap the potentials of neural network.
+
+Often it is said that an artificial neural network mimics the structure of a biological brain. As illustrated in figure \ref{fig:bio neuron}, a brain is a deep network of neurons which processes the input signals received from Dendrites and transited with Axon. Before transmitting these incoming signals are integrated or summed together in some way and if resulting signal exceeds some threshold then the neuron will transmit it to other neurons.   
+\begin{figure}[H]
+    \centering    
+    \includegraphics[scale=0.4]{bio_neuron.png}
+    \caption{Component of biological neuron in stylized form \parencite[section 1.1]{Gevin.1997}}
+    \label{fig:bio neuron}
+\end{figure}
+
+The artificial equivalent of a biological neuron is shown in figure  \ref{fig:basic neuron}. The Synapses of figure \ref{fig:bio neuron} are modelled as number or weight being multiplied to each input signals. The weighted signals are summed together by simple arithmetic addition. The resulting value is passed though an activation function representing threshold logic units \parencite[section 1.1]{Gevin.1997}.
 
 \section{Neural Networks and Loss Minimization}
 
 \subsection*{Neurons}
 
-A neural network is a connection of neurons. A Neuron takes input, do some computation and returns an output.  Figure \ref{fig:basic neuron} illustrates a basic unit of neuron, which is multiplying each unit of inputs with weight $w$ and weighted input are added with bias $b$. Finally, the sum is passed though a sigmoid activation function $ f $.  
+A neural network is a connection of neurons. A Neuron takes input, do some computation and returns an output.  Figure \ref{fig:basic neuron} illustrates a example of   basic unit of neuron, which is multiplying each unit of inputs with weight $w$ and weighted input are added with bias $b$. Finally, the sum is passed though a activation function $ f $.   
 \begin{figure}[H]
     \centering    
     \includegraphics[scale=0.4]{neuron.png}
@@ -17,7 +29,7 @@ A neural network is a connection of neurons. A Neuron takes input, do some compu
     y = f(x_1 * w_1 + x_2 * w_2 + b) \label{eq:single_n}
 \end{align}
 
-The equation \ref{eq:single_n} is the mathematical representation of the sample neuron.
+The equation \ref{eq:single_n} is the mathematical representation of the sample neuron. The artificial neurons can be added and concatenated into new functions eventually leading to a complex function. A neuron's characteristics is determined by its parameters and activation functions. Each of the activation functions have a mathematical particularity and their practical effects \parencite{Lederer.25012021}. 
 
 \subsection*{Neural Network}
 
@@ -71,7 +83,7 @@ The equation \ref{eq:single_n} is the mathematical representation of the sample 
    \label{fig:nn_hl} 
 \end{figure}
 
-Figure \ref{fig:nn_hl}, illustrates addition of two neurons hidden layers $h_1$ and $h_2$ between input layer (first) and output layer (last). The data flow is represented with directed arrows, this process of passing input forward to get an output is called feed-forward.
+Figure \ref{fig:nn_hl}, illustrates addition of two neurons hidden layers $h_1$ and $h_2$ between input layer (first) and output layer (last). The data flow is represented with directed arrows, this process of passing input forward to get an output is called feed-forward. A feedforward neural network comprises many functions associated with a \acl{DAG}. These chain of functions form a deep layers of the network and such is the term deep learning being tossed  \parencite[chapter 6]{Goodfellow-et-al-2016}.
 
 \subsection*{Training a Network}
 
@@ -225,8 +237,8 @@ Multinoulli distributions are often employed to model distributions over categor
 
 Moreover, when working with multinoulli-distributed random variables, it is typically unnecessary to compute expectations or variances since these distributions are used to describe categorical outcomes where numerical operations may not be meaningful \parencite[Page 60,61]{Goodfellow-et-al-2016}. 
 
-
-\section{Softmax}
+\section{Activation Functions and their Propertise}
+\subsection{Softmax}
 
 The softmax function is often used to predict the probabilities associated with a multinoulli distribution \parencite[Page 79]{Goodfellow-et-al-2016}.
 
@@ -281,6 +293,73 @@ Substituting \(a = \exp(x_i)\) and \(b = \sum_{j=1}^n \exp(x_j)\) in equation \e
     \item Logarithms and Multiplication: Logarithms convert multiplication to addition. Probabilities of independent events,  represented as \(P(A \cap B \cap C \cap \ldots)\). Logarithm of the product of these probabilities simplifies the computation to a sum. 
 \end{itemize}
 
+\subsection{Sigmoid or Logistic}
+
+Sigmoid function, also termed as squashing function as the values are bounded in an interval.  Figure \ref{fig:SigmoidActivation} shows the graph of a sigmoid function showing a smooth ``S'' shaped curve. This function is denoted with greek letter $\sigma$ (sigma) and is defined as \parencite[section 2.1]{Lederer.25012021}: 
+
+\begin{align}
+    \sigma(x) = \frac{1}{1+ e^{-x}} \label{eq:sigma}
+\end{align}
+
+\begin{itemize}
+    \item If $x$ to the sigmoid function is a small negative number, the output is very close to 0.
+    \item If $x$ is a large positive number, then the output is very close to 1.
+    \item If $x$ is 0, the output is $0.5$.
+    \item Types of sigmoid functions are logistics, artan, tanh and softsign.
+\end{itemize}
+
+\subsection{ReLU Rectified Linear Unit}
+In electrical engineering, a rectifier is a device that converts alternating current to direct current. Similarly, this function lets positive inputs pass unaltered but cuts negative inputs as shown in figure  \ref{fig:ReLUActivation}. Limitations of ReLU is dying-relu phenomina, which is similar to vanishing gradient decent. The solution to it is leaky-ReLu  \parencite[section 2.2.2]{Lederer.25012021}. 
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                xlabel=$x$,
+                ylabel=$\sigma(x)$,
+                xmin=-6,
+                xmax=6,
+                ymin=0,
+                ymax=1.2,
+                width=8cm,
+                height=6cm,
+                grid=both,
+                axis lines=middle
+            ]
+            \addplot[blue, domain=-6:6, samples=100] {1 / (1 + exp(-x))};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Sigmoid activation function}
+        \label{fig:SigmoidActivation}
+    \end{subfigure}
+    \hspace{0.05\textwidth}
+    \begin{subfigure}{0.45\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                xlabel=$x$,
+                ylabel=$\text{ReLU}(x)$,
+                xmin=-2,
+                xmax=2,
+                ymin=0,
+                ymax=2,
+                width=8cm,
+                height=6cm,
+                grid=both,
+                axis lines=middle
+            ]
+            \addplot[blue, domain=-2:0, samples=100] {0};
+            \addplot[blue, domain=0:2, samples=100] {x};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{ReLU activation function}
+        \label{fig:ReLUActivation}
+    \end{subfigure}
+   
+    \caption{Activation functions}
+    \label{fig:ActivationFunctions}
+\end{figure}
+
 \section{ \acs*{RNN} - Forward and Backward Propagation} \label{sec:math-rnn}
 
 When a feedforward neural network are extended to include feedback connections, they are called \acfp{RNN} \parencite[Chapter 6, Page 164]{Goodfellow-et-al-2016}. \acfp{RNN} is best suited for machine learning problems that involve sequential data such as sequence translation, generation and classification. A recurrent neural network is specialized for processing sequence of values $ x^{(1)},\ldots,x^{(t)}$. The prediction of output $y^t$ also depends on the hidden state of the system $h^t$, which gets updated overtime as the sequence is processed \parencite[Chapter 15, Page 501]{pml1Book}.
@@ -302,8 +381,8 @@ Equation \ref{eq:rnn} depicts the common representation of RNN to define the hid
  \end{align}
 
 
-\begin{itemize}
-    \item Graph un-rolling and parameter sharing.
+
+    \subsection*{Graph Un-rolling and Parameter Sharing}
     
     Here graph is referred to as the structure of a set of computations, such as the data flow from input layer to output layer for mapping the loss. Unfolding the equation \ref{eq:rnn} for $t=3$ times, we obtain:
     
@@ -315,7 +394,35 @@ Equation \ref{eq:rnn} depicts the common representation of RNN to define the hid
     The equation \ref{eq:rnn} is recurrent without the external signal $x^{(t)}$. This expression can be represented by \acl{DAG}.  Unfolding this graph results in the sharing of parameters across a network structure.
 
 
-\end{itemize}
+    \subsection*{Sequence Generation}
+
+    In this type, the output sequence is generated one token at a time. At every step a sample output $y^t$ from the hidden state $h^t$ is again feed back in to the model to get new state $h^{t+1}$ as illustrated in figure \ref{fig:RNN vectoseq}.  This architecture could be applied in image captioning method \parencite[section 15.2.1]{pml1Book}. 
+
+
+    \begin{figure}[H]
+        \centering    
+        \includegraphics[scale=0.9]{seq_gen.png}
+        \caption{A \acl*{RNN} for generating a variable length output sequence given an
+        optional fixed length input vector. \parencite[section 15.2.1]{pml1Book}}
+        \label{fig:RNN vectoseq}
+    \end{figure}
+
+    \subsection*{Sequence Classification}
+This architecture take variable length sequence as input and predict an output vector. The output of the hidden state is depended on the previous hidden state and also on input sequence as shown in figure \ref{fig:RNN seqtovec}.
+    \begin{figure}[H]
+        \centering    
+        \includegraphics[scale=0.9]{seq_class.png}
+        \caption{A \acs*{RNN} for classification \parencite[section 15.2.1]{pml1Book}}
+        \label{fig:RNN seqtovec}
+    \end{figure}
+
+
+
+    \subsection*{Sequence Translation}
+There are two types, one in which the input and output are of same length (aligned) and other in which input and output sequence are of variable length(unaligned). 
+Application of unaligned sequence translation is machine translation.     
+    
+    
 
 
 
