@@ -1,4 +1,4 @@
-\chapter{Model selection : Neural networks} \label{sec:feature-extraction}
+\chapter{Defining Model Architecture: Neural networks} \label{sec:feature-extraction}
 
 \section{Understanding Pytorch tutorial on \textit{classifying names with a character-level \acs{RNN}} } \label{sec:chRNN}
 
@@ -24,11 +24,11 @@
           \bottomrule
           \end{tabular}
 \end{table}
-
+\clearpage
 \subsection{Vector input and scalar output of the classification model}
 It is a character level \acs*{RNN} which reads words as a series of characters. Figure \ref{fig:pytorch} shows the flow of name information to the neural network as a sequence of characters. One character at a time is feed in classification model built using RNN and outputs the language corresponding to that name.
 
-\begin{figure}[htp!]
+\begin{figure}[H]
     \centering    
     \includesvg[scale=0.5]{pytorchTuitorial.svg}
     \caption{Language prediction based on name}

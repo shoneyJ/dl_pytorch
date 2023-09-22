@@ -49,7 +49,7 @@ A feature represents a dataset fine-tuned to serve as a training data for machin
       \item Recursive feature elimination
 
 \end{itemize}
-
+\clearpage
 \subsection{Obvious Feature Selection}
 
 In this paper, the datasets used are of an ecommerce business specializing in automotive industry domain. Secondary dataset used is from the TecDoc catalogue by TecAlliance \footnote{https://www.tecalliance.net/}. 
@@ -112,9 +112,10 @@ The above code fetches indexed product name and its lowest hierarchy level categ
 
 Table \ref{table:enc} highlights the total number of products and category and name of fields considered as feature and label. 
 
+\clearpage
 \section{Text Normalization} \label{text_normalization}
 
-Text normalization is a process of transforming the document into a standard and consistent form of a text. A document is a text from single source. Some examples of document are list of product names from databases, a pdf file, texts retrieved from web scraping. Text normalization enables to perform required operations on the text as the text inputs are consistent across the document. The process of text normalization varies based on the type of text that needs to be normalize. There is no standard method for text normalization task. In this paper, text normalization of product name and category from the database source is performed. 
+Text normalization is a process of transforming the document into a standard and consistent form of a text. A document is a text from single source. Some examples of document are list of product names from databases, a pdf file, texts retrieved from web scraping. Text normalization enables to perform required operations on the text as the text inputs are consistent across the document. The process of text normalization varies based on the type of text that needs to be normalized. There is no standard method for text normalization task. In this paper, text normalization of product name and category from the database source is performed. 
 
 In table \ref{table:TN}, displays the difference in text before and after normalization. 
 
@@ -156,7 +157,7 @@ The better option would be to use Beautiful Soup \footnote{https://www.crummy.co
       soup = BeautifulSoup(doc, 'html.parser')
       text =soup.get_text()
 \end{lstlisting}
-
+\clearpage
 \subsection{Cleaning Text}
 A product detail text may contain non-word characters represented in regular expression as \textbackslash W. It may also contain space separated decimals describing the dimensional values of the product such as weight, height. Regular expressions could be used for removing the non-character words and spaces between the decimal values, using code \ref{cd:ct}. 
 
@@ -254,7 +255,7 @@ Replacing the most frequent categorical value in a column is known as mode imput
 Mode imputation on categorical data are prone to fill incorrect data if the missing data is not the most frequent one.
 
 
-
+\clearpage
 \subsection{\acf{KNN}  imputation}
 
 \acl{KNN} is a supervised learning algorithm and is used to search dataset with the most similar elements to a given query element, with similarity defined by a distance function. This imputation method is suitable for categorical data.
