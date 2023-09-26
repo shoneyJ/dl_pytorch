@@ -1,38 +1,28 @@
-# Building Deep Learning Models Using PyTorch
+# Application of Natural Language Processing and Machine Learning in E-Commerce
+## Predicting Product Taxonomy
 
-These are practice codes from plural site by Janani Ravi
+Business-to-business or business-to-consumer transactions conducted online is increasing sub-
+stantially. Manufacturers and suppliers rely on various sales channels such as an E-commerce
+website to gain a market share. E-commerce platforms fetches manufacture’s or supplier’s version of multilingual product information including the products’ taxonomy from the Product Information Management (PIM) systems. Vocabulary used in defining a product taxonomy may differ from
+one source to another. In E-commerce platform, mediation of machine learning model to predict
+the product taxonomy eases the process of product information deployment.
 
-# LaTex
+In this thesis, the author developed a supervised text based classification model to predict the
+product taxonomy using open source deep learning framework PyTorch. Author described the
+data pre-processing methods, architecture of Recurrent Neural Network (RNN), parameter tuning,
+model evaluation and deployment. The concepts of neural networks, classification problem and
+machine learning process were analyzed from a mathematical point of view.
 
-https://www.youtube.com/watch?v=ydOTMQC7np0
+Initially, research on impact of well-defined product taxonomy on a recommendation system,
+virtual agents, Search Engine Optimization (SEO), in an E-commerce was conducted. The concept
+of supervised learning and classification methods was presented. Recent developments and research
+related to E-Commerce and its reliance on Natural Language Processing (NLP) and machine learn-
+ing algorithm were shown. In the following chapters, the step by step implementation of an RNN
+based classification model were described. Finally, the model was evaluated using the confusion
+matrix.
 
-
-
-Eingabe	Ausgabe
-\ac{ecu}	European currency unit (ECU)
-\acf{ecu}	European currency unit (ECU)
-\acs{ecu}	ECU
-\acl{ecu}	European currency unit
-\acp{ecu}	ECUs
-\acfp{ecu}	European currency units (ECUs)
-\acsp{ecu}	ECUs
-\aclp{ecu}	European currency units
-\acfi{ecu}	European currency unit (ECU)
-\iac{ecu}	a ECU
-\Iac{ecu}	A ECU
-\acused{ecu}	
-\acsu{ecu}	ECU
-\aclu{ecu}	European currency unit
-
-
-https://www.kaggle.com/datasets/lakritidis/product-classification-and-categorization
-
-https://medium.com/analytics-vidhya/classification-using-long-short-term-memory-glove-global-vectors-for-word-representation-254d02d5e158
-
-https://www.kaggle.com/code/leekahwin/text-classification-using-n-gram-0-8-f1
-
-https://pytorch.org/tutorials/beginner/former_torchies/nnft_tutorial.html
-
-https://github.com/pytorch/examples/blob/main/word_language_model/main.py
-
-https://pytorch.org/tutorials/intermediate/char_rnn_generation_tutorial.html
+Comparing the falsely predicted category along with the actual category, indicated some records
+were false negative. Meaning the model predicted the category correctly. However, due to prior
+human error the actual category itself was incorrectly saved. Author concluded that leveraging
+this thesis study with the image based machine learning algorithm to image captioning, image
+translation, image classification can generate better product taxonomies.
