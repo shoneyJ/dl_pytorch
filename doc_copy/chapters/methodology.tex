@@ -1,0 +1,65 @@
+\chapter{Methodology}
+
+\section{Start with small prototype}
+
+Predicting the number of vehicles on a particular junction involves processing timeseries data. Initially the author processes the data only forone of the junction. The raw data has been used from Kaggle.com provided by  \parencite{fedesoriano}.
+
+About the dataset : \\
+The dataset contains data from year 2015-2017 along with junctions and number of vehicles in hourly intervals.
+The data manipulation is performed using Python library-Pandas.
+
+\begin{lstlisting}[language=Python,caption={Data set fetching using Pandas},label={code:data}]
+    df = pd.read_csv('Data/traffic.csv')
+    df = df.drop('ID', axis=1) df.head()
+\end{lstlisting}
+
+\begin{lstlisting}[language=Bash,caption={Sample Result},label={code:confusion matrix}]
+    index,DateTime,Junction,Vehicles,ID
+    0,2015-11-01 00:00:00,1,15,20151101001
+    1,2015-11-01 01:00:00,1,13,20151101011
+    2,2015-11-01 02:00:00,1,10,20151101021
+    3,2015-11-01 03:00:00,1,7,20151101031
+    4,2015-11-01 04:00:00,1,9,20151101041
+\end{lstlisting}
+
+At 4 junctions vehicles passing in every 1 hour recorded. Entire test dataset available in  ``traffic.csv'' file
+
+\section{Time series extraction}
+
+Developing a machine learning model to predict the flow of traffic considering multiple aspects such as exact point of year(month-wise), also on the daily basis considering progression hour-wise is a complicated process.
+
+We need to split the data such that \texttt{DateTime} column is split into `months', `hours', `day'. This is important as various aspects such as `day of the week', `month in a year', `hours in a day' need to be checked against for validating the trend in traffic.
+
+\begin{lstlisting}[language=Python,caption={Data set fetching using Pandas},label={code:data}]
+    df['DateTime'] = pd.to_datetime(df['DateTime'], format='mixed')
+    # Exploring more features
+    df_Junction1["Year"]= df_Junction1['DateTime'].dt.year 
+    df_Junction1["Month"]= df_Junction1['DateTime'].dt.month
+     df_Junction1["Date_no"]= df_Junction1['DateTime'].dt.day 
+     df_Junction1["Hour"]= df_Junction1['DateTime'].dt.hour 
+     df_Junction1["Day"]= df_Junction1.DateTime.dt.strftime
+     ("%A") df_Junction1.head()
+\end{lstlisting}
+
+
+
+
+\section{Ideate: Data Exploration}
+
+Initial approach of finding a solution to predict time-series event is to analyze already existing solution to a different type of prediction problem.
+
+For example, \parencite[Section 4.3]{Goodfellow-et-al-2016} showcases the implementation of RNN (Recurrent Neural Network) techniques in handling time-series events. In this context, the author leverages historical data patterns, to forecast the progression of traffic over time. The primary goal is to predict traffic conditions based on learned historical patterns.
+
+In tailoring this methodology to the intricacies of traffic flow, the author recognizes the complexity of the task and opts to utilize past data patterns for making predictions.
+
+To assess the effectiveness of the model, the author employs a visual tool, such as plotting graphs based on various traffic events. This visual representation offers a clear evaluation of predicted versus actual traffic conditions. Additionally, this approach allows for manual verification and scrutiny of instances where the model may have inaccurately predicted traffic conditions, contributing to a more comprehensive understanding of the model's performance.
+
+
+\section{Understanding Mathematics of Neural Networks}
+
+In this paper, author researches on the relevance of the mathematical concept with respect to the machine learning process. Understanding the math behind reducing the loss for prediction enables to completely understand the algorithms. Especially the training algorithm applies the activation functions. Author describes the theoretical knowledge with reasoning to apply these activation functions.
+
+Understanding the mathematical foundations on which the neural networks and data prediction model works enables to reverse engineer the algorithm of machine learning model.
+
+
+

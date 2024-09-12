@@ -1,0 +1,231 @@
+\documentclass[15pt,twoside]{report}
+\usepackage[utf8]{inputenc}
+
+
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
+\usepackage[british]{babel}
+\usepackage{csquotes}
+
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage[nohyperlinks, printonlyused, withpage, smaller]{acronym}
+\usepackage[backend=biber, sorting=nyt, style=ext-authoryear-comp,dashed=false,block=par]{biblatex}
+\usepackage[inkscapeformat=png]{svg}
+\usepackage{booktabs,multirow,array}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
+
+\usepackage[font=small,labelfont=bf,tableposition=top]{caption}
+\usepackage{tikz}
+\usepackage{tocloft}
+\usepackage{enumitem}
+\usepackage{appendix}
+\usepackage{mathrsfs}
+\usepackage{subcaption} % For subfigures
+\usepackage{pgfplots}
+\usepackage{ragged2e}
+% \title{\Large \textbf{Application of Natural Language Processing \\ and Machine Learning in E-Commerce} \\ \Large Predicting Product Taxonomy}
+\usetikzlibrary{shapes,arrows,positioning,arrows.meta,calc}
+\captionsetup[table]{skip=5pt}
+
+% Customize list of figures appearance in table of contents
+\renewcommand{\cftfigpresnum}{\figurename\ }
+\setlength{\cftfigindent}{0pt}
+\setlength{\cftfignumwidth}{6.5em}
+
+% Add extra space between paragraphs
+\setlength{\parskip}{10pt} % Adjust the value to your preferred paragraph spacing
+
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+
+
+% Define the page style "mystyle" for the fancyhdr package
+\fancypagestyle{mypagestyle}{
+     % Clear all header and footer fields
+     \fancyhf{}
+     % Set the header to display the chapter name on the right side
+     \fancyhead[R]{\leftmark}
+     % Set the footer to display the page number on the center
+     \fancyfoot[C]{\thepage}
+     % Set the footer line to appear (change 0pt to desired line thickness)
+     \renewcommand{\footrulewidth}{0.4pt}
+
+}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\graphicspath{ {images/} }
+
+% \renewbibmacro*{url+urldate}{%
+%   \printfield{url}%
+%   \iffieldundef{urlyear}
+%     {}
+%     {\setunit*{\addspace}%
+%      \printtext[urldate]{\printurldate}}}
+
+\DeclareFieldFormat{url}{Available at\addcolon\space\url{#1}}
+\DeclareFieldFormat{urldate}{\newline Accessed on\addcolon\space{#1}}
+% \DeclareFieldFormat{title}{\newline{#1}}
+\DeclareFieldFormat{biblabeldate}{#1}
+\DeclareDelimFormat{nameyeardelim}{\addcomma\space}% comma before the year
+% \DeclareFieldFormat{url}{\bibstring{urlfrom}\addcolon\space\url{#1}}
+% \DeclareFieldFormat{urldate}{\mkbibbrackets{\bibstring{urlseen}\addcolon\space#1}}
+
+% \renewbibmacro*{url+urldate}{% changes the default order of the fields url and urldate
+%                              \usebibmacro{urldate}%
+%                              \newunit
+%                              \usebibmacro{url}%
+%                             }
+
+%                             \makeatletter
+%                             \setlength{\bibitemsep}{0.5\baselineskip plus 0.5\baselineskip}
+                            
+%                             \newsavebox\ay@labelbox
+%                             \newlength{\labwidthsameline}
+%                             \setlength{\labwidthsameline}{6em}
+                            
+%                             % \newbibmacro{labelwidthbib}{%
+%                             %   \begingroup
+%                             %   \delimcontext{parencite}%
+%                             %   \DeclareFieldFormat{bibhyperref}{##1}%
+%                             %   \csuse{blx@hook@cite}%
+%                             %   \csuse{blx@hook@citekey}%
+%                             %   \global\undef\cbx@lasthash
+%                             %   \global\undef\cbx@lastyear
+%                             %   \citetrackerfalse\pagetrackerfalse\backtrackerfalse
+%                             %   \defcounter{maxnames}{\blx@maxcitenames}%
+%                             %   \printtext[brackets]{\usebibmacro{cite}}%
+%                             %   \endgroup
+%                             % } 
+%                             %-----------------------
+%                             \newbibmacro{kicklabel}{% 
+%                               \sbox\ay@labelbox{\usebibmacro{labelwidthbib}}%
+%                               \global\togglefalse{blx@insert}%
+%                               \ifdim\wd\ay@labelbox>\labwidthsameline
+%                                 \leavevmode\newline
+%                               \fi
+%                             }
+                            
+%                             \defbibenvironment{bibliography}%
+%                               {\list
+%                                 {\usebibmacro{labelwidthbib}}%
+%                                 {\setlength{\labelwidth}{\labwidthsameline}%
+%                                  \setlength{\leftmargin}{\labelwidth}%
+%                                  \setlength{\labelsep}{\biblabelsep}%
+%                                  \addtolength{\leftmargin}{\labelsep}%
+%                                  \setlength{\itemsep}{\bibitemsep}%
+%                                  \setlength{\parsep}{\bibparsep}%
+%                                  \renewcommand*{\makelabel}[1]{##1\hss}}}%
+%                               {\endlist}%
+%                               {\item\usebibmacro{kicklabel}}
+%                             \makeatother
+
+\addbibresource{References.bib}
+
+\includeonly{preliminary/title, %
+preliminary/affidavit, %
+preliminary/certificate, %
+preliminary/acknowledgement, %
+preliminary/abstract, %
+preliminary/acronyms, %
+chapters/introduction, %
+chapters/literature, %
+chapters/methodology, %
+chapters/experiment, %
+}
+
+\begin{document}
+
+
+%--------------- Prelimanary pages -------------
+
+
+%--------------------------------------------
+\include{preliminary/title.tex}
+\include{preliminary/affidavit.tex}
+\include{preliminary/certificate.tex}
+\include{preliminary/acknowledgement.tex}
+\include{preliminary/abstract.tex}
+
+
+
+\pagenumbering{roman}
+\pagestyle{plain}
+\tableofcontents
+
+\clearpage
+%----------------- chapters --------------------
+\pagestyle{mypagestyle}
+\pagenumbering{arabic}
+
+%---------------------------------------
+\include{chapters/introduction.tex}
+\include{chapters/literature.tex}
+\include{chapters/methodology.tex}
+\include{chapters/experiment}
+
+\pagenumbering{roman}
+\pagestyle{mypagestyle}
+
+% Add the List of Figures to the table of contents
+\cleardoublepage % Ensure the correct page
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+
+
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+
+\lstlistoflistings
+
+
+\clearpage
+% \printglossary[type=\acronymtype]
+
+% \printglossary
+\addcontentsline{toc}{chapter}{Bibliography}
+
+
+\nocite{*}
+\printbibliography[title={References}]
+
+
+
+% \defbibheading{bibempty}{}
+
+% \let\oldbib\thebibliography
+% \let\endoldbib\endthebibliography
+% \renewenvironment{thebibliography}
+%   {\vspace{\baselineskip}\begin{oldbib}}
+%   {\end{oldbib}\vspace{\baselineskip}}
+
+
+\end{document}
